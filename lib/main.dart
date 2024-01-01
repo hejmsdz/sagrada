@@ -1,125 +1,288 @@
+import 'dart:async';
+
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:image/image.dart' as img;
+import 'package:sagrada/ai.dart';
+import 'package:sagrada/game.dart' as game;
 
-void main() {
-  runApp(const MyApp());
-}
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final cameras = await availableCameras();
+  final firstCamera = cameras.first;
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+  runApp(
+    MaterialApp(
+      title: 'Sagrada',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+      home: TakePictureScreen(
+        camera: firstCamera,
+      ),
+    ),
+  );
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class TakePictureScreen extends StatefulWidget {
+  const TakePictureScreen({
+    super.key,
+    required this.camera,
+  });
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
+  final CameraDescription camera;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  TakePictureScreenState createState() => TakePictureScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class TakePictureScreenState extends State<TakePictureScreen> {
+  late CameraController _controller;
+  late Future<void> _initializeControllerFuture;
 
-  void _incrementCounter() async {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _controller = CameraController(
+      widget.camera,
+      ResolutionPreset.high,
+      enableAudio: false,
+    );
+
+    _initializeControllerFuture = _controller.initialize();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+      appBar: AppBar(title: const Text('Take a picture')),
+      body: FutureBuilder<void>(
+        future: _initializeControllerFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Stack(
+              children: [
+                CameraPreview(_controller),
+                Positioned.fill(child: CustomPaint(painter: GridLinesPainter()))
+              ],
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        onPressed: () async {
+          try {
+            await _initializeControllerFuture;
+
+            final image = await _controller.takePicture();
+
+            if (!mounted) return;
+
+            await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => DisplayPictureScreen(
+                  imagePath: image.path,
+                ),
+              ),
+            );
+          } catch (e) {
+            print(e);
+          }
+        },
+        child: const Icon(Icons.camera_alt),
+      ),
     );
+  }
+}
+
+class GridCoordinates {
+  late double margin;
+  late double left;
+  late double width;
+  late double right;
+  late double cellSize;
+  late double height;
+  late double top;
+  late double bottom;
+
+  GridCoordinates(double containerWidth, double containerHeight) {
+    margin = 0.05 * containerWidth;
+    left = margin;
+    width = containerWidth - 2 * margin;
+    right = left + width;
+    cellSize = width / 5;
+    height = cellSize * 4;
+    top = (containerHeight - height) / 2;
+    bottom = top + height;
+  }
+}
+
+class GridLinesPainter extends CustomPainter {
+  Size? lastSize;
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final grid = GridCoordinates(size.width, size.height);
+
+    paintOverlay(canvas, size, grid);
+    paintGridLines(canvas, size, grid);
+
+    lastSize = size;
+  }
+
+  void paintOverlay(Canvas canvas, Size size, GridCoordinates grid) {
+    final paint = Paint()..color = Colors.black54;
+
+    canvas.drawRect(Rect.fromLTRB(0, 0, size.width, grid.top), paint);
+    canvas.drawRect(
+        Rect.fromLTRB(0, grid.bottom, size.width, size.height), paint);
+    canvas.drawRect(Rect.fromLTRB(0, grid.top, grid.left, grid.bottom), paint);
+    canvas.drawRect(
+        Rect.fromLTRB(grid.right, grid.top, size.width, grid.bottom), paint);
+  }
+
+  void paintGridLines(Canvas canvas, Size size, GridCoordinates grid) {
+    final paint = Paint()
+      ..color = Colors.white70
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0;
+
+    final path = Path();
+
+    for (int i = 0; i <= game.numRows; i++) {
+      final y = grid.top + i * grid.cellSize;
+      path.moveTo(grid.left, y);
+      path.lineTo(grid.right, y);
+    }
+
+    for (int j = 0; j <= game.numColumns; j++) {
+      final x = grid.left + j * grid.cellSize;
+      path.moveTo(x, grid.top);
+      path.lineTo(x, grid.bottom);
+    }
+
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(GridLinesPainter oldDelegate) =>
+      lastSize != oldDelegate.lastSize;
+}
+
+class DisplayPictureScreen extends StatefulWidget {
+  final String imagePath;
+
+  const DisplayPictureScreen({super.key, required this.imagePath});
+
+  @override
+  DisplayPictureScreenState createState() => DisplayPictureScreenState();
+}
+
+class DisplayPictureScreenState extends State<DisplayPictureScreen> {
+  List<Image> thumbnails = [];
+  List<game.Dice?> dice = [];
+
+  static final diceColors = {
+    game.Color.blue: Colors.blue,
+    game.Color.green: Colors.green,
+    game.Color.purple: Colors.purple,
+    game.Color.red: Colors.red,
+    game.Color.yellow: Colors.yellow,
+  };
+
+  @override
+  void initState() {
+    super.initState();
+
+    () async {
+      final fullImage = await img.decodeImageFile(widget.imagePath);
+      if (fullImage == null) {
+        return;
+      }
+
+      final grid = GridCoordinates(
+          fullImage.width.toDouble(), fullImage.height.toDouble());
+      final cellSize = grid.cellSize.round();
+
+      final inputs = <ImageTensor>[];
+
+      setState(() {
+        thumbnails.clear();
+
+        for (int i = 0; i < game.numRows; i++) {
+          final y = (grid.top + i * grid.cellSize).round();
+          for (int j = 0; j < game.numColumns; j++) {
+            final x = (grid.left + j * grid.cellSize).round();
+
+            var diceImage = img.copyCrop(fullImage,
+                x: x, y: y, width: cellSize, height: cellSize);
+
+            diceImage = img.copyResize(
+              diceImage,
+              width: diceImageWidth,
+              height: diceImageHeight,
+            );
+
+            thumbnails.add(Image.memory(img.encodePng(diceImage)));
+            inputs.add(imageToTensor(diceImage));
+          }
+        }
+      });
+
+      final classifyNumber = await getNumbersClassifier();
+      final classifyColor = await getColorsClassifier();
+
+      final numbers = classifyNumber(inputs);
+      final colors = classifyColor(inputs);
+
+      setState(() {
+        dice.clear();
+        for (int i = 0; i < game.numRows * game.numColumns; i++) {
+          if (colors[i] == null) {
+            dice.add(null);
+          } else {
+            dice.add(game.Dice(colors[i]!, numbers[i]));
+          }
+        }
+      });
+    }();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(title: const Text('Display the Picture')),
+        body: Container(
+          child: Column(children: [
+            Expanded(
+                child: GridView.count(
+              crossAxisCount: 5,
+              mainAxisSpacing: 15.0,
+              children: List.generate(
+                  thumbnails.length,
+                  (index) => Center(
+                          child: Column(children: [
+                        thumbnails[index],
+                        dice[index] == null
+                            ? const Text("")
+                            : Text("${dice[index]!.number}",
+                                style: TextStyle(
+                                  color: diceColors[dice[index]!.color],
+                                  fontSize: 32.0,
+                                ))
+                      ]))).toList(),
+            )),
+          ]),
+        ));
   }
 }
