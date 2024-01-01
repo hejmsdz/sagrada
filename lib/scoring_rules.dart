@@ -50,7 +50,7 @@ class MediumShades extends ScoringRule {
   }
 }
 
-class DarkShades extends ScoringRule {
+class DeepShades extends ScoringRule {
   @override
   int getScore(Board board) {
     final fives = board.countIf((dice) => dice?.number == 5);
@@ -59,7 +59,7 @@ class DarkShades extends ScoringRule {
   }
 }
 
-class VariousColors extends ScoringRule {
+class ColorVariety extends ScoringRule {
   @override
   int getScore(Board board) {
     return 4 *
@@ -69,7 +69,7 @@ class VariousColors extends ScoringRule {
   }
 }
 
-class VariousNumbers extends ScoringRule {
+class ShadeVariety extends ScoringRule {
   @override
   int getScore(Board board) {
     return 5 *
@@ -79,10 +79,10 @@ class VariousNumbers extends ScoringRule {
   }
 }
 
-abstract class VariousColumns<T> extends ScoringRule {
+abstract class ColumnVariety<T> extends ScoringRule {
   int scorePerColumn;
 
-  VariousColumns(this.scorePerColumn);
+  ColumnVariety(this.scorePerColumn);
 
   T key(Dice dice);
 
@@ -114,8 +114,8 @@ abstract class VariousColumns<T> extends ScoringRule {
   }
 }
 
-class VariousColorsInColumn extends VariousColumns {
-  VariousColorsInColumn() : super(5);
+class ColumnColorVariety extends ColumnVariety {
+  ColumnColorVariety() : super(5);
 
   @override
   key(Dice dice) {
@@ -123,8 +123,8 @@ class VariousColorsInColumn extends VariousColumns {
   }
 }
 
-class VariousNumbersInColumn extends VariousColumns {
-  VariousNumbersInColumn() : super(4);
+class ColumnShadeVariety extends ColumnVariety {
+  ColumnShadeVariety() : super(4);
 
   @override
   key(Dice dice) {
@@ -132,10 +132,10 @@ class VariousNumbersInColumn extends VariousColumns {
   }
 }
 
-abstract class VariousRows<T> extends ScoringRule {
+abstract class RowVariety<T> extends ScoringRule {
   int scorePerRow;
 
-  VariousRows(this.scorePerRow);
+  RowVariety(this.scorePerRow);
 
   T key(Dice dice);
 
@@ -167,8 +167,8 @@ abstract class VariousRows<T> extends ScoringRule {
   }
 }
 
-class VariousColorsInRow extends VariousRows {
-  VariousColorsInRow() : super(6);
+class RowColorVariety extends RowVariety {
+  RowColorVariety() : super(6);
 
   @override
   key(Dice dice) {
@@ -176,8 +176,8 @@ class VariousColorsInRow extends VariousRows {
   }
 }
 
-class VariousNumbersInRow extends VariousRows {
-  VariousNumbersInRow() : super(5);
+class RowShadeVariety extends RowVariety {
+  RowShadeVariety() : super(5);
 
   @override
   key(Dice dice) {
@@ -185,7 +185,7 @@ class VariousNumbersInRow extends VariousRows {
   }
 }
 
-class Diagonals extends ScoringRule {
+class ColorDiagonals extends ScoringRule {
   @override
   int getScore(Board board) {
     int total = 0;

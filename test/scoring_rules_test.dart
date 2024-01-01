@@ -38,26 +38,26 @@ void main() {
     expect(score, 3 * 2); // three 1's and three 2's
   });
 
-  test('VariousColors', () {
-    final score = VariousColors().getScore(board);
+  test('ColorVariety', () {
+    final score = ColorVariety().getScore(board);
 
     expect(score, 2 * 4); // two green dice
   });
 
-  test('VariousNumbersInColumn', () {
-    final score = VariousNumbersInColumn().getScore(board);
+  test('ColumnShadeVariety', () {
+    final score = ColumnShadeVariety().getScore(board);
 
     expect(score, 2 * 4); // second and fourth columns satisfy the condition
   });
 
-  test('VariousColorsInRow', () {
-    final score = VariousColorsInRow().getScore(board);
+  test('RowColorVariety', () {
+    final score = RowColorVariety().getScore(board);
 
     expect(score, 0); // no rows satisfy the condition
   });
 
-  test('Diagonals', () {
-    final score = Diagonals().getScore(board);
+  test('ColorDiagonals', () {
+    final score = ColorDiagonals().getScore(board);
     const expectedScore = (3 + 6 + 4 + 1 + 4) // red
         +
         (2 + 3 + 6) // yellow
