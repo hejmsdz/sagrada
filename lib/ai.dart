@@ -1,21 +1,23 @@
+import 'package:sagrada/images.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as image;
 import 'package:sagrada/game.dart' as game;
 
-typedef Classifier<T> = List<T> Function(List<dynamic>);
+typedef Classifier<T> = Future<List<T>> Function(List<dynamic>);
 
 const diceImageWidth = 32;
 const diceImageHeight = 32;
 
-Classifier<T> wrapModel<T>(Interpreter model, List<T> classes) {
+Future<Classifier<T>> wrapModel<T>(Interpreter model, List<T> classes) async {
+  final asyncModel = await IsolateInterpreter.create(address: model.address);
   final numClasses = classes.length;
 
-  return (List<dynamic> inputs) {
+  return (List<dynamic> inputs) async {
     final numInputs = inputs.length;
     var outputs = List.filled(numInputs * numClasses, 0.0)
         .reshape([numInputs, numClasses]);
 
-    model.run(inputs, outputs);
+    await asyncModel.run(inputs, outputs);
 
     return (outputs as List<List<dynamic>>).map((probabilities) {
       int maxIndex = 0;
@@ -51,4 +53,79 @@ Future<Classifier<int>> getNumbersClassifier() async {
 Future<Classifier<game.Color?>> getColorsClassifier() async {
   final model = await Interpreter.fromAsset('models/colors.tflite');
   return wrapModel(model, [null, ...game.Color.values]);
+}
+
+class ImageRecognizer {
+  late Classifier<int> numbersClassifier;
+  late Classifier<game.Color?> colorsClassifier;
+
+  ImageRecognizer(this.numbersClassifier, this.colorsClassifier);
+
+  static Future<ImageRecognizer> create() async {
+    return ImageRecognizer(
+      await getNumbersClassifier(),
+      await getColorsClassifier(),
+    );
+  }
+
+  Future<game.Board> readBoard(
+      image.Image boardImage, GridCoordinates grid) async {
+    final diceCrops = await getDiceCrops(boardImage, grid);
+    final diceCropTensors = diceCrops.map(imageToTensor).toList();
+
+    final numbers = await numbersClassifier(diceCropTensors);
+    final colors = await colorsClassifier(diceCropTensors);
+
+    final flatDiceList = [];
+    for (int i = 0; i < game.numRows * game.numColumns; i++) {
+      if (colors[i] == null) {
+        flatDiceList.add(null);
+      } else {
+        flatDiceList.add(game.Dice(colors[i]!, numbers[i]));
+      }
+    }
+
+    return game.Board(List.generate(
+        game.numRows,
+        (i) => List.generate(game.numColumns, (j) {
+              final sequentialIndex = i * game.numColumns + j;
+
+              if (colors[sequentialIndex] == null) {
+                return null;
+              }
+              return game.Dice(
+                  colors[sequentialIndex]!, numbers[sequentialIndex]);
+            })));
+  }
+
+  Future<List<image.Image>> getDiceCrops(
+      image.Image boardImage, GridCoordinates grid) async {
+    final diceCrops = <image.Image>[];
+    final cellSize = grid.cellSize.round();
+
+    for (int i = 0; i < game.numRows; i++) {
+      final y = (grid.top + i * grid.cellSize).round();
+      for (int j = 0; j < game.numColumns; j++) {
+        final x = (grid.left + j * grid.cellSize).round();
+
+        final command = image.Command()
+          ..image(boardImage)
+          ..copyCrop(x: x, y: y, width: cellSize, height: cellSize)
+          ..copyResize(
+            width: diceImageWidth,
+            height: diceImageHeight,
+          );
+
+        final diceImage = await command.getImageThread();
+
+        if (diceImage == null) {
+          throw Exception("Failed to process the image from camera.");
+        }
+
+        diceCrops.add(diceImage);
+      }
+    }
+
+    return diceCrops;
+  }
 }
