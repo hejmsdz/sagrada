@@ -3,10 +3,14 @@ import 'package:sagrada/game.dart' as game;
 
 class BoardView extends StatelessWidget {
   final game.Board board;
+  final List<List<bool>>? mask;
+  final Function(int, int)? onDiceTap;
 
   const BoardView({
     Key? key,
     required this.board,
+    this.onDiceTap,
+    this.mask,
   }) : super(key: key);
 
   static final diceColors = {
@@ -29,19 +33,28 @@ class BoardView extends StatelessWidget {
               final i = index ~/ game.numColumns;
               final j = index % game.numColumns;
               final dice = board.board[i][j];
+              final opacity = (mask == null || mask![i][j]) ? 1.0 : 0.2;
 
-              return Material(
-                borderRadius: BorderRadius.circular(5.0),
-                elevation: 3.0,
-                color: dice == null ? Colors.black38 : diceColors[dice.color],
-                child: dice == null
-                    ? null
-                    : Center(
-                        child: Text(
-                        '${dice.number}',
-                        style: const TextStyle(fontSize: 32),
-                      )),
-              );
+              return Opacity(
+                  opacity: opacity,
+                  child: Material(
+                      borderRadius: BorderRadius.circular(5.0),
+                      elevation: 3.0,
+                      color: dice == null
+                          ? Colors.black38
+                          : diceColors[dice.color],
+                      child: InkWell(
+                        onTap: () {
+                          onDiceTap?.call(i, j);
+                        },
+                        child: dice == null
+                            ? null
+                            : Center(
+                                child: Text(
+                                '${dice.number}',
+                                style: const TextStyle(fontSize: 32),
+                              )),
+                      )));
             })));
   }
 }

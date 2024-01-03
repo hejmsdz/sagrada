@@ -172,6 +172,8 @@ class DisplayPictureScreen extends StatefulWidget {
 }
 
 class DisplayPictureScreenState extends State<DisplayPictureScreen> {
+  List<List<bool>>? mask;
+
   @override
   void initState() {
     super.initState();
@@ -193,6 +195,67 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen> {
     }();
   }
 
+  void handleDiceTap(int i, int j) async {
+    setState(() {
+      mask = List.generate(
+          game.numRows, (i) => List.filled(game.numColumns, false));
+      mask![i][j] = true;
+    });
+
+    final result = await showDialog<String>(
+        context: context,
+        builder: (BuildContext context) {
+          return Consumer<AppState>(builder: (context, state, child) {
+            final dice = state.board?.board[i][j];
+            final isBlank = dice == null;
+
+            return SimpleDialog(
+              contentPadding: const EdgeInsets.all(12.0),
+              children: [
+                SegmentedButton<int>(
+                  showSelectedIcon: false,
+                  segments: [1, 2, 3, 4, 5, 6]
+                      .map((number) => ButtonSegment<int>(
+                            value: number,
+                            label: Text('$number'),
+                          ))
+                      .toList(),
+                  selected: {isBlank ? 0 : dice.number},
+                  onSelectionChanged: (Set<int> newSelection) {
+                    state.setDiceNumber(i, j, newSelection.first);
+                  },
+                ),
+                const SizedBox(height: 8),
+                SegmentedButton<game.Color?>(
+                  showSelectedIcon: false,
+                  segments: [...game.Color.values, null]
+                      .map((color) => ButtonSegment<game.Color?>(
+                          value: color,
+                          icon: color == null
+                              ? const Icon(Icons.check_box_outline_blank)
+                              : Icon(Icons.casino,
+                                  color: BoardView.diceColors[color]!)))
+                      .toList(),
+                  selected: {dice?.color},
+                  onSelectionChanged: (Set<game.Color?> newSelection) {
+                    if (newSelection.first == null) {
+                      state.removeDice(i, j);
+                    } else {
+                      state.setDiceColor(i, j, newSelection.first!);
+                    }
+                  },
+                ),
+              ],
+            );
+          });
+        });
+    setState(() {
+      mask = null;
+    });
+
+    print(result);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -202,7 +265,11 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return BoardView(board: state.board!);
+          return BoardView(
+            board: state.board!,
+            mask: mask,
+            onDiceTap: handleDiceTap,
+          );
         }));
   }
 }
