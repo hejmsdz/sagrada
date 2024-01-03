@@ -2,10 +2,12 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as image;
+import 'package:provider/provider.dart';
 import 'package:sagrada/ai.dart';
 import 'package:sagrada/game.dart' as game;
 import 'package:sagrada/images.dart';
 import 'package:sagrada/scoring_rules.dart';
+import 'package:sagrada/state.dart';
 import 'package:sagrada/widgets/board_view.dart';
 
 Future<void> main() async {
@@ -14,8 +16,9 @@ Future<void> main() async {
   final cameras = await availableCameras();
   final firstCamera = cameras.first;
 
-  runApp(
-    MaterialApp(
+  runApp(ChangeNotifierProvider(
+    create: (context) => AppState(),
+    child: MaterialApp(
       title: 'Sagrada',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
@@ -25,7 +28,7 @@ Future<void> main() async {
         camera: firstCamera,
       ),
     ),
-  );
+  ));
 }
 
 class TakePictureScreen extends StatefulWidget {
@@ -169,11 +172,11 @@ class DisplayPictureScreen extends StatefulWidget {
 }
 
 class DisplayPictureScreenState extends State<DisplayPictureScreen> {
-  game.Board? board;
-
   @override
   void initState() {
     super.initState();
+
+    final state = Provider.of<AppState>(context, listen: false);
 
     () async {
       final boardImage = await image.decodeImageFile(widget.imagePath);
@@ -186,32 +189,20 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen> {
 
       final recognizer = await ImageRecognizer.create();
       final result = await recognizer.readBoard(boardImage, grid);
-
-      setState(() {
-        board = result;
-      });
-
-      final rules = [
-        SumColor(game.Color.blue),
-        BlankPenalty(),
-        ColorDiagonals(),
-        LightShades(),
-        ColumnColorVariety()
-      ];
-
-      for (var rule in rules) {
-        print('$rule => ${rule.getScore(board!)}');
-      }
+      state.setBoard(result);
     }();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Board scanning result')),
-      body: board == null
-          ? const Center(child: CircularProgressIndicator())
-          : BoardView(board: board!),
-    );
+        appBar: AppBar(title: const Text('Board scanning result')),
+        body: Consumer<AppState>(builder: (context, state, child) {
+          if (state.board == null) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return BoardView(board: state.board!);
+        }));
   }
 }
