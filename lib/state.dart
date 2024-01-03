@@ -9,6 +9,11 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
+  void resetBoard() {
+    board = null;
+    notifyListeners();
+  }
+
   void setDiceColor(int i, int j, game.Color color) {
     final dice = board!.board[i][j];
     board!.board[i][j] = game.Dice(color, dice?.number ?? 1);

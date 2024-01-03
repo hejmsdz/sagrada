@@ -179,6 +179,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen> {
     super.initState();
 
     final state = Provider.of<AppState>(context, listen: false);
+    state.resetBoard();
 
     () async {
       final boardImage = await image.decodeImageFile(widget.imagePath);
