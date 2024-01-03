@@ -173,6 +173,7 @@ class DisplayPictureScreen extends StatefulWidget {
 
 class DisplayPictureScreenState extends State<DisplayPictureScreen> {
   List<List<bool>>? mask;
+  int scoringRuleIndex = -1;
 
   @override
   void initState() {
@@ -266,11 +267,55 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          return BoardView(
-            board: state.board!,
-            mask: mask,
-            onDiceTap: handleDiceTap,
-          );
+          final results = state.scoringRules
+              .map((rule) => rule.getScore(state.board!))
+              .toList();
+          final total =
+              results.map((result) => result.score).reduce((a, b) => a + b);
+
+          return Column(children: [
+            AspectRatio(
+                aspectRatio: 5 / 4,
+                child: BoardView(
+                  board: state.board!,
+                  mask: mask,
+                  onDiceTap: handleDiceTap,
+                )),
+            Expanded(
+                child: ListView.builder(
+                    // padding: const EdgeInsets.all(8),
+                    itemCount: state.scoringRules.length + 1,
+                    itemBuilder: (BuildContext context, int index) {
+                      if (index == state.scoringRules.length) {
+                        const bold = TextStyle(fontWeight: FontWeight.bold);
+                        return ListTile(
+                          title: const Text("Total", style: bold),
+                          trailing: Text('$total', style: bold),
+                        );
+                      }
+
+                      final rule = state.scoringRules[index];
+                      final result = results[index];
+
+                      return ListTile(
+                        title: Text(rule.toString()),
+                        trailing: Text('${result.score}'),
+                        subtitle: Text(result.calculation),
+                        selected: index == scoringRuleIndex,
+                        onTap: () => {
+                          setState(() {
+                            if (index == scoringRuleIndex) {
+                              scoringRuleIndex = -1;
+                              mask = null;
+                            } else {
+                              mask = result.mask;
+                              scoringRuleIndex = index;
+                            }
+                          })
+                        },
+                      );
+                    })),
+          ]);
         }));
   }
 }

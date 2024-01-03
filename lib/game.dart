@@ -10,6 +10,8 @@ class Dice {
 const numRows = 4;
 const numColumns = 5;
 
+typedef Mask = List<List<bool>>;
+
 class Board {
   final List<List<Dice?>> board;
 
@@ -22,6 +24,23 @@ class Board {
         callback(row[j], i, j);
       }
     }
+  }
+
+  Mask createMask(bool Function(Dice? dice, int i, int j) predicate) {
+    return List.generate(numRows,
+        (i) => List.generate(numColumns, (j) => predicate(board[i][j], i, j)));
+  }
+
+  List<Dice?> diceAtMask(Mask mask) {
+    final diceList = <Dice?>[];
+    for (int i = 0; i < numRows; i++) {
+      for (int j = 0; j < numColumns; j++) {
+        if (mask[i][j]) {
+          diceList.add(board[i][j]);
+        }
+      }
+    }
+    return diceList;
   }
 
   int countIf(bool Function(Dice? dice) callback) {

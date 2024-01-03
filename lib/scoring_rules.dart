@@ -2,9 +2,19 @@ import 'dart:math';
 
 import 'package:sagrada/game.dart';
 
-abstract class ScoringRule {
-  int getScore(Board board);
+class ScoringResult {
+  final int score;
+  final List<List<bool>> mask;
+  final String calculation;
+
+  ScoringResult(this.score, this.mask, this.calculation);
 }
+
+abstract class ScoringRule {
+  ScoringResult getScore(Board board);
+}
+
+const times = '•';
 
 class SumColor extends ScoringRule {
   final Color color;
@@ -12,70 +22,129 @@ class SumColor extends ScoringRule {
   SumColor(this.color);
 
   @override
-  int getScore(Board board) {
-    int total = 0;
+  ScoringResult getScore(Board board) {
+    final mask = board.createMask((dice, i, j) => dice?.color == color);
+    final numbers = board.diceAtMask(mask).map((dice) => dice!.number);
+    final score = numbers.reduce((a, b) => a + b);
 
-    board.forEachDice((dice, i, j) {
-      if (dice?.color == color) {
-        total += dice!.number;
-      }
-    });
+    return ScoringResult(score, mask, numbers.join(" + "));
+  }
 
-    return total;
+  @override
+  String toString() {
+    return "Private goal (${color.name})";
   }
 }
 
 class BlankPenalty extends ScoringRule {
   @override
-  int getScore(Board board) {
-    return -1 * board.countIf((dice) => dice == null);
+  ScoringResult getScore(Board board) {
+    final mask = board.createMask((dice, i, j) => dice == null);
+    final numBlanks = board.diceAtMask(mask).length;
+    final score = numBlanks * -1;
+
+    return ScoringResult(score, mask, "$numBlanks $times (-1)");
+  }
+
+  @override
+  String toString() {
+    return "Penalty for blank spaces";
   }
 }
 
-class LightShades extends ScoringRule {
+typedef SetClassifier = bool Function(Dice?);
+
+abstract class SetBasedScoringRule<T> extends ScoringRule {
+  int scorePerSet;
+  List<SetClassifier> diceClassifiers;
+
+  SetBasedScoringRule(this.scorePerSet, this.diceClassifiers);
+
   @override
-  int getScore(Board board) {
-    final ones = board.countIf((dice) => dice?.number == 1);
-    final twos = board.countIf((dice) => dice?.number == 2);
-    return 2 * min(ones, twos);
+  ScoringResult getScore(Board board) {
+    final itemCounts = List.filled(diceClassifiers.length, 0);
+
+    final mask = board.createMask((dice, i, j) {
+      for (int k = 0; k < diceClassifiers.length; k++) {
+        if (diceClassifiers[k](dice)) {
+          itemCounts[k]++;
+          return true;
+        }
+      }
+      return false;
+    });
+
+    final score = itemCounts.reduce(min) * scorePerSet;
+
+    return ScoringResult(
+        score, mask, "min(${itemCounts.join(', ')}) $times $scorePerSet");
   }
 }
 
-class MediumShades extends ScoringRule {
+class LightShades extends SetBasedScoringRule {
+  LightShades()
+      : super(2, [
+          (dice) => dice?.number == 1,
+          (dice) => dice?.number == 2,
+        ]);
+
   @override
-  int getScore(Board board) {
-    final threes = board.countIf((dice) => dice?.number == 3);
-    final fours = board.countIf((dice) => dice?.number == 4);
-    return 2 * min(threes, fours);
+  String toString() {
+    return "Light shades";
   }
 }
 
-class DeepShades extends ScoringRule {
+class MediumShades extends SetBasedScoringRule {
+  MediumShades()
+      : super(2, [
+          (dice) => dice?.number == 3,
+          (dice) => dice?.number == 4,
+        ]);
+
   @override
-  int getScore(Board board) {
-    final fives = board.countIf((dice) => dice?.number == 5);
-    final sixes = board.countIf((dice) => dice?.number == 6);
-    return 2 * min(fives, sixes);
+  String toString() {
+    return "Medium shades";
   }
 }
 
-class ColorVariety extends ScoringRule {
+class DeepShades extends SetBasedScoringRule {
+  DeepShades()
+      : super(2, [
+          (dice) => dice?.number == 5,
+          (dice) => dice?.number == 6,
+        ]);
+
   @override
-  int getScore(Board board) {
-    return 4 *
-        Color.values
-            .map((color) => board.countIf((dice) => dice?.color == color))
-            .reduce(min);
+  String toString() {
+    return "Deep shades";
   }
 }
 
-class ShadeVariety extends ScoringRule {
+class ColorVariety extends SetBasedScoringRule {
+  ColorVariety()
+      : super(
+            4,
+            Color.values
+                .map((color) => (dice) => dice?.color == color)
+                .toList());
+
   @override
-  int getScore(Board board) {
-    return 5 *
-        [1, 2, 3, 4, 5, 6]
-            .map((number) => board.countIf((dice) => dice?.number == number))
-            .reduce(min);
+  String toString() {
+    return "Color variety";
+  }
+}
+
+class ShadeVariety extends SetBasedScoringRule {
+  ShadeVariety()
+      : super(
+            5,
+            [1, 2, 3, 4, 5, 6]
+                .map((color) => (dice) => dice?.color == color)
+                .toList());
+
+  @override
+  String toString() {
+    return "Shade variety";
   }
 }
 
@@ -87,17 +156,17 @@ abstract class ColumnVariety<T> extends ScoringRule {
   T key(Dice dice);
 
   @override
-  int getScore(Board board) {
-    int total = 0;
+  ScoringResult getScore(Board board) {
+    final satisfyingColumns = <int>{};
 
-    for (int j = 0; j < 5; j++) {
+    for (int j = 0; j < numColumns; j++) {
       final valuesSeen = <T>{};
       bool isFailed = false;
 
-      for (int i = 0; i < 4; i++) {
+      for (int i = 0; i < numRows; i++) {
         Dice? dice = board.board[i][j];
 
-        if (dice == null || valuesSeen.contains(dice.color)) {
+        if (dice == null || valuesSeen.contains(key(dice))) {
           isFailed = true;
           break;
         }
@@ -106,11 +175,17 @@ abstract class ColumnVariety<T> extends ScoringRule {
       }
 
       if (!isFailed) {
-        total += scorePerColumn;
+        satisfyingColumns.add(j);
       }
     }
 
-    return total;
+    final numSatisfyingColumns = satisfyingColumns.length;
+    final mask =
+        board.createMask((dice, i, j) => satisfyingColumns.contains(j));
+    final score = numSatisfyingColumns * scorePerColumn;
+
+    return ScoringResult(
+        score, mask, "$numSatisfyingColumns $times $scorePerColumn");
   }
 }
 
@@ -121,6 +196,11 @@ class ColumnColorVariety extends ColumnVariety {
   key(Dice dice) {
     return dice.color;
   }
+
+  @override
+  String toString() {
+    return "Column color variety";
+  }
 }
 
 class ColumnShadeVariety extends ColumnVariety {
@@ -129,6 +209,11 @@ class ColumnShadeVariety extends ColumnVariety {
   @override
   key(Dice dice) {
     return dice.number;
+  }
+
+  @override
+  String toString() {
+    return "Column shade variety";
   }
 }
 
@@ -140,17 +225,17 @@ abstract class RowVariety<T> extends ScoringRule {
   T key(Dice dice);
 
   @override
-  int getScore(Board board) {
-    int total = 0;
+  ScoringResult getScore(Board board) {
+    final satisfyingRows = <int>{};
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < numRows; i++) {
       final valuesSeen = <T>{};
       bool isFailed = false;
 
-      for (int j = 0; j < 5; j++) {
+      for (int j = 0; j < numColumns; j++) {
         Dice? dice = board.board[i][j];
 
-        if (dice == null || valuesSeen.contains(dice.color)) {
+        if (dice == null || valuesSeen.contains(key(dice))) {
           isFailed = true;
           break;
         }
@@ -159,11 +244,16 @@ abstract class RowVariety<T> extends ScoringRule {
       }
 
       if (!isFailed) {
-        total += scorePerRow;
+        satisfyingRows.add(i);
       }
     }
 
-    return total;
+    final numSatisfyingColumns = satisfyingRows.length;
+    final mask = board.createMask((dice, i, j) => satisfyingRows.contains(i));
+    final score = numSatisfyingColumns * scorePerRow;
+
+    return ScoringResult(
+        score, mask, "$numSatisfyingColumns $times $scorePerRow");
   }
 }
 
@@ -174,6 +264,11 @@ class RowColorVariety extends RowVariety {
   key(Dice dice) {
     return dice.color;
   }
+
+  @override
+  String toString() {
+    return "Row color variety";
+  }
 }
 
 class RowShadeVariety extends RowVariety {
@@ -183,24 +278,24 @@ class RowShadeVariety extends RowVariety {
   key(Dice dice) {
     return dice.number;
   }
+
+  @override
+  String toString() {
+    return "Row shade variety";
+  }
 }
 
 class ColorDiagonals extends ScoringRule {
   @override
-  int getScore(Board board) {
-    int total = 0;
-    final mask = getDiagonalMask(board);
+  ScoringResult getScore(Board board) {
+    final mask = getMask(board);
+    final numbers = board.diceAtMask(mask).map((dice) => dice!.number);
+    final score = numbers.reduce((a, b) => a + b);
 
-    board.forEachDice((dice, i, j) {
-      if (dice != null && mask[i][j]) {
-        total += dice.number;
-      }
-    });
-
-    return total;
+    return ScoringResult(score, mask, numbers.join(" + "));
   }
 
-  List<List<bool>> getDiagonalMask(Board board) {
+  Mask getMask(Board board) {
     final mask =
         List.generate(numRows, (i) => List<bool>.filled(numColumns, false));
 
@@ -226,5 +321,10 @@ class ColorDiagonals extends ScoringRule {
     });
 
     return mask;
+  }
+
+  @override
+  String toString() {
+    return "Color diagonals";
   }
 }

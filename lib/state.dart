@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:sagrada/game.dart' as game;
+import 'package:sagrada/scoring_rules.dart';
 
 class AppState with ChangeNotifier {
   game.Board? board;
+
+  List<ScoringRule> scoringRules = [
+    SumColor(game.Color.red),
+    BlankPenalty(),
+    ColorDiagonals(),
+    DeepShades(),
+    RowColorVariety(),
+  ];
 
   void setBoard(game.Board newBoard) {
     board = newBoard;
