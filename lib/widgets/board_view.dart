@@ -4,7 +4,7 @@ import 'package:sagrada/game.dart' as game;
 class BoardView extends StatelessWidget {
   final game.Board board;
   final List<List<bool>>? mask;
-  final Function(int, int)? onDiceTap;
+  final Function(int, int, game.Dice?)? onDiceTap;
 
   const BoardView({
     Key? key,
@@ -45,7 +45,7 @@ class BoardView extends StatelessWidget {
                           : diceColors[dice.color],
                       child: InkWell(
                         onTap: () {
-                          onDiceTap?.call(i, j);
+                          onDiceTap?.call(i, j, dice);
                         },
                         child: dice == null
                             ? null

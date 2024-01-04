@@ -5,6 +5,14 @@ class Dice {
   final int number;
 
   const Dice(this.color, this.number);
+
+  @override
+  bool operator ==(Object other) {
+    return other is Dice && other.color == color && other.number == number;
+  }
+
+  @override
+  int get hashCode => Object.hash(color, number);
 }
 
 const numRows = 4;

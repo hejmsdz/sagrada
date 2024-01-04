@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sagrada/main.dart';
 import 'package:sagrada/scoring_rules.dart';
 import 'package:sagrada/screens/photo_capture.dart';
 import 'package:sagrada/state.dart';
@@ -22,51 +21,54 @@ class PublicGoalsSelectionScreen extends StatefulWidget {
   const PublicGoalsSelectionScreen({super.key});
 
   @override
-  GoalSelectionScreenState createState() => GoalSelectionScreenState();
+  PublicGoalsSelectionScreenState createState() =>
+      PublicGoalsSelectionScreenState();
 }
 
-class GoalSelectionScreenState extends State<PublicGoalsSelectionScreen> {
+class PublicGoalsSelectionScreenState
+    extends State<PublicGoalsSelectionScreen> {
   Set<ScoringRule> goals = {};
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Select your public goals')),
-        body: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: GridView.count(
-              crossAxisCount: 2,
-              childAspectRatio: 1.5,
-              children: availableGoals
-                  .map((goal) => GoalCard(
-                      goal: goal,
-                      isSelected: goals.contains(goal),
-                      onTap: () {
-                        setState(() {
-                          if (goals.contains(goal)) {
-                            goals.remove(goal);
-                          } else {
-                            goals.add(goal);
-                          }
-                        });
-                      }))
-                  .toList(),
-            )),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            if (goals.length != 3) {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  content: Text("Select exactly 3 goals to continue.")));
-              return;
-            }
+      appBar: AppBar(title: const Text('Select your public goals')),
+      body: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: GridView.count(
+            crossAxisCount: 2,
+            childAspectRatio: 1.5,
+            children: availableGoals
+                .map((goal) => GoalCard(
+                    goal: goal,
+                    isSelected: goals.contains(goal),
+                    onTap: () {
+                      setState(() {
+                        if (goals.contains(goal)) {
+                          goals.remove(goal);
+                        } else {
+                          goals.add(goal);
+                        }
+                      });
+                    }))
+                .toList(),
+          )),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          if (goals.length != 3) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Select exactly 3 goals to continue.")));
+            return;
+          }
 
-            final state = Provider.of<AppState>(context, listen: false);
-            state.setPublicGoals(goals);
-            await Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const PhotoCaptureScreen()));
-          },
-          child: const Icon(Icons.check),
-        ));
+          final state = Provider.of<AppState>(context, listen: false);
+          state.setPublicGoals(goals);
+          await Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const PhotoCaptureScreen()));
+        },
+        child: const Icon(Icons.check),
+      ),
+    );
   }
 }
 

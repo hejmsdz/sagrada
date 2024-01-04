@@ -6,6 +6,7 @@ import 'package:sagrada/scoring_rules.dart';
 class AppState with ChangeNotifier {
   final CameraDescription camera;
   Set<ScoringRule> publicGoals = {};
+  Color? privateGoalColor;
   Board? board;
 
   AppState({required this.camera});
@@ -15,12 +16,9 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
-  List<ScoringRule> getScoringRules() {
-    return [
-      // SumColor(),
-      BlankPenalty(),
-      ...publicGoals,
-    ];
+  void setPrivateGoalColor(Color color) {
+    privateGoalColor = color;
+    notifyListeners();
   }
 
   void setBoard(Board newBoard) {
@@ -33,20 +31,8 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
-  void setDiceColor(int i, int j, Color color) {
-    final dice = board!.board[i][j];
-    board!.board[i][j] = Dice(color, dice?.number ?? 1);
-    notifyListeners();
-  }
-
-  void setDiceNumber(int i, int j, int number) {
-    final dice = board!.board[i][j];
-    board!.board[i][j] = Dice(dice?.color ?? Color.blue, number);
-    notifyListeners();
-  }
-
-  void removeDice(int i, int j) {
-    board!.board[i][j] = null;
+  void setDice(int i, int j, Dice? newDice) {
+    board!.board[i][j] = newDice;
     notifyListeners();
   }
 }
