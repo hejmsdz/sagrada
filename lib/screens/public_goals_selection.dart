@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sagrada/main.dart';
 import 'package:sagrada/scoring_rules.dart';
+import 'package:sagrada/screens/photo_capture.dart';
 import 'package:sagrada/state.dart';
 
 final availableGoals = [
@@ -62,7 +63,7 @@ class GoalSelectionScreenState extends State<PublicGoalsSelectionScreen> {
             final state = Provider.of<AppState>(context, listen: false);
             state.setPublicGoals(goals);
             await Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const TakePictureScreen()));
+                builder: (context) => const PhotoCaptureScreen()));
           },
           child: const Icon(Icons.check),
         ));
