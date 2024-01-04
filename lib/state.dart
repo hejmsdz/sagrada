@@ -1,19 +1,29 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:sagrada/game.dart' as game;
+import 'package:sagrada/game.dart';
 import 'package:sagrada/scoring_rules.dart';
 
 class AppState with ChangeNotifier {
-  game.Board? board;
+  final CameraDescription camera;
+  Set<ScoringRule> publicGoals = {};
+  Board? board;
 
-  List<ScoringRule> scoringRules = [
-    SumColor(game.Color.red),
-    BlankPenalty(),
-    ColorDiagonals(),
-    DeepShades(),
-    RowColorVariety(),
-  ];
+  AppState({required this.camera});
 
-  void setBoard(game.Board newBoard) {
+  void setPublicGoals(Set<ScoringRule> newPublicGoals) {
+    publicGoals = newPublicGoals;
+    notifyListeners();
+  }
+
+  List<ScoringRule> getScoringRules() {
+    return [
+      // SumColor(),
+      BlankPenalty(),
+      ...publicGoals,
+    ];
+  }
+
+  void setBoard(Board newBoard) {
     board = newBoard;
     notifyListeners();
   }
@@ -23,15 +33,15 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
-  void setDiceColor(int i, int j, game.Color color) {
+  void setDiceColor(int i, int j, Color color) {
     final dice = board!.board[i][j];
-    board!.board[i][j] = game.Dice(color, dice?.number ?? 1);
+    board!.board[i][j] = Dice(color, dice?.number ?? 1);
     notifyListeners();
   }
 
   void setDiceNumber(int i, int j, int number) {
     final dice = board!.board[i][j];
-    board!.board[i][j] = game.Dice(dice?.color ?? game.Color.blue, number);
+    board!.board[i][j] = Dice(dice?.color ?? Color.blue, number);
     notifyListeners();
   }
 

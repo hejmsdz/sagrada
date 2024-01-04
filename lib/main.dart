@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sagrada/ai.dart';
 import 'package:sagrada/game.dart' as game;
 import 'package:sagrada/images.dart';
-import 'package:sagrada/scoring_rules.dart';
+import 'package:sagrada/screens/public_goals_selection.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/widgets/board_view.dart';
 
@@ -17,16 +17,14 @@ Future<void> main() async {
   final firstCamera = cameras.first;
 
   runApp(ChangeNotifierProvider(
-    create: (context) => AppState(),
+    create: (context) => AppState(camera: firstCamera),
     child: MaterialApp(
       title: 'Sagrada',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: TakePictureScreen(
-        camera: firstCamera,
-      ),
+      home: const PublicGoalsSelectionScreen(),
     ),
   ));
 }
@@ -34,10 +32,7 @@ Future<void> main() async {
 class TakePictureScreen extends StatefulWidget {
   const TakePictureScreen({
     super.key,
-    required this.camera,
   });
-
-  final CameraDescription camera;
 
   @override
   TakePictureScreenState createState() => TakePictureScreenState();
@@ -50,8 +45,11 @@ class TakePictureScreenState extends State<TakePictureScreen> {
   @override
   void initState() {
     super.initState();
+
+    final state = Provider.of<AppState>(context, listen: false);
+
     _controller = CameraController(
-      widget.camera,
+      state.camera,
       ResolutionPreset.high,
       enableAudio: false,
     );
@@ -204,7 +202,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen> {
       mask![i][j] = true;
     });
 
-    final result = await showDialog<String>(
+    await showDialog(
         context: context,
         builder: (BuildContext context) {
           return Consumer<AppState>(builder: (context, state, child) {
@@ -254,8 +252,6 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen> {
     setState(() {
       mask = null;
     });
-
-    print(result);
   }
 
   @override
@@ -267,9 +263,10 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final results = state.scoringRules
-              .map((rule) => rule.getScore(state.board!))
-              .toList();
+          final scoringRules = state.getScoringRules();
+          final results =
+              scoringRules.map((rule) => rule.getScore(state.board!)).toList();
+
           final total =
               results.map((result) => result.score).reduce((a, b) => a + b);
 
@@ -283,10 +280,9 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen> {
                 )),
             Expanded(
                 child: ListView.builder(
-                    // padding: const EdgeInsets.all(8),
-                    itemCount: state.scoringRules.length + 1,
+                    itemCount: scoringRules.length + 1,
                     itemBuilder: (BuildContext context, int index) {
-                      if (index == state.scoringRules.length) {
+                      if (index == scoringRules.length) {
                         const bold = TextStyle(fontWeight: FontWeight.bold);
                         return ListTile(
                           title: const Text("Total", style: bold),
@@ -294,7 +290,7 @@ class DisplayPictureScreenState extends State<DisplayPictureScreen> {
                         );
                       }
 
-                      final rule = state.scoringRules[index];
+                      final rule = scoringRules[index];
                       final result = results[index];
 
                       return ListTile(

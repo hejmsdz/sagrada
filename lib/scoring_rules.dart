@@ -139,7 +139,7 @@ class ShadeVariety extends SetBasedScoringRule {
       : super(
             5,
             [1, 2, 3, 4, 5, 6]
-                .map((color) => (dice) => dice?.color == color)
+                .map((number) => (dice) => dice?.number == number)
                 .toList());
 
   @override
