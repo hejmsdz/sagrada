@@ -66,17 +66,25 @@ abstract class SetBasedScoringRule<T> extends ScoringRule {
   ScoringResult getScore(Board board) {
     final itemCounts = List.filled(diceClassifiers.length, 0);
 
-    final mask = board.createMask((dice, i, j) {
+    board.forEachDice((dice, i, j) {
       for (int k = 0; k < diceClassifiers.length; k++) {
         if (diceClassifiers[k](dice)) {
           itemCounts[k]++;
-          return true;
         }
       }
-      return false;
     });
 
-    final score = itemCounts.reduce(min) * scorePerSet;
+    final lowestItemCount = itemCounts.reduce(min);
+
+    final leastFrequentClassesIndices = itemCounts.indexed
+        .where((el) => el.$2 == lowestItemCount)
+        .map((el) => el.$1);
+
+    final mask = board.createMask((dice, i, j) {
+      return leastFrequentClassesIndices.any((k) => diceClassifiers[k](dice));
+    });
+
+    final score = lowestItemCount * scorePerSet;
 
     return ScoringResult(
         score, mask, "min(${itemCounts.join(', ')}) $times $scorePerSet");
