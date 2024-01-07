@@ -22,8 +22,8 @@ class PrivateGoalSelectionScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.boardScanningResults)),
+      appBar:
+          AppBar(title: Text(AppLocalizations.of(context)!.selectPrivateGoal)),
       body: ListView.builder(
           itemCount: game.Color.values.length,
           itemBuilder: (BuildContext context, int index) {

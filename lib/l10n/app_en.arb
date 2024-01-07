@@ -15,6 +15,7 @@
   "photoFramingTip": "Frame your photo, so that the individual dice fit in the spaces between grid lines.",
   "boardScanningResults": "Board scanning results",
   "scanReviewTip": "Check the scanning results. If any dice was misidentified, tap it to correct the mistake manually. To retake the photo, press Back.",
+  "selectPrivateGoal": "Select private goal",
   "scoring": "Scoring",
   "privateGoal": "Private goal ({color})",
   "@privateGoal": {
