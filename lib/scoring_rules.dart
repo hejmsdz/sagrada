@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:sagrada/game.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ScoringResult {
   final int score;
@@ -12,6 +13,7 @@ class ScoringResult {
 
 abstract class ScoringRule {
   ScoringResult getScore(Board board);
+  String getTranslation(AppLocalizations l10n);
 }
 
 const times = '•';
@@ -31,8 +33,8 @@ class SumColor extends ScoringRule {
   }
 
   @override
-  String toString() {
-    return "Private goal (${color.name})";
+  String getTranslation(AppLocalizations l10n) {
+    return l10n.privateGoal(color.getTranslation(l10n));
   }
 }
 
@@ -47,8 +49,8 @@ class BlankPenalty extends ScoringRule {
   }
 
   @override
-  String toString() {
-    return "Penalty for blank spaces";
+  String getTranslation(AppLocalizations l10n) {
+    return l10n.blankPenalty;
   }
 }
 
@@ -89,8 +91,8 @@ class LightShades extends SetBasedScoringRule {
         ]);
 
   @override
-  String toString() {
-    return "Light shades";
+  String getTranslation(AppLocalizations l10n) {
+    return l10n.lightShades;
   }
 }
 
@@ -102,8 +104,8 @@ class MediumShades extends SetBasedScoringRule {
         ]);
 
   @override
-  String toString() {
-    return "Medium shades";
+  String getTranslation(AppLocalizations l10n) {
+    return l10n.mediumShades;
   }
 }
 
@@ -115,8 +117,8 @@ class DeepShades extends SetBasedScoringRule {
         ]);
 
   @override
-  String toString() {
-    return "Deep shades";
+  String getTranslation(AppLocalizations l10n) {
+    return l10n.deepShades;
   }
 }
 
@@ -129,8 +131,8 @@ class ColorVariety extends SetBasedScoringRule {
                 .toList());
 
   @override
-  String toString() {
-    return "Color variety";
+  String getTranslation(AppLocalizations l10n) {
+    return l10n.colorVariety;
   }
 }
 
@@ -143,8 +145,8 @@ class ShadeVariety extends SetBasedScoringRule {
                 .toList());
 
   @override
-  String toString() {
-    return "Shade variety";
+  String getTranslation(AppLocalizations l10n) {
+    return l10n.shadeVariety;
   }
 }
 
@@ -198,8 +200,8 @@ class ColumnColorVariety extends ColumnVariety {
   }
 
   @override
-  String toString() {
-    return "Column color variety";
+  String getTranslation(AppLocalizations l10n) {
+    return l10n.columnColorVariety;
   }
 }
 
@@ -212,8 +214,8 @@ class ColumnShadeVariety extends ColumnVariety {
   }
 
   @override
-  String toString() {
-    return "Column shade variety";
+  String getTranslation(AppLocalizations l10n) {
+    return l10n.columnShadeVariety;
   }
 }
 
@@ -266,8 +268,8 @@ class RowColorVariety extends RowVariety {
   }
 
   @override
-  String toString() {
-    return "Row color variety";
+  String getTranslation(AppLocalizations l10n) {
+    return l10n.rowColorVariety;
   }
 }
 
@@ -280,8 +282,8 @@ class RowShadeVariety extends RowVariety {
   }
 
   @override
-  String toString() {
-    return "Row shade variety";
+  String getTranslation(AppLocalizations l10n) {
+    return l10n.rowShadeVariety;
   }
 }
 
@@ -324,7 +326,7 @@ class ColorDiagonals extends ScoringRule {
   }
 
   @override
-  String toString() {
-    return "Color diagonals";
+  String getTranslation(AppLocalizations l10n) {
+    return l10n.colorDiagonals;
   }
 }

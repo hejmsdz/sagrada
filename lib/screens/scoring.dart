@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sagrada/scoring_rules.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/widgets/board_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ScoringScreen extends StatefulWidget {
   const ScoringScreen({super.key});
@@ -38,7 +39,7 @@ class ScoringScreenState extends State<ScoringScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Scoring')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.scoring)),
       body: Consumer<AppState>(builder: (context, state, child) {
         final mask =
             selectedRuleIndex >= 0 ? results[selectedRuleIndex].mask : null;
@@ -108,7 +109,7 @@ class RuleListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(rule.toString()),
+      title: Text(rule.getTranslation(AppLocalizations.of(context)!)),
       trailing: Text('${result.score}'),
       subtitle: Text(result.calculation),
       selected: isSelected,
@@ -133,7 +134,7 @@ class TokensListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       title: Row(children: [
-        const Text("Favor tokens left"),
+        Text(AppLocalizations.of(context)!.favorTokensLeft),
         IconButton(
           onPressed: count < 6 ? onIncrement : null,
           icon: const Icon(Icons.add),
@@ -158,7 +159,7 @@ class TotalListTile extends StatelessWidget {
     const bold = TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0);
 
     return ListTile(
-      title: const Text("Total", style: bold),
+      title: Text(AppLocalizations.of(context)!.total, style: bold),
       trailing: Text('$total', style: bold),
     );
   }

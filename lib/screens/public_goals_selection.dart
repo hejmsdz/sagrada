@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:sagrada/scoring_rules.dart';
 import 'package:sagrada/screens/photo_capture.dart';
 import 'package:sagrada/state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final availableGoals = [
   LightShades(),
@@ -32,7 +33,10 @@ class PublicGoalsSelectionScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Select your public goals')),
+      appBar: AppBar(
+          title: Text(
+        AppLocalizations.of(context)!.selectPublicGoals,
+      )),
       body: Padding(
           padding: const EdgeInsets.all(5.0),
           child: GridView.count(
@@ -56,8 +60,9 @@ class PublicGoalsSelectionScreenState
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           if (goals.length != 3) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text("Select exactly 3 goals to continue.")));
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content:
+                    Text(AppLocalizations.of(context)!.goalsSelectionMessage)));
             return;
           }
 
@@ -91,7 +96,7 @@ class GoalCard extends StatelessWidget {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(
-                goal.toString(),
+                goal.getTranslation(AppLocalizations.of(context)!),
                 style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),

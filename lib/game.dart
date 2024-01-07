@@ -1,4 +1,23 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 enum Color { blue, green, purple, red, yellow }
+
+extension ColorExtension on Color {
+  String getTranslation(AppLocalizations l10n) {
+    switch (this) {
+      case Color.blue:
+        return l10n.blue;
+      case Color.green:
+        return l10n.green;
+      case Color.purple:
+        return l10n.purple;
+      case Color.red:
+        return l10n.red;
+      case Color.yellow:
+        return l10n.yellow;
+    }
+  }
+}
 
 class Dice {
   final Color color;

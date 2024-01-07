@@ -5,6 +5,7 @@ import 'package:sagrada/images.dart';
 import 'package:sagrada/screens/photo_review.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/game.dart' as game;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PhotoCaptureScreen extends StatefulWidget {
   const PhotoCaptureScreen({
@@ -43,7 +44,8 @@ class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Scan your board')),
+      appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.scanYourWindowFrame)),
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {

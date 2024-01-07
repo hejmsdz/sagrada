@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sagrada/screens/public_goals_selection.dart';
 import 'package:sagrada/state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,8 @@ Future<void> main() async {
         useMaterial3: true,
       ),
       home: const PublicGoalsSelectionScreen(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     ),
   ));
 }

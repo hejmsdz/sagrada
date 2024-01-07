@@ -9,6 +9,7 @@ import 'package:sagrada/screens/private_goal_selection.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/game.dart' as game;
 import 'package:sagrada/widgets/board_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PhotoReviewScreen extends StatefulWidget {
   final String imagePath;
@@ -101,7 +102,8 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Board scanning result')),
+      appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.boardScanningResults)),
       body: Consumer<AppState>(builder: (context, state, child) {
         if (state.board == null) {
           return const Center(child: CircularProgressIndicator());
@@ -115,11 +117,10 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
                 mask: mask,
                 onDiceTap: handleDiceTap,
               )),
-          const Card(
+          Card(
             child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text(
-                  "Check the scanning results. If any dice was misidentified, tap it to correct the mistake manually."),
+              padding: const EdgeInsets.all(8.0),
+              child: Text(AppLocalizations.of(context)!.scanReviewTip),
             ),
           ),
         ]);

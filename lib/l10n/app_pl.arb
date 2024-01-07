@@ -1,0 +1,37 @@
+{
+  "selectPublicGoals": "Wybierz cele grupowe",
+  "lightShades": "Jasne odcienie",
+  "mediumShades": "Pośrednie odcienie",
+  "deepShades": "Ciemne odcienie",
+  "colorVariety": "Różnorodność kolorów",
+  "shadeVariety": "Różnorodność odcieni",
+  "columnColorVariety": "Różnorodność kolorów w kolumnach",
+  "columnShadeVariety": "Różnorodność odcieni w kolumnach",
+  "rowColorVariety": "Różnorodność kolorów w rzędach",
+  "rowShadeVariety": "Różnorodność odcieni w rzędach",
+  "colorDiagonals": "Kolorowe przekątne",
+  "goalsSelectionMessage": "Zaznacz dokładnie 3 cele, aby kontynuować.",
+  "scanYourWindowFrame": "Zeskanuj ramkę witrażu",
+  "photoFramingTip": "Wykadruj zdjęcie tak, żeby kostki znajdowały się w polach siatki widocznej na ekranie.",
+  "boardScanningResults": "Wyniki skanowania",
+  "scanReviewTip": "Sprawdź wynik skanowania planszy. Jeśli któraś kostka została błędnie rozpoznana, dotknij ją i popraw ręcznie. Aby powtórzyć zdjęcie, naciśnij przycisk Wstecz.",
+  "scoring": "Punkty",
+  "selectPrivateGoal": "Wybierz cel indywidualny",
+  "privateGoal": "Cel indywidualny ({color})",
+  "@privateGoal": {
+    "placeholders": {
+      "color": {
+        "type": "String",
+        "example": "czerwony"
+      }
+    }
+  },
+  "blankPenalty": "Kara za puste pola",
+  "favorTokensLeft": "Znaczniki uznania",
+  "total": "Razem",
+  "blue": "niebieski",
+  "green": "zielony",
+  "purple": "fioletowy",
+  "red": "czerwony",
+  "yellow": "żółty"
+}

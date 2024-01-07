@@ -5,6 +5,7 @@ import 'package:sagrada/screens/scoring.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/game.dart' as game;
 import 'package:sagrada/widgets/board_view.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PrivateGoalSelectionScreen extends StatefulWidget {
   const PrivateGoalSelectionScreen({super.key});
@@ -21,14 +22,15 @@ class PrivateGoalSelectionScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Select your private goal')),
+      appBar: AppBar(
+          title: Text(AppLocalizations.of(context)!.boardScanningResults)),
       body: ListView.builder(
           itemCount: game.Color.values.length,
           itemBuilder: (BuildContext context, int index) {
             final color = game.Color.values[index];
 
             return ListTile(
-              title: Text(color.name),
+              title: Text(color.getTranslation(AppLocalizations.of(context)!)),
               tileColor: BoardView.diceColors[color],
               onTap: () async {
                 final state = Provider.of<AppState>(context, listen: false);
