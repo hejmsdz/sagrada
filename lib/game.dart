@@ -69,33 +69,6 @@ class Board {
     }
     return diceList;
   }
-
-  int countIf(bool Function(Dice? dice) callback) {
-    int total = 0;
-    forEachDice((dice, i, j) {
-      if (callback(dice)) {
-        total++;
-      }
-    });
-    return total;
-  }
-
-  Map<T, int> countBy<T>(T? Function(Dice? dice) callback) {
-    final counter = <T, int>{};
-
-    forEachDice((dice, i, j) {
-      T? key = callback(dice);
-      if (key != null) {
-        if (counter.containsKey(key)) {
-          counter[key] = counter[key]! + 1;
-        } else {
-          counter[key] = 1;
-        }
-      }
-    });
-
-    return counter;
-  }
 }
 
 // convenience functions for shorthand board definitions
