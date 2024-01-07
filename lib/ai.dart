@@ -55,6 +55,13 @@ Future<Classifier<game.Color?>> getColorsClassifier() async {
   return wrapModel(model, [null, ...game.Color.values]);
 }
 
+class ImageRecognitionResult {
+  final game.Board board;
+  final List<image.Image> diceCrops;
+
+  ImageRecognitionResult({required this.board, required this.diceCrops});
+}
+
 class ImageRecognizer {
   late Classifier<int> numbersClassifier;
   late Classifier<game.Color?> colorsClassifier;
@@ -68,7 +75,7 @@ class ImageRecognizer {
     );
   }
 
-  Future<game.Board> readBoard(
+  Future<ImageRecognitionResult> readBoard(
       image.Image boardImage, GridCoordinates grid) async {
     final diceCrops = await getDiceCrops(boardImage, grid);
     final diceCropTensors = diceCrops.map(imageToTensor).toList();
@@ -85,7 +92,7 @@ class ImageRecognizer {
       }
     }
 
-    return game.Board(List.generate(
+    final board = game.Board(List.generate(
         game.numRows,
         (i) => List.generate(game.numColumns, (j) {
               final sequentialIndex = i * game.numColumns + j;
@@ -96,6 +103,8 @@ class ImageRecognizer {
               return game.Dice(
                   colors[sequentialIndex]!, numbers[sequentialIndex]);
             })));
+
+    return ImageRecognitionResult(board: board, diceCrops: diceCrops);
   }
 
   Future<List<image.Image>> getDiceCrops(

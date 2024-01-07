@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:provider/provider.dart';
 import 'package:image/image.dart' as image;
 import 'package:sagrada/ai.dart';
@@ -18,6 +20,7 @@ class PhotoReviewScreen extends StatefulWidget {
 }
 
 class PhotoReviewScreenState extends State<PhotoReviewScreen> {
+  ImageRecognitionResult? result;
   game.Mask? mask;
   Map<int, game.Dice?> corrections = {};
 
@@ -40,9 +43,9 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
       );
 
       final recognizer = await ImageRecognizer.create();
-      final result = await recognizer.readBoard(boardImage, grid);
+      result = await recognizer.readBoard(boardImage, grid);
 
-      state.setBoard(result);
+      state.setBoard(result!.board);
     }();
   }
 
@@ -76,6 +79,25 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
     }();
   }
 
+  Future<void> submitCorrections() async {
+    // TODO: ask for user's consent
+
+    corrections.forEach((index, dice) {
+      final uri = Uri.parse("https://sagrada.mrozwadowski.com/corrections");
+      final request = MultipartRequest("POST", uri);
+      request.fields['color'] = dice?.color.name.substring(0, 1) ?? "x";
+      request.fields['number'] = dice?.number.toString() ?? "0";
+      final pngData = image.encodePng(result!.diceCrops[index]);
+      request.files.add(MultipartFile.fromBytes(
+        'image',
+        pngData,
+        filename: 'dice.png',
+        contentType: MediaType('image', 'png'),
+      ));
+      request.send();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,6 +126,7 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          submitCorrections();
           // ScaffoldMessenger.of(context).showSnackBar(
           // SnackBar(content: Text("Corrections: ${corrections.length}")));
 
