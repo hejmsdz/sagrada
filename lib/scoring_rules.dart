@@ -16,7 +16,7 @@ abstract class ScoringRule {
   String getTranslation(AppLocalizations l10n);
 }
 
-const times = '•';
+const times = '×';
 
 class SumColor extends ScoringRule {
   final Color color;
