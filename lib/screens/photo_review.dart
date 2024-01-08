@@ -59,13 +59,20 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
     });
 
     () async {
-      final newDice = await showDialog<game.Dice?>(
+      final result = await showDialog<DiceEditResult?>(
         context: context,
         builder: (BuildContext context) => DiceEditDialog(dice: dice),
       );
 
-      // BUG: when user dismisses the dialog, newDice is also null
-      // and thus indistinguishable from setting a blank space
+      setState(() {
+        mask = null;
+      });
+
+      if (result == null) {
+        return;
+      }
+
+      final newDice = result.dice;
 
       state.setDice(i, j, newDice);
 
@@ -73,10 +80,6 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
         final sequentialIndex = i * game.numColumns + j;
         corrections[sequentialIndex] = newDice;
       }
-
-      setState(() {
-        mask = null;
-      });
     }();
   }
 
@@ -147,6 +150,12 @@ class DiceEditDialog extends StatefulWidget {
 
   @override
   DiceEditDialogState createState() => DiceEditDialogState();
+}
+
+final class DiceEditResult {
+  game.Dice? dice;
+
+  DiceEditResult(this.dice);
 }
 
 class DiceEditDialogState extends State<DiceEditDialog> {
@@ -224,7 +233,7 @@ class DiceEditDialogState extends State<DiceEditDialog> {
               : () {
                   final newDice =
                       color == null ? null : game.Dice(color!, number);
-                  Navigator.of(context).pop(newDice);
+                  Navigator.of(context).pop(DiceEditResult(newDice));
                 },
           child: const Text('OK'),
         ),
