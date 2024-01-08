@@ -58,14 +58,13 @@ void main() {
 
   test('ColorDiagonals', () {
     final score = ColorDiagonals().getScore(board).score;
-    const expectedScore = (3 + 6 + 4 + 1 + 4) // red
+    const expectedScore = 5 // red
         +
-        (2 + 3 + 6) // yellow
+        3 // yellow
         +
-        (1 + 1) // blue
+        2 // blue
         +
-        (4 + 2) +
-        (3 + 3); // purple
+        (2 + 2); // purple
 
     expect(score, expectedScore);
   });

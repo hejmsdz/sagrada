@@ -299,10 +299,14 @@ class ColorDiagonals extends ScoringRule {
   @override
   ScoringResult getScore(Board board) {
     final mask = getMask(board);
-    final numbers = board.diceAtMask(mask).map((dice) => dice!.number);
-    final score = numbers.reduce((a, b) => a + b);
+    final countByColors = <Color, int>{};
+    board.diceAtMask(mask).forEach((dice) {
+      final color = dice!.color;
+      countByColors.update(color, (value) => value + 1, ifAbsent: () => 1);
+    });
+    final score = countByColors.values.reduce((a, b) => a + b);
 
-    return ScoringResult(score, mask, numbers.join(" + "));
+    return ScoringResult(score, mask, countByColors.values.join(" + "));
   }
 
   Mask getMask(Board board) {
@@ -317,15 +321,10 @@ class ColorDiagonals extends ScoringRule {
       final steps = [-1, 1];
       final coordinates = [
         for (final di in steps)
-          for (final dj in steps) [i + di, j + dj]
-      ].where((point) {
-        final i = point[0];
-        final j = point[1];
-
-        return i >= 0 && i < numRows && j >= 0 && j < numColumns;
-      });
-      final neighbors =
-          coordinates.map((point) => board.board[point[0]][point[1]]);
+          for (final dj in steps) (i + di, j + dj)
+      ].where(validCoordinates);
+      final neighbors = coordinates
+          .map(((int, int) point) => board.board[point.$1][point.$2]);
 
       mask[i][j] = neighbors.any((neighbor) => neighbor?.color == dice.color);
     });

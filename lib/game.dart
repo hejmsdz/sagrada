@@ -69,6 +69,11 @@ class Board {
     }
     return diceList;
   }
+
+bool validCoordinates((int, int) coordinates) {
+  final (i, j) = coordinates;
+  return i >= 0 && i < numRows && j >= 0 && j < numColumns;
+}
 }
 
 // convenience functions for shorthand board definitions
