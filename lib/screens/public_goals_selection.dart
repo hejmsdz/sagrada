@@ -41,7 +41,7 @@ class PublicGoalsSelectionScreenState
           padding: const EdgeInsets.all(5.0),
           child: GridView.count(
             crossAxisCount: 2,
-            childAspectRatio: 1.5,
+            childAspectRatio: 0.9,
             children: availableGoals
                 .map((goal) => GoalCard(
                     goal: goal,
@@ -92,15 +92,19 @@ class GoalCard extends StatelessWidget {
       child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Text(
-                goal.getTranslation(AppLocalizations.of(context)!),
-                style: Theme.of(context).textTheme.bodyLarge,
-                textAlign: TextAlign.center,
-              ),
-            ]),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                    'assets/images/public_objectives/${goal.runtimeType.toString()}.png'),
+                Text(
+                  goal.getTranslation(AppLocalizations.of(context)!),
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           )),
     );
   }

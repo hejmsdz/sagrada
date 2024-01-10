@@ -72,6 +72,17 @@ flutter:
   assets:
     - models/numbers.tflite
     - models/colors.tflite
+    - assets/images/public_objectives/ColorDiagonals.png
+    - assets/images/public_objectives/ColorVariety.png
+    - assets/images/public_objectives/ColumnColorVariety.png
+    - assets/images/public_objectives/ColumnShadeVariety.png
+    - assets/images/public_objectives/DeepShades.png
+    - assets/images/public_objectives/LightShades.png
+    - assets/images/public_objectives/MediumShades.png
+    - assets/images/public_objectives/RowColorVariety.png
+    - assets/images/public_objectives/RowShadeVariety.png
+    - assets/images/public_objectives/ShadeVariety.png
+
     # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
