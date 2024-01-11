@@ -44,6 +44,11 @@ class Board {
 
   const Board(this.board);
 
+  Board copy() {
+    return Board(List.generate(
+        numRows, (i) => List.generate(numColumns, (j) => board[i][j])));
+  }
+
   void forEachDice(void Function(Dice? dice, int i, int j) callback) {
     for (int i = 0; i < numRows; i++) {
       final row = board[i];
@@ -70,10 +75,26 @@ class Board {
     return diceList;
   }
 
+  Mask findIllegallyPlacedDice() {
+    return createMask((dice, i, j) {
+      return [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]
+          .where(validCoordinates)
+          .any((point) => isSameColorOrNumber(dice, board[point.$1][point.$2]));
+    });
+  }
+}
+
 bool validCoordinates((int, int) coordinates) {
   final (i, j) = coordinates;
   return i >= 0 && i < numRows && j >= 0 && j < numColumns;
 }
+
+bool isSameColorOrNumber(Dice? dice1, Dice? dice2) {
+  if (dice1 == null || dice2 == null) {
+    return false;
+  }
+
+  return dice1.color == dice2.color || dice1.number == dice2.number;
 }
 
 // convenience functions for shorthand board definitions

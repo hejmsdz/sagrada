@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:image/image.dart' as image;
 import 'package:sagrada/ai.dart';
 import 'package:sagrada/images.dart';
+import 'package:sagrada/screens/placement_rules_check.dart';
 import 'package:sagrada/screens/private_goal_selection.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/game.dart' as game;
@@ -131,11 +132,16 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           submitCorrections();
-          // ScaffoldMessenger.of(context).showSnackBar(
-          // SnackBar(content: Text("Corrections: ${corrections.length}")));
+
+          final state = Provider.of<AppState>(context, listen: false);
+          final arePlacementRulesSatisfied = state.board!
+              .findIllegallyPlacedDice()
+              .every((row) => row.every((isInvalid) => !isInvalid));
 
           await Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const PrivateGoalSelectionScreen()));
+              builder: (context) => arePlacementRulesSatisfied
+                  ? const PrivateGoalSelectionScreen()
+                  : const PlacementRulesCheckScreen()));
         },
         child: const Icon(Icons.check),
       ),
