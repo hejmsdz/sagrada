@@ -5,12 +5,14 @@ import 'package:provider/provider.dart';
 import 'package:image/image.dart' as image;
 import 'package:sagrada/ai.dart';
 import 'package:sagrada/images.dart';
+import 'package:sagrada/preferences.dart';
 import 'package:sagrada/screens/placement_rules_check.dart';
 import 'package:sagrada/screens/private_goal_selection.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/game.dart' as game;
 import 'package:sagrada/widgets/board_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PhotoReviewScreen extends StatefulWidget {
   final String imagePath;
@@ -84,9 +86,54 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
     }();
   }
 
-  Future<void> submitCorrections() async {
-    // TODO: ask for user's consent
+  Future<bool?> checkConsent() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool? isConsentGiven = prefs.getBool(submitCorrectionsConsent);
 
+    if (isConsentGiven == null) {
+      isConsentGiven = await askForConsent();
+
+      if (isConsentGiven != null) {
+        await prefs.setBool(submitCorrectionsConsent, isConsentGiven);
+      }
+    }
+
+    return isConsentGiven;
+  }
+
+  Future<bool?> askForConsent() {
+    return showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(AppLocalizations.of(context)!.shareCorrections),
+            content:
+                Text(AppLocalizations.of(context)!.shareCorrectionsMessage),
+            actions: <Widget>[
+              TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                ),
+                child: Text(AppLocalizations.of(context)!.deny),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                ),
+                child: Text(AppLocalizations.of(context)!.allow),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+              ),
+            ],
+          );
+        });
+  }
+
+  void submitCorrections() {
     corrections.forEach((index, dice) {
       final uri = Uri.parse("https://sagrada.mrozwadowski.com/corrections");
       final request = MultipartRequest("POST", uri);
@@ -131,7 +178,12 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
       }),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          submitCorrections();
+          final isConsentGiven = await checkConsent();
+          if (isConsentGiven == true) {
+            submitCorrections();
+          } else if (isConsentGiven == null) {
+            return;
+          }
 
           final state = Provider.of<AppState>(context, listen: false);
           final arePlacementRulesSatisfied = state.board!
