@@ -168,7 +168,7 @@ class PhotoReviewSheetState extends State<PhotoReviewSheet> {
     return Padding(
         padding: const EdgeInsets.only(left: 18, right: 18, top: 10),
         child: AspectRatio(
-          aspectRatio: 1.05,
+          aspectRatio: 1,
           child: Consumer<AppState>(builder: (context, state, child) {
             if (state.board == null) {
               return const Center(child: CircularProgressIndicator());
@@ -181,21 +181,24 @@ class PhotoReviewSheetState extends State<PhotoReviewSheet> {
                 onDiceTap: handleDiceTap,
               ),
               FilledButton.icon(
-                  onPressed: () async {
-                    final canSubmit = await checkConsent();
-                    if (canSubmit == true) {
-                      submitCorrections();
-                    } else if (canSubmit == null) {
-                      return;
-                    }
+                onPressed: () async {
+                  final canSubmit = await checkConsent();
+                  if (canSubmit == true) {
+                    submitCorrections();
+                  } else if (canSubmit == null) {
+                    return;
+                  }
 
-                    if (!mounted) return;
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            const PrivateGoalSelectionScreen()));
-                  },
-                  icon: const Icon(Icons.check),
-                  label: Text(AppLocalizations.of(context)!.confirm)),
+                  if (!mounted) return;
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          const PrivateGoalSelectionScreen()));
+                },
+                icon: const Icon(Icons.check),
+                label: Text(AppLocalizations.of(context)!.confirm),
+              ),
+              Text(AppLocalizations.of(context)!.tapToCorrect,
+                  style: Theme.of(context).textTheme.bodySmall),
             ]);
           }),
         ));
