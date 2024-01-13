@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:provider/provider.dart';
 import 'package:sagrada/images.dart';
-import 'package:sagrada/screens/photo_review.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/game.dart' as game;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:sagrada/widgets/photo_review_sheet.dart';
 
 class PhotoCaptureScreen extends StatefulWidget {
   const PhotoCaptureScreen({
@@ -67,16 +67,19 @@ class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
             await _initializeControllerFuture;
 
             final image = await _controller.takePicture();
+            _controller.pausePreview();
 
             if (!mounted) return;
-
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => PhotoReviewScreen(
-                  imagePath: image.path,
-                ),
-              ),
-            );
+            Navigator.of(context)
+                .push(ModalBottomSheetRoute(
+              builder: (context) {
+                return PhotoReviewSheet(imagePath: image.path);
+              },
+              isScrollControlled: false,
+            ))
+                .then((value) {
+              _controller.resumePreview();
+            });
           } catch (e) {
             print(e);
           }

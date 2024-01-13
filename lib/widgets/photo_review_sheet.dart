@@ -2,43 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:provider/provider.dart';
-import 'package:image/image.dart' as image;
 import 'package:sagrada/ai.dart';
 import 'package:sagrada/images.dart';
 import 'package:sagrada/preferences.dart';
-import 'package:sagrada/screens/placement_rules_check.dart';
 import 'package:sagrada/screens/private_goal_selection.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/game.dart' as game;
 import 'package:sagrada/widgets/board_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image/image.dart' as image;
 
-class PhotoReviewScreen extends StatefulWidget {
+class PhotoReviewSheet extends StatefulWidget {
   final String imagePath;
 
-  const PhotoReviewScreen({super.key, required this.imagePath});
+  const PhotoReviewSheet({super.key, required this.imagePath});
 
   @override
-  PhotoReviewScreenState createState() => PhotoReviewScreenState();
+  PhotoReviewSheetState createState() => PhotoReviewSheetState();
 }
 
-class PhotoReviewScreenState extends State<PhotoReviewScreen> {
+class PhotoReviewSheetState extends State<PhotoReviewSheet> {
   ImageRecognitionResult? result;
   game.Mask? mask;
-  Map<int, game.Dice?> corrections = {};
 
   @override
   void initState() {
     super.initState();
-
     final state = Provider.of<AppState>(context, listen: false);
-    state.resetBoard();
+
+    state.setBoard(null, silent: true);
 
     () async {
       final boardImage = await image.decodeImageFile(widget.imagePath);
+
       if (boardImage == null) {
-        return;
+        throw Exception("Failed to read the photo from file");
       }
 
       final grid = GridCoordinates(
@@ -47,22 +46,29 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
       );
 
       final recognizer = await ImageRecognizer.create();
-      result = await recognizer.readBoard(boardImage, grid);
+      final result = await recognizer.readBoard(boardImage, grid);
 
-      state.setBoard(result!.board);
+      setState(() {
+        this.result = result;
+        state.setBoard(result.board.copy());
+      });
     }();
   }
 
   void handleDiceTap(int i, int j, game.Dice? dice) {
     final state = Provider.of<AppState>(context, listen: false);
+    final board = state.board;
+
+    if (board == null) {
+      return;
+    }
 
     setState(() {
-      mask = state.board!
-          .createMask((dice, loopI, loopJ) => i == loopI && j == loopJ);
+      mask = board.createMask((dice, loopI, loopJ) => i == loopI && j == loopJ);
     });
 
     () async {
-      final result = await showDialog<DiceEditResult?>(
+      final editResult = await showDialog<DiceEditResult?>(
         context: context,
         builder: (BuildContext context) => DiceEditDialog(dice: dice),
       );
@@ -71,18 +77,14 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
         mask = null;
       });
 
-      if (result == null) {
+      if (editResult == null) {
         return;
       }
 
-      final newDice = result.dice;
-
-      state.setDice(i, j, newDice);
-
-      if (newDice != dice) {
-        final sequentialIndex = i * game.numColumns + j;
-        corrections[sequentialIndex] = newDice;
-      }
+      final newDice = editResult.dice;
+      setState(() {
+        board.set(i, j, newDice);
+      });
     }();
   }
 
@@ -134,11 +136,22 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
   }
 
   void submitCorrections() {
-    corrections.forEach((index, dice) {
+    final state = Provider.of<AppState>(context, listen: false);
+
+    if (state.board == null || result == null) {
+      return;
+    }
+
+    state.board!.forEachDice((dice, i, j) {
+      if (dice == result!.board.at(i, j)) {
+        return;
+      }
+
       final uri = Uri.parse("https://sagrada.mrozwadowski.com/corrections");
       final request = MultipartRequest("POST", uri);
       request.fields['color'] = dice?.color.name.substring(0, 1) ?? "x";
       request.fields['number'] = dice?.number.toString() ?? "0";
+      final index = i * game.numColumns + j;
       final pngData = image.encodePng(result!.diceCrops[index]);
       request.files.add(MultipartFile.fromBytes(
         'image',
@@ -152,50 +165,40 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.boardScanningResults)),
-      body: Consumer<AppState>(builder: (context, state, child) {
-        if (state.board == null) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    return Padding(
+        padding: const EdgeInsets.only(left: 18, right: 18, top: 10),
+        child: AspectRatio(
+          aspectRatio: 1.05,
+          child: Consumer<AppState>(builder: (context, state, child) {
+            if (state.board == null) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-        return Column(children: [
-          BoardView(
-            board: state.board!,
-            mask: mask,
-            onDiceTap: handleDiceTap,
-          ),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(AppLocalizations.of(context)!.scanReviewTip),
-            ),
-          ),
-        ]);
-      }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final isConsentGiven = await checkConsent();
-          if (isConsentGiven == true) {
-            submitCorrections();
-          } else if (isConsentGiven == null) {
-            return;
-          }
+            return Column(children: [
+              BoardView(
+                board: state.board!,
+                mask: mask,
+                onDiceTap: handleDiceTap,
+              ),
+              FilledButton.icon(
+                  onPressed: () async {
+                    final canSubmit = await checkConsent();
+                    if (canSubmit == true) {
+                      submitCorrections();
+                    } else if (canSubmit == null) {
+                      return;
+                    }
 
-          final state = Provider.of<AppState>(context, listen: false);
-          final arePlacementRulesSatisfied = state.board!
-              .findIllegallyPlacedDice()
-              .every((row) => row.every((isInvalid) => !isInvalid));
-
-          await Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => arePlacementRulesSatisfied
-                  ? const PrivateGoalSelectionScreen()
-                  : const PlacementRulesCheckScreen()));
-        },
-        child: const Icon(Icons.check),
-      ),
-    );
+                    if (!mounted) return;
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) =>
+                            const PrivateGoalSelectionScreen()));
+                  },
+                  icon: const Icon(Icons.check),
+                  label: Text(AppLocalizations.of(context)!.confirm)),
+            ]);
+          }),
+        ));
   }
 }
 

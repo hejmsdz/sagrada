@@ -11,6 +11,14 @@ class AppState with ChangeNotifier {
 
   AppState({required this.camera});
 
+  void setBoard(Board? newBoard, {bool silent = false}) {
+    board = newBoard;
+
+    if (!silent) {
+      notifyListeners();
+    }
+  }
+
   void setPublicGoals(Set<ScoringRule> newPublicGoals) {
     publicGoals = newPublicGoals;
     notifyListeners();
@@ -18,21 +26,6 @@ class AppState with ChangeNotifier {
 
   void setPrivateGoalColor(Color color) {
     privateGoalColor = color;
-    notifyListeners();
-  }
-
-  void setBoard(Board newBoard) {
-    board = newBoard;
-    notifyListeners();
-  }
-
-  void resetBoard() {
-    board = null;
-    notifyListeners();
-  }
-
-  void setDice(int i, int j, Dice? newDice) {
-    board!.set(i, j, newDice);
     notifyListeners();
   }
 }
