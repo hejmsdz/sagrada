@@ -32,7 +32,7 @@ class AppState with ChangeNotifier {
   }
 
   void setDice(int i, int j, Dice? newDice) {
-    board!.board[i][j] = newDice;
+    board!.set(i, j, newDice);
     notifyListeners();
   }
 }

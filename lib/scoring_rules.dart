@@ -174,7 +174,7 @@ abstract class ColumnVariety<T> extends ScoringRule {
       bool isFailed = false;
 
       for (int i = 0; i < numRows; i++) {
-        Dice? dice = board.board[i][j];
+        Dice? dice = board.at(i, j);
 
         if (dice == null || valuesSeen.contains(key(dice))) {
           isFailed = true;
@@ -243,7 +243,7 @@ abstract class RowVariety<T> extends ScoringRule {
       bool isFailed = false;
 
       for (int j = 0; j < numColumns; j++) {
-        Dice? dice = board.board[i][j];
+        Dice? dice = board.at(i, j);
 
         if (dice == null || valuesSeen.contains(key(dice))) {
           isFailed = true;
@@ -323,8 +323,8 @@ class ColorDiagonals extends ScoringRule {
         for (final di in steps)
           for (final dj in steps) (i + di, j + dj)
       ].where(validCoordinates);
-      final neighbors = coordinates
-          .map(((int, int) point) => board.board[point.$1][point.$2]);
+      final neighbors =
+          coordinates.map(((int, int) point) => board.at(point.$1, point.$2));
 
       mask[i][j] = neighbors.any((neighbor) => neighbor?.color == dice.color);
     });

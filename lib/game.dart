@@ -40,18 +40,26 @@ const numColumns = 5;
 typedef Mask = List<List<bool>>;
 
 class Board {
-  final List<List<Dice?>> board;
+  final List<List<Dice?>> _board;
 
-  const Board(this.board);
+  const Board(this._board);
+
+  Dice? at(int i, int j) {
+    return _board[i][j];
+  }
+
+  void set(int i, int j, Dice? newDice) {
+    _board[i][j] = newDice;
+  }
 
   Board copy() {
     return Board(List.generate(
-        numRows, (i) => List.generate(numColumns, (j) => board[i][j])));
+        numRows, (i) => List.generate(numColumns, (j) => at(i, j))));
   }
 
   void forEachDice(void Function(Dice? dice, int i, int j) callback) {
     for (int i = 0; i < numRows; i++) {
-      final row = board[i];
+      final row = _board[i];
       for (int j = 0; j < numColumns; j++) {
         callback(row[j], i, j);
       }
@@ -60,7 +68,7 @@ class Board {
 
   Mask createMask(bool Function(Dice? dice, int i, int j) predicate) {
     return List.generate(numRows,
-        (i) => List.generate(numColumns, (j) => predicate(board[i][j], i, j)));
+        (i) => List.generate(numColumns, (j) => predicate(at(i, j), i, j)));
   }
 
   List<Dice?> diceAtMask(Mask mask) {
@@ -68,7 +76,7 @@ class Board {
     for (int i = 0; i < numRows; i++) {
       for (int j = 0; j < numColumns; j++) {
         if (mask[i][j]) {
-          diceList.add(board[i][j]);
+          diceList.add(_board[i][j]);
         }
       }
     }
@@ -79,7 +87,7 @@ class Board {
     return createMask((dice, i, j) {
       return [(i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1)]
           .where(validCoordinates)
-          .any((point) => isSameColorOrNumber(dice, board[point.$1][point.$2]));
+          .any((point) => isSameColorOrNumber(dice, at(point.$1, point.$2)));
     });
   }
 }

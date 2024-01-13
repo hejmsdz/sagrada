@@ -31,9 +31,10 @@ class PlacementRulesCheckScreenState extends State<PlacementRulesCheckScreen> {
 
   void handleDiceTap(int i, int j, game.Dice? dice) {
     if (!mask[i][j]) {
-      if (dice == null && originalBoard.board[i][j] != null) {
+      final originalDice = originalBoard.at(i, j);
+      if (dice == null && originalDice != null) {
         setState(() {
-          board.board[i][j] = originalBoard.board[i][j];
+          board.set(i, j, originalDice);
           mask = board.findIllegallyPlacedDice();
         });
       }
@@ -42,7 +43,7 @@ class PlacementRulesCheckScreenState extends State<PlacementRulesCheckScreen> {
     }
 
     setState(() {
-      board.board[i][j] = null;
+      board.set(i, j, null);
       mask = board.findIllegallyPlacedDice();
     });
   }
@@ -55,13 +56,11 @@ class PlacementRulesCheckScreenState extends State<PlacementRulesCheckScreen> {
       appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.placementRulesCheck)),
       body: Column(children: [
-        AspectRatio(
-            aspectRatio: 5 / 4,
-            child: BoardView(
-              board: board,
-              mask: isValid ? null : mask,
-              onDiceTap: handleDiceTap,
-            )),
+        BoardView(
+          board: board,
+          mask: isValid ? null : mask,
+          onDiceTap: handleDiceTap,
+        ),
         Card(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
