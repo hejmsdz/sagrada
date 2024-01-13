@@ -3,7 +3,15 @@ import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:image/image.dart' as image;
 import 'package:sagrada/game.dart' as game;
 
-typedef Classifier<T> = Future<List<T>> Function(List<dynamic>);
+typedef Classifier<T> = Future<List<ClassificationResult<T>>> Function(
+    List<dynamic>);
+
+class ClassificationResult<T> {
+  final T label;
+  final double confidence;
+
+  const ClassificationResult({required this.label, required this.confidence});
+}
 
 const diceImageWidth = 32;
 const diceImageHeight = 32;
@@ -28,7 +36,10 @@ Future<Classifier<T>> wrapModel<T>(Interpreter model, List<T> classes) async {
         }
       }
 
-      return classes[maxIndex];
+      return ClassificationResult(
+        label: classes[maxIndex],
+        confidence: probabilities[maxIndex],
+      );
     }).toList();
   };
 }
@@ -80,15 +91,21 @@ class ImageRecognizer {
     final diceCrops = await getDiceCrops(boardImage, grid);
     final diceCropTensors = diceCrops.map(imageToTensor).toList();
 
-    final numbers = await numbersClassifier(diceCropTensors);
-    final colors = await colorsClassifier(diceCropTensors);
+    final numberResults = await numbersClassifier(diceCropTensors);
+    final colorResults = await colorsClassifier(diceCropTensors);
 
-    final flatDiceList = [];
+    final flatDiceList = <game.Dice?>[];
     for (int i = 0; i < game.numRows * game.numColumns; i++) {
-      if (colors[i] == null) {
+      final color = colorResults[i].label;
+      final number = numberResults[i].label;
+
+      print(
+          "<C=${colorResults[i].confidence.toStringAsFixed(3)}; N=${numberResults[i].confidence.toStringAsFixed(3)}>");
+
+      if (color == null) {
         flatDiceList.add(null);
       } else {
-        flatDiceList.add(game.Dice(colors[i]!, numbers[i]));
+        flatDiceList.add(game.Dice(color, number));
       }
     }
 
@@ -96,12 +113,7 @@ class ImageRecognizer {
         game.numRows,
         (i) => List.generate(game.numColumns, (j) {
               final sequentialIndex = i * game.numColumns + j;
-
-              if (colors[sequentialIndex] == null) {
-                return null;
-              }
-              return game.Dice(
-                  colors[sequentialIndex]!, numbers[sequentialIndex]);
+              return flatDiceList[sequentialIndex];
             })));
 
     return ImageRecognitionResult(board: board, diceCrops: diceCrops);
