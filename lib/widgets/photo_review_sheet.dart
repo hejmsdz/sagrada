@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:sagrada/ai.dart';
 import 'package:sagrada/images.dart';
 import 'package:sagrada/preferences.dart';
+import 'package:sagrada/screens/placement_rules_check.dart';
 import 'package:sagrada/screens/private_goal_selection.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/game.dart' as game;
@@ -182,6 +183,10 @@ class PhotoReviewSheetState extends State<PhotoReviewSheet> {
               ),
               FilledButton.icon(
                 onPressed: () async {
+                  if (state.board == null) {
+                    return;
+                  }
+
                   final canSubmit = await checkConsent();
                   if (canSubmit == true) {
                     submitCorrections();
@@ -190,9 +195,15 @@ class PhotoReviewSheetState extends State<PhotoReviewSheet> {
                   }
 
                   if (!mounted) return;
+
+                  final areAllRulesSatisfied = state.board!
+                      .findIllegallyPlacedDice()
+                      .every((row) => row.every((isIllegal) => !isIllegal));
+
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          const PrivateGoalSelectionScreen()));
+                      builder: (context) => areAllRulesSatisfied
+                          ? const PrivateGoalSelectionScreen()
+                          : const PlacementRulesCheckScreen()));
                 },
                 icon: const Icon(Icons.check),
                 label: Text(AppLocalizations.of(context)!.confirm),
