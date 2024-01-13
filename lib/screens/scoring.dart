@@ -45,12 +45,10 @@ class ScoringScreenState extends State<ScoringScreen> {
             selectedRuleIndex >= 0 ? results[selectedRuleIndex].mask : null;
 
         return Column(children: [
-          AspectRatio(
-              aspectRatio: 5 / 4,
-              child: BoardView(
-                board: state.board!,
-                mask: mask,
-              )),
+          BoardView(
+            board: state.board!,
+            mask: mask,
+          ),
           Expanded(
               child: ListView.builder(
                   itemCount: rules.length + 2,

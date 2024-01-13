@@ -161,13 +161,11 @@ class PhotoReviewScreenState extends State<PhotoReviewScreen> {
         }
 
         return Column(children: [
-          AspectRatio(
-              aspectRatio: 5 / 4,
-              child: BoardView(
-                board: state.board!,
-                mask: mask,
-                onDiceTap: handleDiceTap,
-              )),
+          BoardView(
+            board: state.board!,
+            mask: mask,
+            onDiceTap: handleDiceTap,
+          ),
           Card(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
