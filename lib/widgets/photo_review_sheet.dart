@@ -6,7 +6,7 @@ import 'package:sagrada/ai.dart';
 import 'package:sagrada/images.dart';
 import 'package:sagrada/preferences.dart';
 import 'package:sagrada/screens/placement_rules_check.dart';
-import 'package:sagrada/screens/private_goal_selection.dart';
+import 'package:sagrada/screens/private_objective_selection.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/game.dart' as game;
 import 'package:sagrada/widgets/board_view.dart';
@@ -202,7 +202,7 @@ class PhotoReviewSheetState extends State<PhotoReviewSheet> {
 
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => areAllRulesSatisfied
-                          ? const PrivateGoalSelectionScreen()
+                          ? const PrivateObjectiveSelectionScreen()
                           : const PlacementRulesCheckScreen()));
                 },
                 icon: const Icon(Icons.check),

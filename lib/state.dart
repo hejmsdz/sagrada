@@ -5,8 +5,8 @@ import 'package:sagrada/scoring_rules.dart';
 
 class AppState with ChangeNotifier {
   final CameraDescription camera;
-  Set<ScoringRule> publicGoals = {};
-  Color? privateGoalColor;
+  Set<ScoringRule> publicObjectives = {};
+  Color? privateObjectiveColor;
   Board? board;
 
   AppState({required this.camera});
@@ -19,13 +19,13 @@ class AppState with ChangeNotifier {
     }
   }
 
-  void setPublicGoals(Set<ScoringRule> newPublicGoals) {
-    publicGoals = newPublicGoals;
+  void setPublicObjectives(Set<ScoringRule> newPublicObjectives) {
+    publicObjectives = newPublicObjectives;
     notifyListeners();
   }
 
-  void setPrivateGoalColor(Color color) {
-    privateGoalColor = color;
+  void setPrivateObjectiveColor(Color color) {
+    privateObjectiveColor = color;
     notifyListeners();
   }
 }

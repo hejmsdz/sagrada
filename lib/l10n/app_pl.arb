@@ -1,5 +1,5 @@
 {
-  "selectPublicGoals": "Wybierz cele grupowe",
+  "selectPublicObjectives": "Wybierz cele grupowe",
   "lightShades": "Jasne odcienie",
   "mediumShades": "Pośrednie odcienie",
   "deepShades": "Ciemne odcienie",
@@ -10,7 +10,7 @@
   "rowColorVariety": "Różnorodność kolorów w rzędzie",
   "rowShadeVariety": "Różnorodność odcieni w rzędzie",
   "colorDiagonals": "Kolorowe przekątne",
-  "goalsSelectionMessage": "Zaznacz 3 cele, aby kontynuować.",
+  "objectivesSelectionMessage": "Zaznacz 3 cele, aby kontynuować.",
   "scanYourWindowFrame": "Zeskanuj ramkę witrażu",
   "photoFramingTip": "Wykadruj zdjęcie tak, żeby kostki znajdowały się w polach siatki widocznej na ekranie.",
   "boardScanningResults": "Wyniki skanowania",
@@ -25,9 +25,9 @@
   "placementRulesCheckTip": "Niektóre kostki są ustawione niezgodnie z zasadami i muszą zostać usunięte z planszy. Dotknij wybraną kostkę, aby ją usunąć.",
   "placementRulesSatisfied": "Dobrze! Teraz wszystkie zasady są już spełnione.",
   "scoring": "Punkty",
-  "selectPrivateGoal": "Wybierz cel indywidualny",
-  "privateGoal": "Cel indywidualny ({color})",
-  "@privateGoal": {
+  "selectPrivateObjective": "Wybierz cel indywidualny",
+  "privateObjective": "Cel indywidualny ({color})",
+  "@privateObjective": {
     "placeholders": {
       "color": {
         "type": "String",

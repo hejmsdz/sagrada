@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sagrada/screens/private_goal_selection.dart';
+import 'package:sagrada/screens/private_objective_selection.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/game.dart' as game;
 import 'package:sagrada/widgets/board_view.dart';
@@ -77,7 +77,8 @@ class PlacementRulesCheckScreenState extends State<PlacementRulesCheckScreen> {
                 state.setBoard(board);
 
                 await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const PrivateGoalSelectionScreen()));
+                    builder: (context) =>
+                        const PrivateObjectiveSelectionScreen()));
               },
               child: const Icon(Icons.check),
             )

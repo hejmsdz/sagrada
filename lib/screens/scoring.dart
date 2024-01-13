@@ -28,8 +28,8 @@ class ScoringScreenState extends State<ScoringScreen> {
     setState(() {
       rules = [
         BlankPenalty(),
-        SumColor(state.privateGoalColor!),
-        ...state.publicGoals
+        SumColor(state.privateObjectiveColor!),
+        ...state.publicObjectives
       ];
       results = rules.map((rule) => rule.getScore(state.board!)).toList();
       total = results.map((result) => result.score).reduce((a, b) => a + b);

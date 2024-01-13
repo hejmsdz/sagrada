@@ -34,7 +34,7 @@ class SumColor extends ScoringRule {
 
   @override
   String getTranslation(AppLocalizations l10n) {
-    return l10n.privateGoal(color.getTranslation(l10n));
+    return l10n.privateObjective(color.getTranslation(l10n));
   }
 }
 

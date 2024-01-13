@@ -5,7 +5,7 @@ import 'package:sagrada/screens/photo_capture.dart';
 import 'package:sagrada/state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-final availableGoals = [
+final availableObjectives = [
   LightShades(),
   MediumShades(),
   DeepShades(),
@@ -18,40 +18,40 @@ final availableGoals = [
   ColorDiagonals(),
 ];
 
-class PublicGoalsSelectionScreen extends StatefulWidget {
-  const PublicGoalsSelectionScreen({super.key});
+class PublicObjectivesSelectionScreen extends StatefulWidget {
+  const PublicObjectivesSelectionScreen({super.key});
 
   @override
-  PublicGoalsSelectionScreenState createState() =>
-      PublicGoalsSelectionScreenState();
+  PublicObjectivesSelectionScreenState createState() =>
+      PublicObjectivesSelectionScreenState();
 }
 
-class PublicGoalsSelectionScreenState
-    extends State<PublicGoalsSelectionScreen> {
-  Set<ScoringRule> goals = {};
+class PublicObjectivesSelectionScreenState
+    extends State<PublicObjectivesSelectionScreen> {
+  Set<ScoringRule> objectives = {};
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-        AppLocalizations.of(context)!.selectPublicGoals,
+        AppLocalizations.of(context)!.selectPublicObjectives,
       )),
       body: Padding(
           padding: const EdgeInsets.all(5.0),
           child: GridView.count(
             crossAxisCount: 2,
             childAspectRatio: 0.9,
-            children: availableGoals
-                .map((goal) => GoalCard(
-                    goal: goal,
-                    isSelected: goals.contains(goal),
+            children: availableObjectives
+                .map((objective) => ObjectiveCard(
+                    objective: objective,
+                    isSelected: objectives.contains(objective),
                     onTap: () {
                       setState(() {
-                        if (goals.contains(goal)) {
-                          goals.remove(goal);
+                        if (objectives.contains(objective)) {
+                          objectives.remove(objective);
                         } else {
-                          goals.add(goal);
+                          objectives.add(objective);
                         }
                       });
                     }))
@@ -59,15 +59,15 @@ class PublicGoalsSelectionScreenState
           )),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          if (goals.length != 3) {
+          if (objectives.length != 3) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                content:
-                    Text(AppLocalizations.of(context)!.goalsSelectionMessage)));
+                content: Text(
+                    AppLocalizations.of(context)!.objectivesSelectionMessage)));
             return;
           }
 
           final state = Provider.of<AppState>(context, listen: false);
-          state.setPublicGoals(goals);
+          state.setPublicObjectives(objectives);
           await Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => const PhotoCaptureScreen()));
         },
@@ -77,13 +77,16 @@ class PublicGoalsSelectionScreenState
   }
 }
 
-class GoalCard extends StatelessWidget {
-  final ScoringRule goal;
+class ObjectiveCard extends StatelessWidget {
+  final ScoringRule objective;
   final bool isSelected;
   final VoidCallback? onTap;
 
-  const GoalCard(
-      {super.key, required this.goal, this.isSelected = false, this.onTap});
+  const ObjectiveCard(
+      {super.key,
+      required this.objective,
+      this.isSelected = false,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -97,9 +100,9 @@ class GoalCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
-                    'assets/images/public_objectives/${goal.runtimeType.toString()}.png'),
+                    'assets/images/public_objectives/${objective.runtimeType.toString()}.png'),
                 Text(
-                  goal.getTranslation(AppLocalizations.of(context)!),
+                  objective.getTranslation(AppLocalizations.of(context)!),
                   style: Theme.of(context).textTheme.bodyLarge,
                   textAlign: TextAlign.center,
                 ),

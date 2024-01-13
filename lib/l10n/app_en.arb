@@ -1,5 +1,5 @@
 {
-  "selectPublicGoals": "Select public goals",
+  "selectPublicObjectives": "Select public objectives",
   "lightShades": "Light shades",
   "mediumShades": "Medium shades",
   "deepShades": "Deep shades",
@@ -10,7 +10,7 @@
   "rowColorVariety": "Row color variety",
   "rowShadeVariety": "Row shade variety",
   "colorDiagonals": "Color diagonals",
-  "goalsSelectionMessage": "Select 3 goals to continue.",
+  "objectivesSelectionMessage": "Select 3 objectives to continue.",
   "scanYourWindowFrame": "Scan your window frame",
   "photoFramingTip": "Frame your photo, so that the individual dice fit in the spaces between grid lines.",
   "boardScanningResults": "Board scanning results",
@@ -23,10 +23,10 @@
   "placementRulesCheck": "Placement rules check",
   "placementRulesCheckTip": "Some dice are placed incorrectly and have to be removed from the board. Tap a dice to remove it.",
   "placementRulesSatisfied": "Well done! All dice placement rules are now satisfied.",
-  "selectPrivateGoal": "Select private goal",
+  "selectPrivateObjective": "Select private objective",
   "scoring": "Scoring",
-  "privateGoal": "Private goal ({color})",
-  "@privateGoal": {
+  "privateObjective": "Private objective ({color})",
+  "@privateObjective": {
     "placeholders": {
       "color": {
         "type": "String",
