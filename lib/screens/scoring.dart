@@ -50,41 +50,55 @@ class ScoringScreenState extends State<ScoringScreen> {
             mask: mask,
           ),
           Expanded(
-              child: ListView.builder(
-                  itemCount: rules.length + 2,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (index < rules.length) {
-                      return RuleListTile(
-                        rule: rules[index],
-                        result: results[index],
-                        isSelected: index == selectedRuleIndex,
-                        onTap: () {
-                          setState(() {
-                            selectedRuleIndex =
-                                selectedRuleIndex == index ? -1 : index;
-                          });
-                        },
-                      );
-                    }
+            child: ListView.builder(
+                itemCount: rules.length + 3,
+                itemBuilder: (BuildContext context, int index) {
+                  if (index < rules.length) {
+                    return RuleListTile(
+                      rule: rules[index],
+                      result: results[index],
+                      isSelected: index == selectedRuleIndex,
+                      onTap: () {
+                        setState(() {
+                          selectedRuleIndex =
+                              selectedRuleIndex == index ? -1 : index;
+                        });
+                      },
+                    );
+                  }
 
-                    if (index == rules.length) {
-                      return TokensListTile(
-                        count: tokensCount,
-                        onIncrement: () {
-                          setState(() {
-                            tokensCount++;
-                          });
-                        },
-                        onDecrement: () {
-                          setState(() {
-                            tokensCount--;
-                          });
-                        },
-                      );
-                    }
+                  if (index == rules.length) {
+                    return TokensListTile(
+                      count: tokensCount,
+                      onIncrement: () {
+                        setState(() {
+                          tokensCount++;
+                        });
+                      },
+                      onDecrement: () {
+                        setState(() {
+                          tokensCount--;
+                        });
+                      },
+                    );
+                  }
 
+                  if (index == rules.length + 1) {
                     return TotalListTile(total: total + tokensCount);
-                  })),
+                  }
+
+                  return Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context)
+                            .popUntil(ModalRoute.withName("/photoCapture"));
+                      },
+                      child:
+                          Text(AppLocalizations.of(context)!.checkAnotherBoard),
+                    ),
+                  );
+                }),
+          ),
         ]);
       }),
     );

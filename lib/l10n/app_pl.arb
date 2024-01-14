@@ -42,5 +42,6 @@
   "green": "zielony",
   "purple": "fioletowy",
   "red": "czerwony",
-  "yellow": "żółty"
+  "yellow": "żółty",
+  "checkAnotherBoard": "Sprawdź kolejną planszę"
 }

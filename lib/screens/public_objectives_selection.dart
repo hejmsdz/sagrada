@@ -69,6 +69,7 @@ class PublicObjectivesSelectionScreenState
           final state = Provider.of<AppState>(context, listen: false);
           state.setPublicObjectives(objectives);
           await Navigator.of(context).push(MaterialPageRoute(
+              settings: const RouteSettings(name: "/photoCapture"),
               builder: (context) => const PhotoCaptureScreen()));
         },
         child: const Icon(Icons.check),
