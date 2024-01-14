@@ -19,6 +19,7 @@ class PhotoCaptureScreen extends StatefulWidget {
 class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
   late CameraController _controller;
   late Future<void> _initializeControllerFuture;
+  bool isPhotoTaken = false;
 
   @override
   void initState() {
@@ -50,11 +51,17 @@ class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return Stack(
-              children: [
-                CameraPreview(_controller),
-                Positioned.fill(child: CustomPaint(painter: GridLinesPainter()))
-              ],
+            return AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
+              transform: Transform.translate(
+                offset: Offset(0, isPhotoTaken ? -100 : 0),
+              ).transform,
+              child: CameraPreview(
+                _controller,
+                child: CustomPaint(
+                  painter: GridLinesPainter(),
+                ),
+              ),
             );
           } else {
             return const Center(child: CircularProgressIndicator());
@@ -67,6 +74,9 @@ class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
             await _initializeControllerFuture;
 
             final image = await _controller.takePicture();
+            setState(() {
+              isPhotoTaken = true;
+            });
             _controller.pausePreview();
 
             if (!mounted) return;
@@ -76,9 +86,13 @@ class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
                 return PhotoReviewSheet(imagePath: image.path);
               },
               isScrollControlled: false,
+              showDragHandle: true,
             ))
                 .then((value) {
               _controller.resumePreview();
+              setState(() {
+                isPhotoTaken = false;
+              });
             });
           } catch (e) {
             print(e);
