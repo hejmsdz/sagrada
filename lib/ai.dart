@@ -108,6 +108,12 @@ class ImageRecognizer {
         flatDiceList.add(game.Dice(color, number));
       }
     }
+    final confidence = [
+          ...colorResults.map((r) => r.confidence),
+          ...numberResults.map((r) => r.confidence)
+        ].reduce((a, b) => a + b) /
+        (2 * game.numRows * game.numColumns);
+    print("overall confidence: $confidence");
 
     final board = game.Board(List.generate(
         game.numRows,
