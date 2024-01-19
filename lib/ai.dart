@@ -56,9 +56,9 @@ ImageTensor imageToTensor(image.Image image) {
           }));
 }
 
-Future<Classifier<int>> getNumbersClassifier() async {
+Future<Classifier<int?>> getNumbersClassifier() async {
   final model = await Interpreter.fromAsset('models/numbers.tflite');
-  return wrapModel<int>(model, [1, 2, 3, 4, 5, 6]);
+  return wrapModel(model, [null, 1, 2, 3, 4, 5, 6]);
 }
 
 Future<Classifier<game.Color?>> getColorsClassifier() async {
@@ -74,7 +74,7 @@ class ImageRecognitionResult {
 }
 
 class ImageRecognizer {
-  late Classifier<int> numbersClassifier;
+  late Classifier<int?> numbersClassifier;
   late Classifier<game.Color?> colorsClassifier;
 
   ImageRecognizer(this.numbersClassifier, this.colorsClassifier);
@@ -102,7 +102,7 @@ class ImageRecognizer {
       print(
           "<C=${colorResults[i].confidence.toStringAsFixed(3)}; N=${numberResults[i].confidence.toStringAsFixed(3)}>");
 
-      if (color == null) {
+      if (color == null || number == null) {
         flatDiceList.add(null);
       } else {
         flatDiceList.add(game.Dice(color, number));
