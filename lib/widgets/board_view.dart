@@ -32,6 +32,7 @@ class BoardView extends StatelessWidget {
                 mainAxisSpacing: 5.0,
                 crossAxisSpacing: 5.0,
                 childAspectRatio: 1.0,
+                physics: const NeverScrollableScrollPhysics(),
                 children:
                     List.generate(game.numRows * game.numColumns, (index) {
                   final i = index ~/ game.numColumns;
