@@ -14,6 +14,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image/image.dart' as image;
 
+const confidenceThreshold = 0.94;
+
 class PhotoReviewSheet extends StatefulWidget {
   final String imagePath;
 
@@ -53,6 +55,18 @@ class PhotoReviewSheetState extends State<PhotoReviewSheet> {
         this.result = result;
         state.setBoard(result.board.copy());
       });
+
+      if (!mounted) return;
+
+      if (result.confidence < confidenceThreshold) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            duration: const Duration(milliseconds: 5000),
+            behavior: SnackBarBehavior.floating,
+            content: Text(AppLocalizations.of(context)!.lowConfidenceMessage),
+          ),
+        );
+      }
     }();
   }
 
@@ -167,52 +181,63 @@ class PhotoReviewSheetState extends State<PhotoReviewSheet> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 18, right: 18, top: 10),
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: Consumer<AppState>(builder: (context, state, child) {
-            if (state.board == null) {
-              return const Center(child: CircularProgressIndicator());
-            }
+      padding: const EdgeInsets.only(left: 18, right: 18, top: 10),
+      child: Consumer<AppState>(builder: (context, state, child) {
+        if (state.board == null) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-            return Column(children: [
-              BoardView(
-                board: state.board!,
-                mask: mask,
-                onDiceTap: handleDiceTap,
-              ),
-              FilledButton.icon(
-                onPressed: () async {
-                  if (state.board == null) {
-                    return;
-                  }
+        return Column(children: [
+          // MaterialBanner(
+          //   padding: const EdgeInsets.all(20),
+          //   content: Text(
+          //       'For better scanning results, hold the phone steadily straight over the board, make sure that the light is uniform and that the dice lie exactly between the grid lines. [c=${result?.confidence}]'),
+          //   leading: const Icon(Icons.help_outline),
+          //   backgroundColor: Colors.green,
+          //   actions: const <Widget>[
+          //     TextButton(
+          //       onPressed: null,
+          //       child: Text('DISMISS'),
+          //     ),
+          //   ],
+          // ),
+          BoardView(
+            board: state.board!,
+            mask: mask,
+            onDiceTap: handleDiceTap,
+          ),
+          FilledButton.icon(
+            onPressed: () async {
+              if (state.board == null) {
+                return;
+              }
 
-                  final canSubmit = await checkConsent();
-                  if (canSubmit == true) {
-                    submitCorrections();
-                  } else if (canSubmit == null) {
-                    return;
-                  }
+              final canSubmit = await checkConsent();
+              if (canSubmit == true) {
+                submitCorrections();
+              } else if (canSubmit == null) {
+                return;
+              }
 
-                  if (!mounted) return;
+              if (!mounted) return;
 
-                  final areAllRulesSatisfied = state.board!
-                      .findIllegallyPlacedDice()
-                      .every((row) => row.every((isIllegal) => !isIllegal));
+              final areAllRulesSatisfied = state.board!
+                  .findIllegallyPlacedDice()
+                  .every((row) => row.every((isIllegal) => !isIllegal));
 
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => areAllRulesSatisfied
-                          ? const PrivateObjectiveSelectionScreen()
-                          : const PlacementRulesCheckScreen()));
-                },
-                icon: const Icon(Icons.check),
-                label: Text(AppLocalizations.of(context)!.confirm),
-              ),
-              Text(AppLocalizations.of(context)!.tapToCorrect,
-                  style: Theme.of(context).textTheme.bodySmall),
-            ]);
-          }),
-        ));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => areAllRulesSatisfied
+                      ? const PrivateObjectiveSelectionScreen()
+                      : const PlacementRulesCheckScreen()));
+            },
+            icon: const Icon(Icons.check),
+            label: Text(AppLocalizations.of(context)!.confirm),
+          ),
+          Text(AppLocalizations.of(context)!.tapToCorrect,
+              style: Theme.of(context).textTheme.bodySmall),
+        ]);
+      }),
+    );
   }
 }
 

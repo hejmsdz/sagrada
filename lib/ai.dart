@@ -69,8 +69,13 @@ Future<Classifier<game.Color?>> getColorsClassifier() async {
 class ImageRecognitionResult {
   final game.Board board;
   final List<image.Image> diceCrops;
+  final double confidence;
 
-  ImageRecognitionResult({required this.board, required this.diceCrops});
+  ImageRecognitionResult({
+    required this.board,
+    required this.diceCrops,
+    required this.confidence,
+  });
 }
 
 class ImageRecognizer {
@@ -108,12 +113,12 @@ class ImageRecognizer {
         flatDiceList.add(game.Dice(color, number));
       }
     }
-    final confidence = [
-          ...colorResults.map((r) => r.confidence),
-          ...numberResults.map((r) => r.confidence)
-        ].reduce((a, b) => a + b) /
+    final confidences = [
+      ...colorResults.map((r) => r.confidence),
+      ...numberResults.map((r) => r.confidence)
+    ];
+    final avgConfidence = confidences.reduce((a, b) => a + b) /
         (2 * game.numRows * game.numColumns);
-    print("overall confidence: $confidence");
 
     final board = game.Board(List.generate(
         game.numRows,
@@ -122,7 +127,11 @@ class ImageRecognizer {
               return flatDiceList[sequentialIndex];
             })));
 
-    return ImageRecognitionResult(board: board, diceCrops: diceCrops);
+    return ImageRecognitionResult(
+      board: board,
+      diceCrops: diceCrops,
+      confidence: avgConfidence,
+    );
   }
 
   Future<List<image.Image>> getDiceCrops(

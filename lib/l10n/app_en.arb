@@ -14,6 +14,7 @@
   "scanYourWindowFrame": "Scan your window frame",
   "photoFramingTip": "Frame your photo, so that the individual dice fit in the spaces between grid lines.",
   "boardScanningResults": "Board scanning results",
+  "lowConfidenceMessage": "For better scanning results, hold the phone steadily straight over the board, make sure that the light is uniform and that the dice lie exactly between the grid lines.",
   "confirm": "Confirm",
   "tapToCorrect": "or tap a misidentified dice to correct it.",
   "shareCorrections": "Share your corrections?",

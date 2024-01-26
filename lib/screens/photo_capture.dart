@@ -83,7 +83,11 @@ class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
             Navigator.of(context)
                 .push(ModalBottomSheetRoute(
               builder: (context) {
-                return PhotoReviewSheet(imagePath: image.path);
+                return SizedBox(
+                    height: 400,
+                    child: Scaffold(
+                        backgroundColor: Colors.transparent,
+                        body: PhotoReviewSheet(imagePath: image.path)));
               },
               isScrollControlled: false,
               showDragHandle: true,
