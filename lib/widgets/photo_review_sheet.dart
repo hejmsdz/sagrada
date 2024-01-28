@@ -153,6 +153,17 @@ class PhotoReviewSheetState extends State<PhotoReviewSheet> {
         });
   }
 
+  bool hasAnyCorrections() {
+    final state = Provider.of<AppState>(context, listen: false);
+    bool hasCorrection = false;
+    state.board!.forEachDice((dice, i, j) {
+      if (dice != result!.board.at(i, j)) {
+        hasCorrection = true;
+      }
+    });
+    return hasCorrection;
+  }
+
   void submitCorrections() {
     final state = Provider.of<AppState>(context, listen: false);
 
@@ -208,11 +219,13 @@ class PhotoReviewSheetState extends State<PhotoReviewSheet> {
                       return;
                     }
 
-                    final canSubmit = await checkConsent();
-                    if (canSubmit == true) {
-                      submitCorrections();
-                    } else if (canSubmit == null) {
-                      return;
+                    if (hasAnyCorrections()) {
+                      final canSubmit = await checkConsent();
+                      if (canSubmit == true) {
+                        submitCorrections();
+                      } else if (canSubmit == null) {
+                        return;
+                      }
                     }
 
                     if (!mounted) return;
