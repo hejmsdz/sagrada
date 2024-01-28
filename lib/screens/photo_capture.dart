@@ -42,20 +42,58 @@ class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
     super.dispose();
   }
 
+  Future<void> capturePhoto() async {
+    try {
+      await _initializeControllerFuture;
+
+      final image = await _controller.takePicture();
+      setState(() {
+        isPhotoTaken = true;
+      });
+      _controller.pausePreview();
+
+      if (!mounted) return;
+      Navigator.of(context)
+          .push(ModalBottomSheetRoute(
+        builder: (context) {
+          return SizedBox(
+              height: 400,
+              child: Scaffold(
+                  backgroundColor: Colors.transparent,
+                  body: PhotoReviewSheet(imagePath: image.path)));
+        },
+        isScrollControlled: false,
+        showDragHandle: true,
+      ))
+          .then((value) {
+        _controller.resumePreview();
+        setState(() {
+          isPhotoTaken = false;
+        });
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.scanYourWindowFrame)),
+        title: Text(
+          AppLocalizations.of(context)!.scanYourWindowFrame,
+        ),
+      ),
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            return AnimatedContainer(
-              duration: const Duration(milliseconds: 250),
-              transform: Transform.translate(
-                offset: Offset(0, isPhotoTaken ? -100 : 0),
-              ).transform,
+            final media = MediaQuery.of(context);
+
+            return AspectRatio(
+              aspectRatio: media.orientation == Orientation.landscape
+                  ? _controller.value.aspectRatio
+                  : 1 / _controller.value.aspectRatio,
               child: CameraPreview(
                 _controller,
                 child: CustomPaint(
@@ -68,42 +106,13 @@ class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.large(
         onPressed: () async {
-          try {
-            await _initializeControllerFuture;
-
-            final image = await _controller.takePicture();
-            setState(() {
-              isPhotoTaken = true;
-            });
-            _controller.pausePreview();
-
-            if (!mounted) return;
-            Navigator.of(context)
-                .push(ModalBottomSheetRoute(
-              builder: (context) {
-                return SizedBox(
-                    height: 400,
-                    child: Scaffold(
-                        backgroundColor: Colors.transparent,
-                        body: PhotoReviewSheet(imagePath: image.path)));
-              },
-              isScrollControlled: false,
-              showDragHandle: true,
-            ))
-                .then((value) {
-              _controller.resumePreview();
-              setState(() {
-                isPhotoTaken = false;
-              });
-            });
-          } catch (e) {
-            print(e);
-          }
+          capturePhoto();
         },
         child: const Icon(Icons.camera_alt),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
