@@ -41,7 +41,8 @@ class PublicObjectivesSelectionScreenState
           padding: const EdgeInsets.all(5.0),
           child: GridView.count(
             crossAxisCount: 2,
-            childAspectRatio: 0.9,
+            childAspectRatio: 0.8,
+            padding: const EdgeInsets.only(bottom: 50),
             children: availableObjectives
                 .map((objective) => ObjectiveCard(
                     objective: objective,
@@ -93,6 +94,7 @@ class ObjectiveCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: isSelected ? Theme.of(context).colorScheme.surfaceVariant : null,
+      elevation: isSelected ? 5 : 1,
       child: InkWell(
           onTap: onTap,
           child: Padding(
@@ -102,11 +104,29 @@ class ObjectiveCard extends StatelessWidget {
               children: [
                 Image.asset(
                     'assets/images/public_objectives/${objective.runtimeType.toString()}.png'),
-                Text(
-                  objective.getTranslation(AppLocalizations.of(context)!),
-                  style: Theme.of(context).textTheme.bodyLarge,
-                  textAlign: TextAlign.center,
-                ),
+                const Padding(padding: EdgeInsets.only(top: 12)),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      isSelected
+                          ? const Icon(Icons.check)
+                          : const SizedBox.shrink(),
+                      Flexible(
+                        child: Text(
+                          objective
+                              .getTranslation(AppLocalizations.of(context)!),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                  fontWeight:
+                                      isSelected ? FontWeight.bold : null),
+                          softWrap: true,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ])
               ],
             ),
           )),
