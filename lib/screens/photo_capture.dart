@@ -79,21 +79,27 @@ class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
     try {
       await _initializeControllerFuture;
 
-      final image = await _controller.takePicture();
-      setState(() {
-        isPhotoTaken = true;
+      final imagePathFuture =
+          _controller.takePicture().then((image) => image.path);
+
+      imagePathFuture.then((_) {
+        setState(() {
+          isPhotoTaken = true;
+        });
+        _controller.pausePreview();
       });
-      _controller.pausePreview();
 
       if (!mounted) return;
       Navigator.of(context)
           .push(ModalBottomSheetRoute(
         builder: (context) {
           return SizedBox(
-              height: 400,
-              child: Scaffold(
-                  backgroundColor: Colors.transparent,
-                  body: PhotoReviewSheet(imagePath: image.path)));
+            height: 400,
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: PhotoReviewSheet(imagePathFuture: imagePathFuture),
+            ),
+          );
         },
         isScrollControlled: false,
         showDragHandle: true,

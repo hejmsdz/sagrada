@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
@@ -20,9 +21,9 @@ final emptyBoard = game.Board(
     List.generate(game.numRows, (index) => List.filled(game.numColumns, null)));
 
 class PhotoReviewSheet extends StatefulWidget {
-  final String imagePath;
+  final Future<String> imagePathFuture;
 
-  const PhotoReviewSheet({super.key, required this.imagePath});
+  const PhotoReviewSheet({super.key, required this.imagePathFuture});
 
   @override
   PhotoReviewSheetState createState() => PhotoReviewSheetState();
@@ -40,7 +41,8 @@ class PhotoReviewSheetState extends State<PhotoReviewSheet> {
     state.setBoard(null, silent: true);
 
     () async {
-      final boardImage = await image.decodeImageFile(widget.imagePath);
+      final imagePath = await widget.imagePathFuture;
+      final boardImage = await image.decodeImageFile(imagePath);
 
       if (boardImage == null) {
         throw Exception("Failed to read the photo from file");
