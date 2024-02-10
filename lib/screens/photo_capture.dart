@@ -33,13 +33,46 @@ class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
       enableAudio: false,
     );
 
-    _initializeControllerFuture = _controller.initialize();
+    initializeController();
+  }
+
+  initializeController() {
+    setState(() {
+      _initializeControllerFuture = _controller.initialize();
+    });
+
+    _initializeControllerFuture.catchError((error) {
+      showErrorDialog();
+    });
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  Future<void> showErrorDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.cameraAccessRequired),
+          content:
+              Text(AppLocalizations.of(context)!.cameraAccessRequiredMessage),
+          actions: <Widget>[
+            TextButton(
+              child: Text(AppLocalizations.of(context)!.retry),
+              onPressed: () {
+                initializeController();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> capturePhoto() async {
@@ -87,6 +120,10 @@ class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
       body: FutureBuilder<void>(
         future: _initializeControllerFuture,
         builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Container();
+          }
+
           if (snapshot.connectionState == ConnectionState.done) {
             final media = MediaQuery.of(context);
 
