@@ -22,7 +22,7 @@
   "allow": "Allow",
   "deny": "Deny",
   "placementRulesCheck": "Placement rules check",
-  "placementRulesCheckTip": "Some dice are placed incorrectly and have to be removed from the board. Tap a dice to remove it.",
+  "placementRulesCheckTip": "Some dice are placed incorrectly and have to be removed from the board. Tap a dice to remove it. (Note: if this is a scanning mistake, go back and correct it.)",
   "placementRulesSatisfied": "Well done! All dice placement rules are now satisfied.",
   "selectPrivateObjective": "Select private objective",
   "scoring": "Scoring",

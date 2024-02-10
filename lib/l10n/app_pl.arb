@@ -22,7 +22,7 @@
   "allow": "Zgadzam się",
   "deny": "Nie zgadzam się",
   "placementRulesCheck": "Sprawdzenie zasad",
-  "placementRulesCheckTip": "Niektóre kostki są ustawione niezgodnie z zasadami i muszą zostać usunięte z planszy. Dotknij wybraną kostkę, aby ją usunąć.",
+  "placementRulesCheckTip": "Niektóre kostki są ustawione niezgodnie z zasadami i muszą zostać usunięte z planszy. Dotknij wybraną kostkę, aby ją usunąć. (Uwaga: jeśli to błąd skanowania, wróć do poprzedniego kroku i go popraw).",
   "placementRulesSatisfied": "Dobrze! Teraz wszystkie zasady są już spełnione.",
   "scoring": "Punkty",
   "selectPrivateObjective": "Wybierz cel indywidualny",
