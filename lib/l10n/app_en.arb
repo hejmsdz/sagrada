@@ -46,5 +46,11 @@
   "purple": "purple",
   "red": "red",
   "yellow": "yellow",
-  "checkAnotherBoard": "Check another board"
+  "checkAnotherBoard": "Check another board",
+  "leaderboard": "Leaderboard",
+  "ok": "OK",
+  "whoseScoreWasThat": "Whose score was that?",
+  "enterPlayerName": "Enter the name of the player whose scoring we've just calculated in order to include it in a leaderboard.",
+  "playerName": "Player name",
+  "newGame": "New game"
 }

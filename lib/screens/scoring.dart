@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sagrada/scoring_rules.dart';
+import 'package:sagrada/screens/leaderboard.dart';
 import 'package:sagrada/state.dart';
 import 'package:sagrada/widgets/board_view.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,6 +19,7 @@ class ScoringScreenState extends State<ScoringScreen> {
   List<ScoringResult> results = [];
   int tokensCount = 0;
   int total = 0;
+  String? playerName;
 
   @override
   void initState() {
@@ -36,6 +38,60 @@ class ScoringScreenState extends State<ScoringScreen> {
     });
   }
 
+  Future<bool> _showPlayerNameDialog() async {
+    final controller = TextEditingController();
+
+    String? name = playerName ??
+        await showDialog<String?>(
+          context: context,
+          barrierDismissible: true,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(AppLocalizations.of(context)!.whoseScoreWasThat),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: <Widget>[
+                    Text(AppLocalizations.of(context)!.enterPlayerName),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: TextField(
+                        controller: controller,
+                        autofocus: true,
+                        textCapitalization: TextCapitalization.words,
+                        decoration: InputDecoration(
+                          border: const OutlineInputBorder(),
+                          labelText: AppLocalizations.of(context)!.playerName,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(AppLocalizations.of(context)!.ok),
+                  onPressed: () {
+                    Navigator.of(context).pop(controller.text);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+
+    if (name == null) {
+      return false;
+    }
+
+    if (name != "" && mounted) {
+      playerName = name;
+      final state = Provider.of<AppState>(context, listen: false);
+      state.saveScore(name, total);
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,6 +99,10 @@ class ScoringScreenState extends State<ScoringScreen> {
       body: Consumer<AppState>(builder: (context, state, child) {
         final mask =
             selectedRuleIndex >= 0 ? results[selectedRuleIndex].mask : null;
+
+        if (state.board == null) {
+          return Container();
+        }
 
         return Column(children: [
           BoardView(
@@ -87,15 +147,38 @@ class ScoringScreenState extends State<ScoringScreen> {
                     return TotalListTile(total: total + tokensCount);
                   }
 
-                  return Center(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context)
-                            .popUntil(ModalRoute.withName("/photoCapture"));
-                      },
-                      child:
-                          Text(AppLocalizations.of(context)!.checkAnotherBoard),
-                    ),
+                  return Flex(
+                    direction: Axis.vertical,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (!await _showPlayerNameDialog()) {
+                            return;
+                          }
+
+                          Navigator.of(context)
+                              .popUntil(ModalRoute.withName("/photoCapture"));
+                        },
+                        child: Text(
+                            AppLocalizations.of(context)!.checkAnotherBoard),
+                      ),
+                      state.leaderboard.isEmpty
+                          ? Container()
+                          : ElevatedButton(
+                              onPressed: () async {
+                                if (!await _showPlayerNameDialog()) {
+                                  return;
+                                }
+
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const LeaderboardScreen()));
+                              },
+                              child: Text(
+                                  AppLocalizations.of(context)!.leaderboard),
+                            )
+                    ],
                   );
                 }),
           ),

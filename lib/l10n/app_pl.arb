@@ -46,5 +46,11 @@
   "purple": "fioletowy",
   "red": "czerwony",
   "yellow": "żółty",
-  "checkAnotherBoard": "Sprawdź kolejną planszę"
+  "checkAnotherBoard": "Sprawdź kolejną planszę",
+  "leaderboard": "Tablica wyników",
+  "ok": "OK",
+  "whoseScoreWasThat": "Czyj to wynik?",
+  "enterPlayerName": "Wpisz imię gracza, którego planszę właśnie sprawdziliśmy, żeby umieścić go na tablicy wyników.",
+  "playerName": "Imię gracza",
+  "newGame": "Nowa gra"
 }

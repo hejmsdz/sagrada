@@ -8,6 +8,7 @@ class AppState with ChangeNotifier {
   Set<ScoringRule> publicObjectives = {};
   Color? privateObjectiveColor;
   Board? board;
+  Map<String, int> leaderboard = {};
 
   AppState({required this.camera});
 
@@ -26,6 +27,19 @@ class AppState with ChangeNotifier {
 
   void setPrivateObjectiveColor(Color color) {
     privateObjectiveColor = color;
+    notifyListeners();
+  }
+
+  void saveScore(String playerName, int score) {
+    leaderboard[playerName] = score;
+    notifyListeners();
+  }
+
+  void reset() {
+    leaderboard.clear();
+    publicObjectives.clear();
+    privateObjectiveColor = null;
+    board = null;
     notifyListeners();
   }
 }
