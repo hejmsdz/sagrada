@@ -27,7 +27,7 @@ class SumColor extends ScoringRule {
   ScoringResult getScore(Board board) {
     final mask = board.createMask((dice, i, j) => dice?.color == color);
     final numbers = board.diceAtMask(mask).map((dice) => dice!.number);
-    final score = numbers.reduce((a, b) => a + b);
+    final score = numbers.isEmpty ? 0 : numbers.reduce((a, b) => a + b);
 
     return ScoringResult(score, mask, numbers.join(" + "));
   }
