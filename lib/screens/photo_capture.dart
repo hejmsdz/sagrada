@@ -118,7 +118,10 @@ class PhotoCaptureScreenState extends State<PhotoCaptureScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.white54,
         title: Text(
           AppLocalizations.of(context)!.scanYourWindowFrame,
         ),
@@ -174,7 +177,7 @@ class GridLinesPainter extends CustomPainter {
   }
 
   void paintOverlay(Canvas canvas, Size size, GridCoordinates grid) {
-    final paint = Paint()..color = Colors.black54;
+    final paint = Paint()..color = Colors.black87;
 
     canvas.drawRect(Rect.fromLTRB(0, 0, size.width, grid.top), paint);
     canvas.drawRect(
