@@ -116,7 +116,7 @@ function columnVarietyFactory<T>(
     );
 
     const numSatisfyingColumns = satisfyingColumns.size;
-    const mask = board.createMask((dice, i, j) => satisfyingColumns.has(j));
+    const mask = board.createMask((_dice, _i, j) => satisfyingColumns.has(j));
     const score = numSatisfyingColumns * scorePerColumn;
 
     return {
