@@ -51,6 +51,11 @@ export function Review({ playerId }: { playerId: string }) {
           mask={mask}
           diceWrapper={(children, rowIndex, columnIndex) => (
             <Popover
+              open={
+                selected !== null &&
+                selected[0] === rowIndex &&
+                selected[1] === columnIndex
+              }
               onOpenChange={(open) =>
                 setSelected(open ? [rowIndex, columnIndex] : null)
               }
@@ -61,9 +66,16 @@ export function Review({ playerId }: { playerId: string }) {
               <PopoverContent>
                 <DiceEdit
                   dice={board.at(rowIndex, columnIndex)}
+                  rowIndex={rowIndex}
+                  columnIndex={columnIndex}
                   onChange={(dice) =>
                     updateDice(Number(playerId), rowIndex, columnIndex, dice)
                   }
+                  onNavigate={(rowIndex, columnIndex) => {
+                    if (Board.validCoordinates(rowIndex, columnIndex)) {
+                      setSelected([rowIndex, columnIndex]);
+                    }
+                  }}
                 />
               </PopoverContent>
             </Popover>

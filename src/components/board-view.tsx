@@ -26,7 +26,10 @@ export function BoardView({
   ) => React.ReactNode;
 }) {
   return (
-    <div className={`grid grid-cols-5 grid-rows-4 gap-2 max-w-sm mx-auto`}>
+    <div
+      className={`grid grid-cols-5 grid-rows-4 gap-2 max-w-sm mx-auto`}
+      role="grid"
+    >
       {ROWS.map((rowIndex) => (
         <React.Fragment key={rowIndex}>
           {COLUMNS.map((columnIndex) => (
