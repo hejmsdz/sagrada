@@ -5,6 +5,7 @@ import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 
 export function PublicObjectives() {
   const selectedObjectives = useStore((state) => state.publicObjectives);
@@ -14,9 +15,11 @@ export function PublicObjectives() {
 
   const isValid = selectedObjectives.length === 3;
 
+  const { t } = useTranslation();
+
   return (
     <Page>
-      <Header>Public Objectives</Header>
+      <Header>{t("publicObjectives")}</Header>
       <div className="grid grid-cols-2 gap-4 mb-4">
         {publicObjectives.map((objective) => (
           <PublicObjectiveItem

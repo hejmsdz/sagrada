@@ -10,6 +10,7 @@ import {
 } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen.ts";
 import { Loader2 } from "lucide-react";
+import "./lib/i18n";
 
 const router = createRouter({
   routeTree,
