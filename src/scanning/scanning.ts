@@ -17,50 +17,55 @@ export const IMAGE_HEIGHT = IMAGE_SIZE * NUM_ROWS;
 const numberLabels = [null, ...VALUES];
 const colorLabels = [null, ...COLORS];
 
-const getImageSlices = (image: tf.Tensor3D) => {
-  const slices = [];
+const getImageSlices = (image: tf.Tensor3D) =>
+  tf.tidy(() => {
+    const slices = [];
 
-  for (let row = 0; row < NUM_ROWS; row++) {
-    for (let column = 0; column < NUM_COLUMNS; column++) {
-      slices.push(
-        image.slice(
-          [row * IMAGE_SIZE, column * IMAGE_SIZE],
-          [IMAGE_SIZE, IMAGE_SIZE],
-        ),
-      );
+    for (let row = 0; row < NUM_ROWS; row++) {
+      for (let column = 0; column < NUM_COLUMNS; column++) {
+        slices.push(
+          image.slice(
+            [row * IMAGE_SIZE, column * IMAGE_SIZE],
+            [IMAGE_SIZE, IMAGE_SIZE],
+          ),
+        );
+      }
     }
-  }
 
-  return tf.stack(slices).div(255);
-};
+    return tf.stack(slices).div(255);
+  });
 
 export const scan = async (
   image: Parameters<typeof tf.browser.fromPixels>[0],
   models: { colorsModel: tf.LayersModel; numbersModel: tf.LayersModel },
 ) => {
-  const inputImage = tf.browser.fromPixels(image);
+  const { colors, numbers } = tf.tidy(() => {
+    const inputImage = tf.browser.fromPixels(image);
 
-  console.log(inputImage.shape);
-  const [height, width, numChannels] = inputImage.shape;
-  if (width !== IMAGE_WIDTH || height !== IMAGE_HEIGHT || numChannels !== 3) {
-    throw new RangeError(`Invalid image size`);
-  }
+    const [height, width, numChannels] = inputImage.shape;
+    if (width !== IMAGE_WIDTH || height !== IMAGE_HEIGHT || numChannels !== 3) {
+      throw new RangeError(`Invalid image size`);
+    }
 
-  const slices = getImageSlices(inputImage);
-  const predict = (model: tf.LayersModel) =>
-    tf.tidy(() => {
-      const scores = model.predict(slices) as tf.Tensor;
-      const confidence = scores.max(1).mean();
-      const predictions = scores.argMax(1);
+    const slices = getImageSlices(inputImage);
 
-      return {
-        predictions: predictions.dataSync(),
-        confidence: confidence.dataSync()[0],
-      };
-    });
+    const predict = (model: tf.LayersModel) =>
+      tf.tidy(() => {
+        const scores = model.predict(slices) as tf.Tensor;
+        const confidence = scores.max(1).mean();
+        const predictions = scores.argMax(1);
 
-  const colors = predict(models.colorsModel);
-  const numbers = predict(models.numbersModel);
+        return {
+          predictions: predictions.dataSync(),
+          confidence: confidence.dataSync()[0],
+        };
+      });
+
+    return {
+      colors: predict(models.colorsModel),
+      numbers: predict(models.numbersModel),
+    };
+  });
 
   let numEmptyFields = 0;
 

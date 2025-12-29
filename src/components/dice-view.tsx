@@ -1,12 +1,5 @@
 import type { OptionalDice } from "@/game/types";
-
-const COLOR_MAP = {
-  blue: "bg-sky-500",
-  green: "bg-green-500",
-  purple: "bg-purple-500",
-  red: "bg-red-500",
-  yellow: "bg-yellow-300",
-};
+import { COLOR_CLASSES_BG } from "@/lib/colors";
 
 export function DiceView({
   className: customClassName = "",
@@ -18,11 +11,11 @@ export function DiceView({
   const className = `${customClassName} aspect-square rounded-lg`;
 
   if (!dice) {
-    return <div className={`${className} bg-gray-500`}></div>;
+    return <div className={`${className} bg-gray-300`}></div>;
   }
   return (
     <div
-      className={`${className} ${COLOR_MAP[dice.color]} flex items-center justify-center text-3xl`}
+      className={`${className} ${COLOR_CLASSES_BG[dice.color]} flex items-center justify-center text-3xl`}
     >
       {dice.value}
     </div>

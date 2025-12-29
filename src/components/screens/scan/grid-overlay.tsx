@@ -1,23 +1,16 @@
 import { NUM_COLUMNS, NUM_ROWS } from "@/game/types";
+import type { GridCoordinates } from "@/lib/grid";
 
 export function GridOverlay({
   className,
-  width,
-  height,
-  left,
-  right,
-  top,
-  bottom,
-  cellSize,
+  videoWidth: width,
+  videoHeight: height,
+  gridCoordinates,
 }: {
   className?: string;
-  width: number;
-  height: number;
-  left: number;
-  right: number;
-  top: number;
-  bottom: number;
-  cellSize: number;
+  videoWidth: number;
+  videoHeight: number;
+  gridCoordinates: GridCoordinates;
 }) {
   const lineProps = {
     stroke: "rgba(255, 255, 255, 0.7)",
@@ -28,8 +21,14 @@ export function GridOverlay({
     fill: "rgba(0, 0, 0, 0.7)",
   };
 
+  const { left, right, top, bottom, cellSize } = gridCoordinates;
+
   return (
-    <svg className={className} viewBox={`0 0 ${width} ${height}`}>
+    <svg
+      className={className}
+      viewBox={`0 0 ${width} ${height}`}
+      preserveAspectRatio="xMidYMid slice"
+    >
       <g>
         <rect x={0} y={0} width={width} height={top} {...rectProps} />
         <rect
