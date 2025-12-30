@@ -23,15 +23,29 @@ export type State = {
     dice: OptionalDice,
   ) => void;
   setPlayerPrivateObjective: (playerId: number, color: Color) => void;
+  incrementFavorTokens: (playerId: number) => void;
+  decrementFavorTokens: (playerId: number) => void;
 };
+
+export const MAX_FAVOR_TOKENS = 6;
+
+type Player = State["players"][number];
+
+function updatePlayer(
+  set: (updater: (state: State) => Partial<State>) => void,
+  playerId: number,
+  update: (player: Player) => Player,
+) {
+  set((prevState) => ({
+    players: prevState.players.map((player, index) =>
+      index === playerId ? update(player) : player,
+    ),
+  }));
+}
 
 export const useStore = create<State>((set) => ({
   publicObjectives: [],
-  players: [
-    {
-      board: Board.build(() => null),
-    },
-  ],
+  players: [{}],
   togglePublicObjective: (objectiveName, isSelected) => {
     set((prevState) => ({
       publicObjectives: isSelected
@@ -40,17 +54,8 @@ export const useStore = create<State>((set) => ({
     }));
   },
   setPlayerBoard: (playerId: number, board: Board) => {
-    set((prevState) => ({
-      players: prevState.players.map((player, index) => {
-        if (index !== playerId) {
-          return player;
-        }
-
-        return {
-          ...player,
-          board,
-        };
-      }),
+    updatePlayer(set, playerId, () => ({
+      board,
     }));
   },
   updateDice: (
@@ -59,37 +64,29 @@ export const useStore = create<State>((set) => ({
     columnIndex: number,
     dice: OptionalDice,
   ) => {
-    set((prevState) => ({
-      players: prevState.players.map((player, index) => {
-        if (index !== playerId || !player.board) {
-          return player;
+    updatePlayer(set, playerId, (player) => ({
+      board: Board.build((row, column) => {
+        if (row === rowIndex && column === columnIndex) {
+          return dice;
         }
 
-        return {
-          ...player,
-          board: Board.build((row, column) => {
-            if (row === rowIndex && column === columnIndex) {
-              return dice;
-            }
-
-            return player.board?.at(row, column) ?? null;
-          }),
-        };
+        return player.board?.at(row, column) ?? null;
       }),
     }));
   },
   setPlayerPrivateObjective: (playerId: number, color: Color) => {
-    set((prevState) => ({
-      players: prevState.players.map((player, index) => {
-        if (index !== playerId) {
-          return player;
-        }
-
-        return {
-          ...player,
-          privateObjective: color,
-        };
-      }),
+    updatePlayer(set, playerId, () => ({
+      privateObjective: color,
+    }));
+  },
+  incrementFavorTokens: (playerId: number) => {
+    updatePlayer(set, playerId, (player) => ({
+      favorTokens: Math.min((player.favorTokens ?? 0) + 1, MAX_FAVOR_TOKENS),
+    }));
+  },
+  decrementFavorTokens: (playerId: number) => {
+    updatePlayer(set, playerId, (player) => ({
+      favorTokens: Math.max((player.favorTokens ?? 0) - 1, 0),
     }));
   },
 }));
