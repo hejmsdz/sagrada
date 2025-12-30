@@ -20,7 +20,7 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
   return (
     <Page>
       <Header>{t("selectPrivateObjective")}</Header>
-      <div className="flex flex-row gap-2 flex-wrap justify-between my-32">
+      <div className="flex flex-row gap-2 flex-wrap my-32">
         {COLORS.map((color) => {
           const isSelected = selectedColor === color;
           return (
@@ -30,7 +30,7 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
               aria-checked={isSelected}
               onClick={() => setSelectedColor(Number(playerId), color)}
               className={cn(
-                "flex flex-col items-center justify-center gap-2 p-2 rounded-xl cursor-pointer",
+                "flex flex-1 aspect-square flex-col items-center justify-center gap-2 p-2 rounded-xl cursor-pointer",
                 isSelected && "outline-2 outline-black-400 bg-neutral-50",
               )}
             >
