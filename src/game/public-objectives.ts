@@ -13,61 +13,46 @@ import {
 import type { ScoringRule } from "./scoring-rules";
 
 export type Goal = {
-  name: string;
-  description: string;
   scoringRule: ScoringRule;
-  // image: string;
 };
 
-export default [
-  {
-    name: "Diagonals",
-    description: "2 or more pieces of the same color",
+export const publicObjectives = {
+  diagonals: {
     scoringRule: colorDiagonals,
   },
-  {
-    name: "ColorVariety",
-    description: "Sets of one each color everywhere",
+  colorVariety: {
     scoringRule: colorVariety,
   },
-  {
-    name: "ColumnColorVariety",
-    description: "Columns with no repeated colors",
+  columnColorVariety: {
     scoringRule: columnColorVariety,
   },
-  {
-    name: "ColumnShadeVariety",
-    description: "Columns with no repeated values",
+  columnShadeVariety: {
     scoringRule: columnShadeVariety,
   },
-  {
-    name: "DeepShades",
-    description: "Sets of 5 & 6 values anywhere",
-    scoringRule: deepShades,
-  },
-  {
-    name: "LightShades",
-    description: "Sets of 1 & 2 values anywhere",
+  lightShades: {
     scoringRule: lightShades,
   },
-  {
-    name: "MediumShades",
-    description: "Sets of 3 & 4 values anywhere",
+  mediumShades: {
     scoringRule: mediumShades,
   },
-  {
-    name: "RowColorVariety",
-    description: "Rows with no repeated colors",
+  deepShades: {
+    scoringRule: deepShades,
+  },
+  rowColorVariety: {
     scoringRule: rowColorVariety,
   },
-  {
-    name: "RowShadeVariety",
-    description: "Rows with no repeated values",
+  rowShadeVariety: {
     scoringRule: rowShadeVariety,
   },
-  {
-    name: "ShadeVariety",
-    description: "Sets of 1 of each shade",
+  shadeVariety: {
     scoringRule: shadeVariety,
   },
-] satisfies Goal[];
+} satisfies Record<string, Goal>;
+
+export type PublicObjectiveName = keyof typeof publicObjectives;
+
+export const publicObjectiveNames = Object.keys(
+  publicObjectives,
+) as PublicObjectiveName[];
+
+export default publicObjectives;

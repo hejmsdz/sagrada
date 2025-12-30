@@ -14,6 +14,8 @@ import {
   scan,
 } from "@/scanning/scanning";
 import { useStore } from "@/lib/store";
+import { useTranslation } from "react-i18next";
+import { HelpText } from "@/components/help-text";
 
 const models = loadModels();
 
@@ -133,19 +135,22 @@ export function Scan({ playerId }: { playerId: string }) {
     [stream],
   );
 
+  const { t } = useTranslation();
+
   return (
     <Page>
-      <Header>Scan your board</Header>
+      <Header>{t("scanYourWindowFrame")}</Header>
       <CameraPreview
         stream={stream}
         onPlay={onCameraReady}
         onEnded={() => setStream(null)}
       />
+      <HelpText>{t("photoFramingTip")}</HelpText>
       <div className="flex flex-col gap-2">
         {stream ? (
           <Button variant="default" className="w-full" onClick={manualCapture}>
             <CameraIcon className="w-4 h-4" />
-            Capture
+            {t("capture")}
           </Button>
         ) : (
           <Button
@@ -155,13 +160,13 @@ export function Scan({ playerId }: { playerId: string }) {
             disabled={isDisabled}
           >
             <ScanIcon className="w-4 h-4" />
-            Start scanning
+            {t("startScanning")}
           </Button>
         )}
         <Button variant="outline" className="w-full" asChild>
           <Link to="/player/$id/review" params={{ id: playerId }}>
             <PencilIcon className="w-4 h-4" />
-            Enter manually
+            {t("enterManually")}
           </Link>
         </Button>
       </div>

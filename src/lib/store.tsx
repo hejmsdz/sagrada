@@ -1,16 +1,20 @@
+import type { PublicObjectiveName } from "@/game/public-objectives";
 import type { Color } from "@/game/types";
 import { Board, type OptionalDice } from "@/game/types";
 import { create } from "zustand";
 
 export type State = {
-  publicObjectives: string[]; // todo: keyof
+  publicObjectives: PublicObjectiveName[];
   players: {
     name?: string;
     board?: Board;
     privateObjective?: Color;
     favorTokens?: number;
   }[];
-  togglePublicObjective: (objectiveName: string, isSelected: boolean) => void;
+  togglePublicObjective: (
+    objectiveName: PublicObjectiveName,
+    isSelected: boolean,
+  ) => void;
   setPlayerBoard: (playerId: number, board: Board) => void;
   updateDice: (
     playerId: number,
@@ -21,7 +25,7 @@ export type State = {
 };
 
 export const useStore = create<State>((set) => ({
-  publicObjectives: [] as string[],
+  publicObjectives: [],
   players: [
     {
       board: Board.build(() => null),

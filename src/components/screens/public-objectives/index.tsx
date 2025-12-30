@@ -1,4 +1,4 @@
-import publicObjectives from "@/game/public-objectives";
+import { publicObjectiveNames } from "@/game/public-objectives";
 import { PublicObjectiveItem } from "./public-objective-item";
 import { useStore } from "@/lib/store";
 import { Page } from "@/components/layout/page";
@@ -19,24 +19,26 @@ export function PublicObjectives() {
 
   return (
     <Page>
-      <Header>{t("publicObjectives")}</Header>
+      <Header>{t("selectPublicObjectives")}</Header>
       <div className="grid grid-cols-2 gap-4 mb-4">
-        {publicObjectives.map((objective) => (
+        {publicObjectiveNames.map((name) => (
           <PublicObjectiveItem
-            key={objective.name}
-            name={objective.name}
-            description={objective.description}
-            checked={selectedObjectives.includes(objective.name)}
-            onChange={(isSelected) =>
-              togglePublicObjective(objective.name, isSelected)
-            }
+            key={name}
+            name={t(`${name}.name`, { ns: "publicObjectives" })}
+            description={t(`${name}.description`, { ns: "publicObjectives" })}
+            checked={selectedObjectives.includes(name)}
+            onChange={(isSelected) => togglePublicObjective(name, isSelected)}
           />
         ))}
       </div>
-      <Button variant="default" className="w-full" asChild>
-        <Link to="/player/$id/scan" params={{ id: "0" }} disabled={!isValid}>
-          {isValid ? "Next" : "Select 3 objectives to continue"}
-        </Link>
+      <Button variant="default" className="w-full" asChild disabled={!isValid}>
+        {isValid ? (
+          <Link to="/player/$id/scan" params={{ id: "0" }}>
+            {t("next")}
+          </Link>
+        ) : (
+          <button disabled>{t("objectivesSelectionMessage")}</button>
+        )}
       </Button>
     </Page>
   );

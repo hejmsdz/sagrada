@@ -13,7 +13,8 @@ import { BoardView } from "@/components/board-view";
 import { DiceEdit } from "./dice-edit";
 import { BackButton } from "@/components/back-button";
 import { Board } from "@/game/types";
-// import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
+import { HelpText } from "@/components/help-text";
 
 export function Review({ playerId }: { playerId: string }) {
   const board = useStore((state) => state.players[Number(playerId)]?.board);
@@ -38,13 +39,15 @@ export function Review({ playerId }: { playerId: string }) {
     );
   };
 
+  const { t } = useTranslation();
+
   if (!board) {
     return null;
   }
 
   return (
     <Page>
-      <Header>Review</Header>
+      <Header>{t("reviewScanningResults")}</Header>
       <div className="mb-4">
         <BoardView
           board={board}
@@ -82,11 +85,12 @@ export function Review({ playerId }: { playerId: string }) {
           )}
         />
       </div>
+      <HelpText>{t("boardReviewTip")}</HelpText>
       <div className="flex flex-col gap-2">
         <Button variant="default" className="w-full">
-          Continue
+          {t("continue")}
         </Button>
-        <BackButton onClick={resetBoard}>Scan again</BackButton>
+        <BackButton onClick={resetBoard}>{t("scanAgain")}</BackButton>
       </div>
     </Page>
   );

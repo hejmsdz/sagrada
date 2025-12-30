@@ -34,7 +34,9 @@ export function CameraPreview({
   useEffect(() => {
     if (stream && videoRef.current) {
       videoRef.current.srcObject = stream;
-      videoRef.current.play();
+      videoRef.current.onloadedmetadata = () => {
+        videoRef.current?.play();
+      };
     }
   }, [stream]);
 
