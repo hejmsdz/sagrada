@@ -34,10 +34,22 @@ export function Scan({ playerId }: { playerId: string }) {
         audio: false,
       });
       setStream(stream);
-    } catch {
+    } finally {
       setIsDisabled(false);
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      const permissions = await navigator.permissions?.query?.({
+        name: "camera",
+      });
+
+      if (permissions?.state === "granted") {
+        requestCamera();
+      }
+    })();
+  }, []);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
@@ -124,7 +136,11 @@ export function Scan({ playerId }: { playerId: string }) {
   return (
     <Page>
       <Header>Scan your board</Header>
-      <CameraPreview stream={stream} onPlay={onCameraReady} />
+      <CameraPreview
+        stream={stream}
+        onPlay={onCameraReady}
+        onEnded={() => setStream(null)}
+      />
       <div className="flex flex-col gap-2">
         {stream ? (
           <Button variant="default" className="w-full" onClick={manualCapture}>
