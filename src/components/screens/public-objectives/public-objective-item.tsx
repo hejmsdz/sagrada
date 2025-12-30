@@ -13,7 +13,7 @@ export function PublicObjectiveItem({
   onChange: (checked: boolean) => void;
 }) {
   return (
-    <Label className="flex items-start gap-3 rounded-lg border p-3 has-aria-checked:border-primary has-aria-checked:bg-primary-500 dark:has-aria-checked:border-primary dark:has-aria-checked:bg-primary">
+    <Label className="flex items-start gap-3 rounded-lg border p-3 has-aria-checked:border-primary has-aria-checked:bg-primary-500 dark:has-aria-checked:border-primary dark:has-aria-checked:bg-primary cursor-pointer">
       <Checkbox
         id={name}
         className="data-[state=checked]:border-primary data-[state=checked]:bg-primary data-[state=checked]:text-white dark:data-[state=checked]:border-primary dark:data-[state=checked]:bg-primary"

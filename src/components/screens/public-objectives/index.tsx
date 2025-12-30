@@ -6,6 +6,7 @@ import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { Actions } from "@/components/layout/actions";
 
 export function PublicObjectives() {
   const selectedObjectives = useStore((state) => state.publicObjectives);
@@ -31,15 +32,22 @@ export function PublicObjectives() {
           />
         ))}
       </div>
-      <Button variant="default" className="w-full" asChild disabled={!isValid}>
-        {isValid ? (
-          <Link to="/player/$id/scan" params={{ id: "0" }}>
-            {t("next")}
-          </Link>
-        ) : (
-          <button disabled>{t("objectivesSelectionMessage")}</button>
-        )}
-      </Button>
+      <Actions>
+        <Button
+          variant="default"
+          className="w-full"
+          asChild
+          disabled={!isValid}
+        >
+          {isValid ? (
+            <Link to="/player/$id/scan" params={{ id: "0" }}>
+              {t("next")}
+            </Link>
+          ) : (
+            <button disabled>{t("objectivesSelectionMessage")}</button>
+          )}
+        </Button>
+      </Actions>
     </Page>
   );
 }

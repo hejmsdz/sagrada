@@ -7,6 +7,7 @@ import { COLOR_CLASSES_BG } from "@/lib/colors";
 import { cn } from "@/lib/utils";
 import { Link } from "@tanstack/react-router";
 import { useStore } from "@/lib/store";
+import { Actions } from "@/components/layout/actions";
 
 export function PrivateObjective({ playerId }: { playerId: string }) {
   const { t } = useTranslation();
@@ -41,7 +42,7 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
           );
         })}
       </div>
-      <div className="flex flex-col gap-2">
+      <Actions>
         <Button variant="default" className="w-full" asChild>
           {selectedColor ? (
             <Link to="/player/$id/tokens" params={{ id: playerId }}>
@@ -51,7 +52,7 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
             <button disabled>{t("continue")}</button>
           )}
         </Button>
-      </div>
+      </Actions>
     </Page>
   );
 }

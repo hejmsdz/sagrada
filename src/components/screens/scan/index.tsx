@@ -16,6 +16,7 @@ import {
 import { useStore } from "@/lib/store";
 import { useTranslation } from "react-i18next";
 import { HelpText } from "@/components/help-text";
+import { Actions } from "@/components/layout/actions";
 
 const models = loadModels();
 
@@ -146,7 +147,7 @@ export function Scan({ playerId }: { playerId: string }) {
         onEnded={() => setStream(null)}
       />
       <HelpText>{t("photoFramingTip")}</HelpText>
-      <div className="flex flex-col gap-2">
+      <Actions>
         {stream ? (
           <Button variant="default" className="w-full" onClick={manualCapture}>
             <CameraIcon className="w-4 h-4" />
@@ -169,7 +170,7 @@ export function Scan({ playerId }: { playerId: string }) {
             {t("enterManually")}
           </Link>
         </Button>
-      </div>
+      </Actions>
     </Page>
   );
 }
