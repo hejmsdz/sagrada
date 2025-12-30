@@ -17,6 +17,7 @@ const resources = {
       scanAgain: "Scan again",
       continue: "Continue",
       boardReviewTip: "If any dice was misidentified, click it to correct it.",
+      selectPrivateObjective: "Select your private objective",
     },
     publicObjectives: {
       diagonals: {
@@ -59,6 +60,13 @@ const resources = {
         name: "Shade variety",
         description: "Sets of 1 of each shade",
       },
+    },
+    colors: {
+      blue: "Blue",
+      green: "Green",
+      purple: "Purple",
+      red: "Red",
+      yellow: "Yellow",
     },
   },
 };

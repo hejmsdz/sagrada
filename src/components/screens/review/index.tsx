@@ -15,6 +15,7 @@ import { BackButton } from "@/components/back-button";
 import { Board } from "@/game/types";
 import { useTranslation } from "react-i18next";
 import { HelpText } from "@/components/help-text";
+import { Link } from "@tanstack/react-router";
 
 export function Review({ playerId }: { playerId: string }) {
   const board = useStore((state) => state.players[Number(playerId)]?.board);
@@ -87,8 +88,10 @@ export function Review({ playerId }: { playerId: string }) {
       </div>
       <HelpText>{t("boardReviewTip")}</HelpText>
       <div className="flex flex-col gap-2">
-        <Button variant="default" className="w-full">
-          {t("continue")}
+        <Button variant="default" className="w-full" asChild>
+          <Link to="/player/$id/objective" params={{ id: playerId }}>
+            {t("continue")}
+          </Link>
         </Button>
         <BackButton onClick={resetBoard}>{t("scanAgain")}</BackButton>
       </div>

@@ -22,6 +22,7 @@ export type State = {
     columnIndex: number,
     dice: OptionalDice,
   ) => void;
+  setPlayerPrivateObjective: (playerId: number, color: Color) => void;
 };
 
 export const useStore = create<State>((set) => ({
@@ -73,6 +74,20 @@ export const useStore = create<State>((set) => ({
 
             return player.board?.at(row, column) ?? null;
           }),
+        };
+      }),
+    }));
+  },
+  setPlayerPrivateObjective: (playerId: number, color: Color) => {
+    set((prevState) => ({
+      players: prevState.players.map((player, index) => {
+        if (index !== playerId) {
+          return player;
+        }
+
+        return {
+          ...player,
+          privateObjective: color,
         };
       }),
     }));
