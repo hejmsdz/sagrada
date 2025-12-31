@@ -90,7 +90,7 @@ export function Review({ playerId }: { playerId: string }) {
       <HelpText>{t("boardReviewTip")}</HelpText>
       <Actions>
         <Button variant="default" className="w-full" asChild>
-          <Link to="/player/$id/objective" params={{ id: playerId }}>
+          <Link to="/player/$id/rules" params={{ id: playerId }}>
             {t("continue")}
           </Link>
         </Button>

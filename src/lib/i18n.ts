@@ -6,6 +6,7 @@ const resources = {
     translation: {
       selectPublicObjectives: "Select public objectives",
       next: "Next",
+      back: "Back",
       objectivesSelectionMessage: "Select 3 objectives to continue",
       scanYourWindowFrame: "Scan your window frame",
       startScanning: "Start scanning",
@@ -17,6 +18,13 @@ const resources = {
       scanAgain: "Scan again",
       continue: "Continue",
       boardReviewTip: "If any dice was misidentified, click it to correct it.",
+      placementRulesCheck: "Placement rules check",
+      placementRulesCheckInfo:
+        "Some dice are placed incorrectly and have to be removed from the board. Click on a dice to remove it.",
+      placementRulesCheckInfoAdditional:
+        "Note: if this is a scanning mistake, go back and correct it.",
+      placementRulesSatisfied:
+        "Well done! All dice placement rules are now satisfied.",
       selectPrivateObjective: "Select your private objective",
       favorTokens: "Favor tokens",
       favorTokensDescription:
