@@ -3,12 +3,11 @@ import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
 import { useTranslation } from "react-i18next";
 import { COLORS } from "@/game/types";
-import { Button } from "@/components/ui/button";
 import { COLOR_CLASSES_BG } from "@/lib/colors";
 import { cn } from "@/lib/utils";
-import { Link } from "@tanstack/react-router";
 import { useStore } from "@/lib/store";
 import { Actions } from "@/components/layout/actions";
+import { DisablableButtonLink } from "@/components/disablable-button-link";
 
 export function PrivateObjective({ playerId }: { playerId: string }) {
   const { t } = useTranslation();
@@ -61,15 +60,15 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
         })}
       </div>
       <Actions>
-        <Button variant="default" className="w-full" asChild>
-          {selectedColor ? (
-            <Link to="/player/$id/tokens" params={{ id: playerId }}>
-              {t("continue")}
-            </Link>
-          ) : (
-            <button disabled>{t("continue")}</button>
-          )}
-        </Button>
+        <DisablableButtonLink
+          variant="default"
+          className="w-full"
+          to="/player/$id/tokens"
+          params={{ id: playerId }}
+          disabled={!selectedColor}
+        >
+          {t("continue")}
+        </DisablableButtonLink>
       </Actions>
     </Page>
   );
