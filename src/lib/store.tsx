@@ -31,16 +31,12 @@ export const MAX_FAVOR_TOKENS = 6;
 
 type Player = State["players"][number];
 
-function updatePlayer(
-  set: (updater: (state: State) => Partial<State>) => void,
-  playerId: number,
-  update: (player: Player) => Player,
-) {
-  set((prevState) => ({
+function updatePlayer(playerId: number, update: (player: Player) => Player) {
+  return (prevState: State) => ({
     players: prevState.players.map((player, index) =>
-      index === playerId ? update(player) : player,
+      index === playerId ? { ...player, ...update(player) } : player,
     ),
-  }));
+  });
 }
 
 export const useStore = create<State>((set) => ({
@@ -54,9 +50,11 @@ export const useStore = create<State>((set) => ({
     }));
   },
   setPlayerBoard: (playerId: number, board: Board) => {
-    updatePlayer(set, playerId, () => ({
-      board,
-    }));
+    set(
+      updatePlayer(playerId, () => ({
+        board,
+      })),
+    );
   },
   updateDice: (
     playerId: number,
@@ -64,29 +62,37 @@ export const useStore = create<State>((set) => ({
     columnIndex: number,
     dice: OptionalDice,
   ) => {
-    updatePlayer(set, playerId, (player) => ({
-      board: Board.build((row, column) => {
-        if (row === rowIndex && column === columnIndex) {
-          return dice;
-        }
+    set(
+      updatePlayer(playerId, (player) => ({
+        board: Board.build((row, column) => {
+          if (row === rowIndex && column === columnIndex) {
+            return dice;
+          }
 
-        return player.board?.at(row, column) ?? null;
-      }),
-    }));
+          return player.board?.at(row, column) ?? null;
+        }),
+      })),
+    );
   },
   setPlayerPrivateObjective: (playerId: number, color: Color) => {
-    updatePlayer(set, playerId, () => ({
-      privateObjective: color,
-    }));
+    set(
+      updatePlayer(playerId, () => ({
+        privateObjective: color,
+      })),
+    );
   },
   incrementFavorTokens: (playerId: number) => {
-    updatePlayer(set, playerId, (player) => ({
-      favorTokens: Math.min((player.favorTokens ?? 0) + 1, MAX_FAVOR_TOKENS),
-    }));
+    set(
+      updatePlayer(playerId, (player) => ({
+        favorTokens: Math.min((player.favorTokens ?? 0) + 1, MAX_FAVOR_TOKENS),
+      })),
+    );
   },
   decrementFavorTokens: (playerId: number) => {
-    updatePlayer(set, playerId, (player) => ({
-      favorTokens: Math.max((player.favorTokens ?? 0) - 1, 0),
-    }));
+    set(
+      updatePlayer(playerId, (player) => ({
+        favorTokens: Math.max((player.favorTokens ?? 0) - 1, 0),
+      })),
+    );
   },
 }));

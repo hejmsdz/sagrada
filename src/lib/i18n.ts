@@ -18,6 +18,8 @@ const resources = {
       continue: "Continue",
       boardReviewTip: "If any dice was misidentified, click it to correct it.",
       selectPrivateObjective: "Select your private objective",
+      scoring: "Scoring",
+      total: "Total",
     },
     publicObjectives: {
       diagonals: {
@@ -61,6 +63,11 @@ const resources = {
         description: "Sets of 1 of each shade",
       },
     },
+    scoringRules: {
+      blankPenalty: "Penalty for blank spaces",
+      privateObjective: "Private objective ($t(colors:{{color}}, lowercase))",
+      favorTokens: "Favor tokens left",
+    },
     colors: {
       blue: "Blue",
       green: "Green",
@@ -76,6 +83,12 @@ i18n.use(initReactI18next).init({
   lng: "en",
   interpolation: {
     escapeValue: false,
+    format: (value, format) => {
+      if (format === "lowercase") {
+        return value.toLowerCase();
+      }
+      return value;
+    },
   },
 });
 

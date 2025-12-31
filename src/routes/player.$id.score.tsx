@@ -1,9 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { Score } from "@/components/screens/score";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const Route = createFileRoute('/player/$id/score')({
+export const Route = createFileRoute("/player/$id/score")({
   component: RouteComponent,
-})
+});
 
 function RouteComponent() {
-  return <div>Hello "/player/$id/score"!</div>
+  const { id } = Route.useParams();
+  return <Score playerId={id} />;
 }

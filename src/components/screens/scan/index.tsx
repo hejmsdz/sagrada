@@ -17,8 +17,11 @@ import { useStore } from "@/lib/store";
 import { useTranslation } from "react-i18next";
 import { HelpText } from "@/components/help-text";
 import { Actions } from "@/components/layout/actions";
+import { Board } from "@/game/types";
 
 const models = loadModels();
+
+const emptyBoard = Board.build(() => null);
 
 export function Scan({ playerId }: { playerId: string }) {
   const [stream, setStream] = useState<MediaStream | null>(null);
@@ -165,7 +168,11 @@ export function Scan({ playerId }: { playerId: string }) {
           </Button>
         )}
         <Button variant="outline" className="w-full" asChild>
-          <Link to="/player/$id/review" params={{ id: playerId }}>
+          <Link
+            to="/player/$id/review"
+            params={{ id: playerId }}
+            onClick={() => setPlayerBoard(Number(playerId), emptyBoard)}
+          >
             <PencilIcon className="w-4 h-4" />
             {t("enterManually")}
           </Link>

@@ -1,9 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { FavorTokens } from "@/components/screens/favor-tokens";
 
 export const Route = createFileRoute("/player/$id/tokens")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  return <div>Hello "/player/$id/tokens"!</div>;
+  const { id } = Route.useParams();
+
+  return <FavorTokens playerId={id} />;
 }
