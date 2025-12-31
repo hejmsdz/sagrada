@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ObjectivesRouteImport } from './routes/objectives'
 import { Route as LeaderboardRouteImport } from './routes/leaderboard'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PlayerIdTokensRouteImport } from './routes/player.$id.tokens'
 import { Route as PlayerIdScoreRouteImport } from './routes/player.$id.score'
@@ -27,11 +26,6 @@ const ObjectivesRoute = ObjectivesRouteImport.update({
 const LeaderboardRoute = LeaderboardRouteImport.update({
   id: '/leaderboard',
   path: '/leaderboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -67,7 +61,6 @@ const PlayerIdObjectiveRoute = PlayerIdObjectiveRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/leaderboard': typeof LeaderboardRoute
   '/objectives': typeof ObjectivesRoute
   '/player/$id/objective': typeof PlayerIdObjectiveRoute
@@ -78,7 +71,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/leaderboard': typeof LeaderboardRoute
   '/objectives': typeof ObjectivesRoute
   '/player/$id/objective': typeof PlayerIdObjectiveRoute
@@ -90,7 +82,6 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/leaderboard': typeof LeaderboardRoute
   '/objectives': typeof ObjectivesRoute
   '/player/$id/objective': typeof PlayerIdObjectiveRoute
@@ -103,7 +94,6 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/about'
     | '/leaderboard'
     | '/objectives'
     | '/player/$id/objective'
@@ -114,7 +104,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/leaderboard'
     | '/objectives'
     | '/player/$id/objective'
@@ -125,7 +114,6 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/about'
     | '/leaderboard'
     | '/objectives'
     | '/player/$id/objective'
@@ -137,7 +125,6 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   LeaderboardRoute: typeof LeaderboardRoute
   ObjectivesRoute: typeof ObjectivesRoute
   PlayerIdObjectiveRoute: typeof PlayerIdObjectiveRoute
@@ -161,13 +148,6 @@ declare module '@tanstack/react-router' {
       path: '/leaderboard'
       fullPath: '/leaderboard'
       preLoaderRoute: typeof LeaderboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -217,7 +197,6 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   LeaderboardRoute: LeaderboardRoute,
   ObjectivesRoute: ObjectivesRoute,
   PlayerIdObjectiveRoute: PlayerIdObjectiveRoute,

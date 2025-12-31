@@ -87,6 +87,34 @@ const resources = {
       red: "Red",
       yellow: "Yellow",
     },
+    home: {
+      title: "Sagrada Scoring Assistant",
+      description:
+        "Welcome! This app makes scoring your <1>Sagrada</1> game quick and easy.",
+      features: {
+        scan: {
+          title: "Scan with your camera",
+          description:
+            "Use machine learning to automatically capture your dice board. Everything is processed locally on your device.",
+        },
+        review: {
+          title: "Review & edit",
+          description:
+            "Verify scanned results and manually adjust any dice if needed.",
+        },
+        score: {
+          title: "Automatic score calculation",
+          description:
+            "Instantly calculate scores for all public and private objectives, as well as favor tokens.",
+        },
+        leaderboard: {
+          title: "Built-in leaderboard",
+          description:
+            "Track scores for multiple players and crown the winner!",
+        },
+      },
+      getStarted: "Get started",
+    },
   },
 };
 
