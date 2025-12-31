@@ -1,3 +1,4 @@
+import { EnsurePlayerHas } from "@/components/ensure-player-has";
 import { Score } from "@/components/screens/score";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -7,5 +8,10 @@ export const Route = createFileRoute("/player/$id/score")({
 
 function RouteComponent() {
   const { id } = Route.useParams();
-  return <Score playerId={id} />;
+
+  return (
+    <EnsurePlayerHas board privateObjective playerId={id}>
+      <Score playerId={id} />
+    </EnsurePlayerHas>
+  );
 }

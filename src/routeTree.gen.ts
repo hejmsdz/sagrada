@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ObjectivesRouteImport } from './routes/objectives'
 import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as PlayerIdRouteImport } from './routes/player.$id'
 import { Route as PlayerIdTokensRouteImport } from './routes/player.$id.tokens'
 import { Route as PlayerIdScoreRouteImport } from './routes/player.$id.score'
 import { Route as PlayerIdScanRouteImport } from './routes/player.$id.scan'
@@ -34,41 +35,47 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PlayerIdTokensRoute = PlayerIdTokensRouteImport.update({
-  id: '/player/$id/tokens',
-  path: '/player/$id/tokens',
+const PlayerIdRoute = PlayerIdRouteImport.update({
+  id: '/player/$id',
+  path: '/player/$id',
   getParentRoute: () => rootRouteImport,
+} as any)
+const PlayerIdTokensRoute = PlayerIdTokensRouteImport.update({
+  id: '/tokens',
+  path: '/tokens',
+  getParentRoute: () => PlayerIdRoute,
 } as any)
 const PlayerIdScoreRoute = PlayerIdScoreRouteImport.update({
-  id: '/player/$id/score',
-  path: '/player/$id/score',
-  getParentRoute: () => rootRouteImport,
+  id: '/score',
+  path: '/score',
+  getParentRoute: () => PlayerIdRoute,
 } as any)
 const PlayerIdScanRoute = PlayerIdScanRouteImport.update({
-  id: '/player/$id/scan',
-  path: '/player/$id/scan',
-  getParentRoute: () => rootRouteImport,
+  id: '/scan',
+  path: '/scan',
+  getParentRoute: () => PlayerIdRoute,
 } as any)
 const PlayerIdRulesRoute = PlayerIdRulesRouteImport.update({
-  id: '/player/$id/rules',
-  path: '/player/$id/rules',
-  getParentRoute: () => rootRouteImport,
+  id: '/rules',
+  path: '/rules',
+  getParentRoute: () => PlayerIdRoute,
 } as any)
 const PlayerIdReviewRoute = PlayerIdReviewRouteImport.update({
-  id: '/player/$id/review',
-  path: '/player/$id/review',
-  getParentRoute: () => rootRouteImport,
+  id: '/review',
+  path: '/review',
+  getParentRoute: () => PlayerIdRoute,
 } as any)
 const PlayerIdObjectiveRoute = PlayerIdObjectiveRouteImport.update({
-  id: '/player/$id/objective',
-  path: '/player/$id/objective',
-  getParentRoute: () => rootRouteImport,
+  id: '/objective',
+  path: '/objective',
+  getParentRoute: () => PlayerIdRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/leaderboard': typeof LeaderboardRoute
   '/objectives': typeof ObjectivesRoute
+  '/player/$id': typeof PlayerIdRouteWithChildren
   '/player/$id/objective': typeof PlayerIdObjectiveRoute
   '/player/$id/review': typeof PlayerIdReviewRoute
   '/player/$id/rules': typeof PlayerIdRulesRoute
@@ -80,6 +87,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/leaderboard': typeof LeaderboardRoute
   '/objectives': typeof ObjectivesRoute
+  '/player/$id': typeof PlayerIdRouteWithChildren
   '/player/$id/objective': typeof PlayerIdObjectiveRoute
   '/player/$id/review': typeof PlayerIdReviewRoute
   '/player/$id/rules': typeof PlayerIdRulesRoute
@@ -92,6 +100,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/leaderboard': typeof LeaderboardRoute
   '/objectives': typeof ObjectivesRoute
+  '/player/$id': typeof PlayerIdRouteWithChildren
   '/player/$id/objective': typeof PlayerIdObjectiveRoute
   '/player/$id/review': typeof PlayerIdReviewRoute
   '/player/$id/rules': typeof PlayerIdRulesRoute
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/'
     | '/leaderboard'
     | '/objectives'
+    | '/player/$id'
     | '/player/$id/objective'
     | '/player/$id/review'
     | '/player/$id/rules'
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
     | '/'
     | '/leaderboard'
     | '/objectives'
+    | '/player/$id'
     | '/player/$id/objective'
     | '/player/$id/review'
     | '/player/$id/rules'
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '/'
     | '/leaderboard'
     | '/objectives'
+    | '/player/$id'
     | '/player/$id/objective'
     | '/player/$id/review'
     | '/player/$id/rules'
@@ -139,12 +151,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LeaderboardRoute: typeof LeaderboardRoute
   ObjectivesRoute: typeof ObjectivesRoute
-  PlayerIdObjectiveRoute: typeof PlayerIdObjectiveRoute
-  PlayerIdReviewRoute: typeof PlayerIdReviewRoute
-  PlayerIdRulesRoute: typeof PlayerIdRulesRoute
-  PlayerIdScanRoute: typeof PlayerIdScanRoute
-  PlayerIdScoreRoute: typeof PlayerIdScoreRoute
-  PlayerIdTokensRoute: typeof PlayerIdTokensRoute
+  PlayerIdRoute: typeof PlayerIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -170,61 +177,85 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/player/$id': {
+      id: '/player/$id'
+      path: '/player/$id'
+      fullPath: '/player/$id'
+      preLoaderRoute: typeof PlayerIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/player/$id/tokens': {
       id: '/player/$id/tokens'
-      path: '/player/$id/tokens'
+      path: '/tokens'
       fullPath: '/player/$id/tokens'
       preLoaderRoute: typeof PlayerIdTokensRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof PlayerIdRoute
     }
     '/player/$id/score': {
       id: '/player/$id/score'
-      path: '/player/$id/score'
+      path: '/score'
       fullPath: '/player/$id/score'
       preLoaderRoute: typeof PlayerIdScoreRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof PlayerIdRoute
     }
     '/player/$id/scan': {
       id: '/player/$id/scan'
-      path: '/player/$id/scan'
+      path: '/scan'
       fullPath: '/player/$id/scan'
       preLoaderRoute: typeof PlayerIdScanRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof PlayerIdRoute
     }
     '/player/$id/rules': {
       id: '/player/$id/rules'
-      path: '/player/$id/rules'
+      path: '/rules'
       fullPath: '/player/$id/rules'
       preLoaderRoute: typeof PlayerIdRulesRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof PlayerIdRoute
     }
     '/player/$id/review': {
       id: '/player/$id/review'
-      path: '/player/$id/review'
+      path: '/review'
       fullPath: '/player/$id/review'
       preLoaderRoute: typeof PlayerIdReviewRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof PlayerIdRoute
     }
     '/player/$id/objective': {
       id: '/player/$id/objective'
-      path: '/player/$id/objective'
+      path: '/objective'
       fullPath: '/player/$id/objective'
       preLoaderRoute: typeof PlayerIdObjectiveRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof PlayerIdRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  LeaderboardRoute: LeaderboardRoute,
-  ObjectivesRoute: ObjectivesRoute,
+interface PlayerIdRouteChildren {
+  PlayerIdObjectiveRoute: typeof PlayerIdObjectiveRoute
+  PlayerIdReviewRoute: typeof PlayerIdReviewRoute
+  PlayerIdRulesRoute: typeof PlayerIdRulesRoute
+  PlayerIdScanRoute: typeof PlayerIdScanRoute
+  PlayerIdScoreRoute: typeof PlayerIdScoreRoute
+  PlayerIdTokensRoute: typeof PlayerIdTokensRoute
+}
+
+const PlayerIdRouteChildren: PlayerIdRouteChildren = {
   PlayerIdObjectiveRoute: PlayerIdObjectiveRoute,
   PlayerIdReviewRoute: PlayerIdReviewRoute,
   PlayerIdRulesRoute: PlayerIdRulesRoute,
   PlayerIdScanRoute: PlayerIdScanRoute,
   PlayerIdScoreRoute: PlayerIdScoreRoute,
   PlayerIdTokensRoute: PlayerIdTokensRoute,
+}
+
+const PlayerIdRouteWithChildren = PlayerIdRoute._addFileChildren(
+  PlayerIdRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  LeaderboardRoute: LeaderboardRoute,
+  ObjectivesRoute: ObjectivesRoute,
+  PlayerIdRoute: PlayerIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

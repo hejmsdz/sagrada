@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { FavorTokens } from "@/components/screens/favor-tokens";
+import { EnsurePlayerHas } from "@/components/ensure-player-has";
 
 export const Route = createFileRoute("/player/$id/tokens")({
   component: RouteComponent,
@@ -8,5 +9,9 @@ export const Route = createFileRoute("/player/$id/tokens")({
 function RouteComponent() {
   const { id } = Route.useParams();
 
-  return <FavorTokens playerId={id} />;
+  return (
+    <EnsurePlayerHas board privateObjective playerId={id}>
+      <FavorTokens playerId={id} />
+    </EnsurePlayerHas>
+  );
 }

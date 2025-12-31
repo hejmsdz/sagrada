@@ -1,6 +1,6 @@
 import { publicObjectiveNames } from "@/game/public-objectives";
 import { PublicObjectiveItem } from "./public-objective-item";
-import { useStore } from "@/lib/store";
+import { REQUIRED_PUBLIC_OBJECTIVES, useStore } from "@/lib/store";
 import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,7 @@ export function PublicObjectives() {
     (store) => store.togglePublicObjective,
   );
 
-  const isValid = selectedObjectives.length === 3;
+  const isValid = selectedObjectives.length === REQUIRED_PUBLIC_OBJECTIVES;
 
   const { t } = useTranslation();
 
@@ -38,7 +38,9 @@ export function PublicObjectives() {
           to="/player/$id/scan"
           params={{ id: "0" }}
           disabled={!isValid}
-          disabledText={t("objectivesSelectionMessage")}
+          disabledText={t("objectivesSelectionMessage", {
+            count: REQUIRED_PUBLIC_OBJECTIVES,
+          })}
         >
           {t("next")}
         </DisablableButtonLink>

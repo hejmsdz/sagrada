@@ -7,7 +7,7 @@ const resources = {
       selectPublicObjectives: "Select public objectives",
       next: "Next",
       back: "Back",
-      objectivesSelectionMessage: "Select 3 objectives to continue",
+      objectivesSelectionMessage: "Select {{count}} objectives to continue",
       scanYourWindowFrame: "Scan your window frame",
       startScanning: "Start scanning",
       capture: "Capture",

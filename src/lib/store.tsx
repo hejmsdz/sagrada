@@ -30,6 +30,7 @@ export type State = {
   resetStore: () => void;
 };
 
+export const REQUIRED_PUBLIC_OBJECTIVES = 3;
 export const MAX_FAVOR_TOKENS = 6;
 
 export type Player = State["players"][number];

@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PlacementRulesCheck } from "@/components/screens/placement-rules-check";
+import { EnsurePlayerHas } from "@/components/ensure-player-has";
 
 export const Route = createFileRoute("/player/$id/rules")({
   component: RouteComponent,
@@ -7,5 +8,10 @@ export const Route = createFileRoute("/player/$id/rules")({
 
 function RouteComponent() {
   const { id } = Route.useParams();
-  return <PlacementRulesCheck playerId={id} />;
+
+  return (
+    <EnsurePlayerHas board playerId={id}>
+      <PlacementRulesCheck playerId={id} />
+    </EnsurePlayerHas>
+  );
 }
