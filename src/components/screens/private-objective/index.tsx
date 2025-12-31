@@ -33,7 +33,7 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
   return (
     <Page>
       <Header>{t("selectPrivateObjective")}</Header>
-      <div className="flex flex-row gap-2 flex-wrap my-32">
+      <div className="grid grid-cols-5 gap-2 my-32 max-w-sm mx-auto">
         {COLORS.map((color) => {
           const isSelected = selectedColor === color;
           return (
@@ -50,7 +50,7 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
             >
               <div
                 className={cn(
-                  "rounded-full size-[10vw]",
+                  "rounded-full aspect-square w-full",
                   COLOR_CLASSES_BG[color],
                 )}
               />
