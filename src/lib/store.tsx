@@ -32,6 +32,7 @@ export type State = {
 
 export const REQUIRED_PUBLIC_OBJECTIVES = 3;
 export const MAX_FAVOR_TOKENS = 6;
+export const MAX_PLAYERS = 4;
 
 export type Player = State["players"][number];
 
