@@ -20,6 +20,15 @@ const resources = {
       selectPrivateObjective: "Select your private objective",
       scoring: "Scoring",
       total: "Total",
+      checkAnotherBoard: "Check another board",
+      leaderboard: "Leaderboard",
+      whoseScoreWasThat: "Whose score was that?",
+      enterPlayerName:
+        "Enter the name of the player whose scoring we've just calculated in order to include them in a leaderboard.",
+      ok: "OK",
+      playerName: "Name",
+      defaultPlayerName: "Player {{number}}",
+      newGame: "New game",
     },
     publicObjectives: {
       diagonals: {

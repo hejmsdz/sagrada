@@ -10,6 +10,7 @@ import {
   type ScoringResult,
 } from "./scoring-rules";
 import type { TFunction } from "i18next";
+import type { Player } from "@/lib/store";
 
 const favorTokensScoringRule =
   (favorTokens: number): ScoringRule =>
@@ -73,4 +74,53 @@ export function calculateScore({
     results,
     total,
   };
+}
+
+export type LeaderboardEntry = {
+  name: string;
+  score: number;
+  rank: number;
+};
+
+export function calculateLeaderboard({
+  players,
+  publicObjectives,
+  t,
+}: {
+  players: Player[];
+  publicObjectives: PublicObjectiveName[];
+  t: TFunction<"translation">;
+}): LeaderboardEntry[] {
+  const leaderboard = players
+    .filter((player) => player.name && player.board && player.privateObjective)
+    .map((player) => {
+      const { total } = calculateScore({
+        board: player.board!,
+        publicObjectives,
+        privateObjective: player.privateObjective!,
+        favorTokens: player.favorTokens ?? 0,
+        t,
+      });
+
+      return {
+        name: player.name!,
+        score: total,
+      };
+    })
+    .sort((a, b) => b.score - a.score);
+
+  let previousScore = Infinity;
+  let previousRank = 0;
+  return leaderboard.map((player, index) => {
+    if (player.score < previousScore) {
+      previousScore = player.score;
+      previousRank = index + 1;
+    }
+
+    return {
+      name: player.name,
+      score: player.score,
+      rank: previousRank,
+    };
+  });
 }

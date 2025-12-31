@@ -25,11 +25,14 @@ export type State = {
   setPlayerPrivateObjective: (playerId: number, color: Color) => void;
   incrementFavorTokens: (playerId: number) => void;
   decrementFavorTokens: (playerId: number) => void;
+  setPlayerName: (playerId: number, name: string) => void;
+  addPlayer: () => number;
+  resetStore: () => void;
 };
 
 export const MAX_FAVOR_TOKENS = 6;
 
-type Player = State["players"][number];
+export type Player = State["players"][number];
 
 function updatePlayer(playerId: number, update: (player: Player) => Player) {
   return (prevState: State) => ({
@@ -39,7 +42,7 @@ function updatePlayer(playerId: number, update: (player: Player) => Player) {
   });
 }
 
-export const useStore = create<State>((set) => ({
+export const useStore = create<State>((set, get) => ({
   publicObjectives: [],
   players: [{}],
   togglePublicObjective: (objectiveName, isSelected) => {
@@ -94,5 +97,20 @@ export const useStore = create<State>((set) => ({
         favorTokens: Math.max((player.favorTokens ?? 0) - 1, 0),
       })),
     );
+  },
+  setPlayerName: (playerId: number, name: string) => {
+    set(updatePlayer(playerId, () => ({ name })));
+  },
+  addPlayer: () => {
+    const newPlayerId = get().players.length;
+    set((prevState) => ({ players: [...prevState.players, {}] }));
+
+    return newPlayerId;
+  },
+  resetStore: () => {
+    set({
+      publicObjectives: [],
+      players: [{}],
+    });
   },
 }));

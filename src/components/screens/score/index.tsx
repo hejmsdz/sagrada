@@ -13,6 +13,9 @@ import {
 } from "@/components/ui/item";
 import { cn } from "@/lib/utils";
 import { usePlayerScore } from "@/lib/scoring";
+import { Actions } from "@/components/layout/actions";
+import { CheckAnotherBoardButton } from "./check-another-board-button";
+import { LeaderboardButton } from "./leaderboard-button";
 
 export function Score({ playerId }: { playerId: string }) {
   const board = useStore((state) => state.players[Number(playerId)]?.board);
@@ -65,6 +68,10 @@ export function Score({ playerId }: { playerId: string }) {
           </li>
         </Item>
       </ul>
+      <Actions>
+        <CheckAnotherBoardButton playerId={playerId} />
+        <LeaderboardButton playerId={playerId} />
+      </Actions>
     </Page>
   );
 }
