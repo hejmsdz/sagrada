@@ -18,6 +18,9 @@ const resources = {
       continue: "Continue",
       boardReviewTip: "If any dice was misidentified, click it to correct it.",
       selectPrivateObjective: "Select your private objective",
+      favorTokens: "Favor tokens",
+      favorTokensDescription:
+        "How many favor tokens did you keep until the end of the game?",
       scoring: "Scoring",
       total: "Total",
       checkAnotherBoard: "Check another board",

@@ -19,9 +19,7 @@ export function FavorTokens({ playerId }: { playerId: string }) {
   return (
     <Page>
       <Header>{t("favorTokens")}</Header>
-      <p className="text-center">
-        How many favor tokens did you keep until the end of the game?
-      </p>
+      <p className="text-center">{t("favorTokensDescription")}</p>
       <div className="text-5xl text-center my-8">{favorTokens}</div>
       <div className="flex flex-row gap-2 justify-center mb-4">
         <Button
