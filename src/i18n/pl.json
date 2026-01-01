@@ -1,6 +1,7 @@
 {
   "translation": {
     "selectPublicObjectives": "Wybierz cele grupowe",
+    "back": "Wróć",
     "objectivesSelectionMessage": "Wybierz {{count}} cele, aby kontynuować",
     "scanYourWindowFrame": "Zeskanuj ramkę witrażu",
     "cameraPreview": "Podgląd kamery",
@@ -23,7 +24,7 @@
     "keyboardEntryTip": "Możesz poruszać się za pomocą strzałek na klawiaturze, wybierać wartości za pomocą klawiszy z cyframi (1-6) i kolory za pomocą liter B, G, P, R, Y (od nazw angielskich). Aby wyczyścić pole, naciśnij X lub 0.",
     "placementRulesCheck": "Sprawdzenie zasad",
     "placementRulesCheckInfo": "Niektóre kostki są ustawione niezgodnie z zasadami i muszą zostać usunięte z planszy. Kliknij na wybraną kostkę, aby ją usunąć.",
-    "placementRulesCheckInfoAdditional": "Dobrze! Teraz wszystkie zasady są już spełnione",
+    "placementRulesCheckInfoAdditional": "Uwaga: jeśli to błąd skanowania, wróć do poprzedniego kroku i go popraw.",
     "placementRulesSatisfied": "Dobrze! Teraz wszystkie zasady są już spełnione.",
     "selectPrivateObjective": "Wybierz Twój cel indywidualny",
     "favorTokens": "Znaczniki uznania",
