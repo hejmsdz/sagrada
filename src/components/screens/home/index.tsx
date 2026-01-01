@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { FeatureHighlight } from "./feature-highlight";
 import { Trans, useTranslation } from "react-i18next";
+import { useStore } from "@/lib/store";
 
 const features = [
   {
@@ -33,6 +34,7 @@ const features = [
 
 export function Home() {
   const { t } = useTranslation("home");
+  const resetStore = useStore((state) => state.resetStore);
 
   return (
     <Page>
@@ -65,7 +67,14 @@ export function Home() {
       </div>
 
       <Actions>
-        <Button variant="default" className="w-full" asChild>
+        <Button
+          variant="default"
+          className="w-full"
+          asChild
+          onClick={() => {
+            resetStore();
+          }}
+        >
           <Link to="/objectives">{t("getStarted")}</Link>
         </Button>
       </Actions>
