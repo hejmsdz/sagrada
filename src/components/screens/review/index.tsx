@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useStore } from "@/lib/store";
 import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
@@ -50,6 +50,21 @@ export function Review({
 
   const { t } = useTranslation();
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (
+        event.key.startsWith("Arrow") &&
+        event.target === document.body &&
+        !selected
+      ) {
+        setSelected([0, 0]);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [selected]);
+
   if (!board) {
     return null;
   }
@@ -75,7 +90,15 @@ export function Review({
               }
             >
               <PopoverTrigger asChild>
-                <ClickableDiceWrapper>{children}</ClickableDiceWrapper>
+                <ClickableDiceWrapper
+                  isSelected={
+                    selected !== null &&
+                    selected[0] === rowIndex &&
+                    selected[1] === columnIndex
+                  }
+                >
+                  {children}
+                </ClickableDiceWrapper>
               </PopoverTrigger>
               <PopoverContent
                 aria-label={t("editDice", {
@@ -104,9 +127,9 @@ export function Review({
       <HelpText>
         {t(isManual ? "boardManualEntryTip" : "boardReviewTip")}
       </HelpText>
-      {/* <div className="pointer-fine:block hidden">
+      <div className="pointer-fine:block hidden">
         <HelpText>{t("keyboardEntryTip")}</HelpText>
-      </div> */}
+      </div>
       <Actions>
         <Button variant="default" className="w-full" asChild>
           <Link to="/player/$id/rules" params={{ id: playerId }}>
