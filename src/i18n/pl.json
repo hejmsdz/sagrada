@@ -1,0 +1,130 @@
+{
+  "translation": {
+    "selectPublicObjectives": "Wybierz cele grupowe",
+    "objectivesSelectionMessage": "Wybierz {{count}} cele, aby kontynuować",
+    "scanYourWindowFrame": "Zeskanuj ramkę witrażu",
+    "cameraPreview": "Podgląd kamery",
+    "startScanning": "Rozpocznij skanowanie",
+    "capture": "Zrób zdjęcie",
+    "enterManually": "Wprowadź ręcznie",
+    "photoFramingTip": "Ustaw aparat poziomo nad planszą i wykadruj zdjęcie tak, żeby kostki znajdowały się dokładnie między liniami siatki.",
+    "reviewScanningResults": "Sprawdź wyniki skanowania",
+    "enterBoardManually": "Wprowadź planszę ręcznie",
+    "emptyField": "Puste pole",
+    "diceLabel": "$t(colorsAdjFem:{{color}}) kostka z liczbą {{value}}",
+    "editDice": "Edytuj kostkę w {{row}}. wierszu i {{column}}. kolumnie",
+    "selectColor": "Wybierz kolor",
+    "selectValue": "Wybierz wartość",
+    "scanAgain": "Zeskanuj ponownie",
+    "backToScanning": "Wróć do skanowania",
+    "continue": "Kontynuuj",
+    "boardReviewTip": "Jeśli któraś kostka została źle rozpoznana, kliknij na nią, aby poprawić.",
+    "boardManualEntryTip": "Kliknij na pole, aby ustawić kolor i wartość kostki.",
+    "keyboardEntryTip": "Możesz poruszać się za pomocą strzałek na klawiaturze, wybierać wartości za pomocą klawiszy z cyframi (1-6) i kolory za pomocą liter B, G, P, R, Y (od nazw angielskich). Aby wyczyścić pole, naciśnij X lub 0.",
+    "placementRulesCheck": "Sprawdzenie zasad",
+    "placementRulesCheckInfo": "Niektóre kostki są ustawione niezgodnie z zasadami i muszą zostać usunięte z planszy. Kliknij na wybraną kostkę, aby ją usunąć.",
+    "placementRulesCheckInfoAdditional": "Dobrze! Teraz wszystkie zasady są już spełnione",
+    "placementRulesSatisfied": "Dobrze! Teraz wszystkie zasady są już spełnione.",
+    "selectPrivateObjective": "Wybierz Twój cel indywidualny",
+    "favorTokens": "Znaczniki uznania",
+    "favorTokensDescription": "Ile znaczników uznania zostało Ci do końca gry?",
+    "increment": "Zwiększ o 1",
+    "decrement": "Zmniejsz o 1",
+    "calculateScore": "Oblicz wynik",
+    "scoring": "Punktacja",
+    "total": "Razem",
+    "checkAnotherBoard": "Sprawdź kolejną planszę",
+    "leaderboard": "Tablica wyników",
+    "whoseScoreWasThis": "Czyj to wynik?",
+    "enterPlayerName": "Wpisz imię gracza, którego planszę właśnie sprawdziliśmy, żeby umieścić go na tablicy wyników",
+    "ok": "OK",
+    "playerName": "Imię",
+    "defaultPlayerName": "Gracz {{number}}",
+    "newGame": "Nowa gra"
+  },
+  "publicObjectives": {
+    "diagonals": {
+      "name": "Kolorowe przekątne",
+      "description": "Suma kostek tego samego koloru, które stykają się rogami"
+    },
+    "colorVariety": {
+      "name": "Różnorodność kolorów",
+      "description": "Zestawy, w których znajdują się kostki wszystkich dostępnych kolorów"
+    },
+    "columnColorVariety": {
+      "name": "Różnorodność kolorów w kolumnie",
+      "description": "Kolumny z niepowtarzającymi się kolorami"
+    },
+    "columnShadeVariety": {
+      "name": "Różnorodność odcieni w kolumnie",
+      "description": "Kolumny z niepowtarzającymi się wartościami kostek"
+    },
+    "lightShades": {
+      "name": "Jasne odcienie",
+      "description": "Każdy zestaw kostek o wartościach 1 i 2 w całym witrażu"
+    },
+    "mediumShades": {
+      "name": "Pośrednie odcienie",
+      "description": "Każdy zestaw kostek o wartościach 3 i 4 w całym witrażu"
+    },
+    "deepShades": {
+      "name": "Ciemne odcienie",
+      "description": "Każdy zestaw kostek o wartościach 5 i 6 w całym witrażu"
+    },
+    "rowColorVariety": {
+      "name": "Różnorodność kolorów w rzędzie",
+      "description": "Kolumny z niepowtarzającymi się kolorami"
+    },
+    "rowShadeVariety": {
+      "name": "Różnorodność odcieni w rzędzie",
+      "description": "Rzędy z niepowtarzającymi się wartościami kostek"
+    },
+    "shadeVariety": {
+      "name": "Różnorodność odcieni",
+      "description": "Każdy zestaw kostek o wartościach od 1 do 6 w całym witrażu"
+    }
+  },
+  "scoringRules": {
+    "blankPenalty": "Kara za puste pola",
+    "privateObjective": "Cel indywidualny ($t(colors:{{color}}, lowercase))",
+    "favorTokens": "Znaczniki uznania"
+  },
+  "colors": {
+    "blue": "Niebieski",
+    "green": "Zielony",
+    "purple": "Fioletowy",
+    "red": "Czerwony",
+    "yellow": "Żółty"
+  },
+  "colorsAdjFem": {
+    "blue": "Niebieska",
+    "green": "Zielona",
+    "purple": "Fioletowa",
+    "red": "Czerwona",
+    "yellow": "Żółta"
+  },
+  "home": {
+    "title": "Sagrada Scoring Assistant",
+    "description": "Cześć! Za pomocą tej aplikacji szybko i łatwo policzysz punkty w grze <1>Sagrada</1>.",
+    "howDoesItWork": "Jak to działa?",
+    "features": {
+      "scan": {
+        "title": "Skanowanie planszy",
+        "description": "Gdy tylko ustawisz aparat nad swoją ramką witrażu, wszystkie kostki zostaną automatycznie rozpoznane."
+      },
+      "review": {
+        "title": "Sprawdź i edytuj",
+        "description": "Przejrzyj wyniki skanowania i popraw w razie potrzeby. Aplikacja sprawdzi, czy wszystkie kostki są ustawione zgodnie z zasadami."
+      },
+      "score": {
+        "title": "Obliczanie punktacji",
+        "description": "Zobaczysz wyszczególnione wyniki za każdy cel i sumę punktów."
+      },
+      "leaderboard": {
+        "title": "Tablica wyników",
+        "description": "Sprawdź wyniki wszystkich graczy i ogłoś zwycięzcę!"
+      }
+    },
+    "getStarted": "Zaczynamy"
+  }
+}
