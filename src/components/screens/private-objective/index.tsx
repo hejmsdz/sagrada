@@ -47,7 +47,7 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
               onClick={() => setSelectedColor(Number(playerId), color)}
               className={cn(
                 "flex flex-1 aspect-square flex-col items-center justify-center gap-2 p-2 rounded-xl cursor-pointer disabled:opacity-30 disabled:grayscale disabled:cursor-not-allowed",
-                isSelected && "outline-2 outline-black-400 bg-neutral-50",
+                isSelected && "outline-2 outline-foreground-100 bg-muted",
               )}
               disabled={takenColors.has(color)}
             >

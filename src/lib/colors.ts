@@ -15,3 +15,11 @@ export const COLOR_CLASSES_TEXT: Record<Color, string> = {
   red: "text-red-500",
   yellow: "text-yellow-300",
 };
+
+export const COLOR_CLASSES_TEXT_CONTRAST: Record<Color, string> = {
+  blue: "text-foreground",
+  green: "text-foreground",
+  purple: "text-foreground",
+  red: "text-foreground",
+  yellow: "text-black",
+};

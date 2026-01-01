@@ -45,7 +45,7 @@ export function ObjectiveIllustration({
 }) {
   return (
     <div
-      className="grid grid-cols-5 gap-1 mb-2 w-full aspect-5/4 bg-neutral-50 rounded-md p-2 content-center"
+      className="grid grid-cols-5 gap-1 mb-2 w-full aspect-5/4 bg-muted rounded-md p-2 content-center"
       role="presentation"
       aria-hidden="true"
     >

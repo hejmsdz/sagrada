@@ -43,7 +43,7 @@ export function CameraPreview({
   }, [stream]);
 
   return (
-    <div className="text-sm text-muted-foreground mb-4 bg-gray-100 p-4 rounded-lg flex flex-col items-center justify-center gap-2 aspect-5/4 max-w-sm mx-auto overflow-hidden relative">
+    <div className="text-sm text-muted-foreground mb-4 bg-muted p-4 rounded-lg flex flex-col items-center justify-center gap-2 aspect-5/4 max-w-sm mx-auto overflow-hidden relative">
       <video
         aria-label={t("cameraPreview")}
         className={cn("absolute inset-0 w-full h-full object-cover", {

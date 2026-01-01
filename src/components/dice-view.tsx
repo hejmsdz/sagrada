@@ -1,5 +1,5 @@
 import type { OptionalDice } from "@/game/types";
-import { COLOR_CLASSES_BG } from "@/lib/colors";
+import { COLOR_CLASSES_BG, COLOR_CLASSES_TEXT_CONTRAST } from "@/lib/colors";
 import { useTranslation } from "react-i18next";
 
 export function DiceView({
@@ -14,15 +14,12 @@ export function DiceView({
 
   if (!dice) {
     return (
-      <div
-        className={`${className} bg-gray-300`}
-        aria-label={t("emptyField")}
-      />
+      <div className={`${className} bg-muted`} aria-label={t("emptyField")} />
     );
   }
   return (
     <div
-      className={`${className} ${COLOR_CLASSES_BG[dice.color]} flex items-center justify-center text-3xl`}
+      className={`${className} ${COLOR_CLASSES_BG[dice.color]} ${COLOR_CLASSES_TEXT_CONTRAST[dice.color]} flex items-center justify-center text-3xl`}
       aria-label={t("diceLabel", { color: dice.color, value: dice.value })}
     >
       {dice.value}
