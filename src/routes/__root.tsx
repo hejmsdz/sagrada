@@ -7,10 +7,11 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   useEffect(() => {
     document.title = t("title", { ns: "home" });
-  }, [t]);
+    document.documentElement.lang = i18n.language;
+  }, [t, i18n.language]);
 
   return <Outlet />;
 }
