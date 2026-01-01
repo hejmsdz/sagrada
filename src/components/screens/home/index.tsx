@@ -38,7 +38,7 @@ export function Home() {
 
   return (
     <Page>
-      <Header>Sagrada Scoring Assistant</Header>
+      <Header>{t("title")}</Header>
 
       <p className="text-lg mb-6">
         <Trans i18nKey="description" ns="home">
@@ -55,16 +55,18 @@ export function Home() {
         </Trans>
       </p>
 
-      <div className="space-y-4 mb-6">
+      <h2 className="text-xl font-semibold mb-4">{t("howDoesItWork")}</h2>
+      <ul className="space-y-4 mb-6">
         {features.map(({ name, icon }) => (
-          <FeatureHighlight
-            key={name}
-            icon={icon}
-            title={t(`features.${name}.title`)}
-            description={t(`features.${name}.description`)}
-          />
+          <li key={name}>
+            <FeatureHighlight
+              icon={icon}
+              title={t(`features.${name}.title`)}
+              description={t(`features.${name}.description`)}
+            />
+          </li>
         ))}
-      </div>
+      </ul>
 
       <Actions>
         <Button

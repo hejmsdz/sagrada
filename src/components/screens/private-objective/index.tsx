@@ -33,7 +33,10 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
   return (
     <Page>
       <Header>{t("selectPrivateObjective")}</Header>
-      <div className="grid grid-cols-5 gap-2 my-32 max-w-sm mx-auto">
+      <div
+        className="grid grid-cols-5 gap-2 my-32 max-w-sm mx-auto"
+        role="radiogroup"
+      >
         {COLORS.map((color) => {
           const isSelected = selectedColor === color;
           return (

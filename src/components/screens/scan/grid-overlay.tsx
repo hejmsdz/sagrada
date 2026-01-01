@@ -28,6 +28,7 @@ export function GridOverlay({
       className={className}
       viewBox={`0 0 ${width} ${height}`}
       preserveAspectRatio="xMidYMid slice"
+      aria-hidden="true"
     >
       <g>
         <rect x={0} y={0} width={width} height={top} {...rectProps} />

@@ -8,12 +8,18 @@ const resources = {
       back: "Back",
       objectivesSelectionMessage: "Select {{count}} objectives to continue",
       scanYourWindowFrame: "Scan your window frame",
+      cameraPreview: "Camera preview",
       startScanning: "Start scanning",
       capture: "Capture",
       enterManually: "Enter manually",
       photoFramingTip:
         "Place your camera directly above the board and align the photo so that each die fits between the grid lines.",
       reviewScanningResults: "Review your board",
+      emptyField: "Empty field",
+      diceLabel: "$t(colors:{{color}}) dice with number {{value}}",
+      editDice: "Edit dice in row {{row}} and column {{column}}",
+      selectColor: "Select color",
+      selectValue: "Select value",
       scanAgain: "Scan again",
       continue: "Continue",
       boardReviewTip: "If any dice was misidentified, click it to correct it.",
@@ -28,6 +34,8 @@ const resources = {
       favorTokens: "Favor tokens",
       favorTokensDescription:
         "How many favor tokens did you keep until the end of the game?",
+      increment: "Increase by 1",
+      decrement: "Reduce by 1",
       calculateScore: "Calculate score",
       scoring: "Scoring",
       total: "Total",
@@ -99,16 +107,17 @@ const resources = {
       title: "Sagrada Scoring Assistant",
       description:
         "Welcome! This app makes scoring your <1>Sagrada</1> game quick and easy.",
+      howDoesItWork: "How does it work?",
       features: {
         scan: {
-          title: "Scan with your camera",
+          title: "Scan your window frame",
           description:
-            "Use machine learning to automatically capture your dice board. Everything is processed locally on your device.",
+            "As soon as you point the camera at your board, all dice will be identified automatically.",
         },
         review: {
-          title: "Review & edit",
+          title: "Review and edit",
           description:
-            "Verify scanned results and manually adjust any dice if needed.",
+            "Verify scanned results and adjust any dice manually, if needed. The app will make sure that all placement rules are satisfied.",
         },
         score: {
           title: "Automatic score calculation",
@@ -116,7 +125,7 @@ const resources = {
             "Instantly calculate scores for all public and private objectives, as well as favor tokens.",
         },
         leaderboard: {
-          title: "Built-in leaderboard",
+          title: "Leaderboard",
           description:
             "Track scores for multiple players and crown the winner!",
         },

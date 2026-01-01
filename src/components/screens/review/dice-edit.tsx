@@ -6,6 +6,7 @@ import { COLORS, VALUES } from "@/game/types";
 import { Dice5Icon, SquareIcon } from "lucide-react";
 import { COLOR_CLASSES_TEXT } from "@/lib/colors";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 const keysToColors: Record<string, Color> = {
   b: "blue",
@@ -28,6 +29,7 @@ export function DiceEdit({
   onChange: (dice: OptionalDice) => void;
   onNavigate: (rowIndex: number, columnIndex: number) => void;
 }) {
+  const { t } = useTranslation();
   const buttonClasses = "flex-1 aria-checked:bg-primary/40";
   const lastValueRef = useRef<Value | null>(dice?.value ?? null);
   const lastColorRef = useRef<Color | null>(dice?.color ?? null);
@@ -121,7 +123,11 @@ export function DiceEdit({
 
   return (
     <div className="flex flex-col gap-2">
-      <ButtonGroup className="w-full" role="radiogroup">
+      <ButtonGroup
+        className="w-full"
+        role="radiogroup"
+        aria-label={t("selectColor")}
+      >
         {COLORS.map((color) => (
           <Button
             key={color}
@@ -133,6 +139,7 @@ export function DiceEdit({
             role="radio"
             aria-checked={dice?.color === color}
             aria-keyshortcuts={color.toUpperCase().slice(0, 1)}
+            aria-label={t(color, { ns: "colors" })}
             onClick={() =>
               onChange({
                 color,
@@ -145,7 +152,6 @@ export function DiceEdit({
                 COLOR_CLASSES_TEXT[color],
                 "fill-current [&_path]:stroke-white [&_path]:stroke-3",
               )}
-              aria-label={color} /* TODO: i18n */
             />
           </Button>
         ))}
@@ -160,16 +166,21 @@ export function DiceEdit({
           aria-keyshortcuts="x 0"
           onClick={() => onChange(null)}
         >
-          <SquareIcon aria-label="Empty field" />
+          <SquareIcon aria-label={t("emptyField")} />
         </Button>
       </ButtonGroup>
-      <ButtonGroup className="w-full" role="radiogroup">
+      <ButtonGroup
+        className="w-full"
+        role="radiogroup"
+        aria-label={t("selectValue")}
+      >
         {VALUES.map((value) => (
           <Button
             key={value}
             ref={(el) => {
               valueButtonRefs.current[value] = el;
             }}
+            role="radio"
             variant="outline"
             className={buttonClasses}
             aria-checked={dice?.value === value}

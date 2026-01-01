@@ -3,6 +3,7 @@ import { CameraIcon } from "lucide-react";
 import { getGridCoordinates, type GridCoordinates } from "@/lib/grid";
 import { GridOverlay } from "./grid-overlay";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 export function CameraPreview({
   stream,
@@ -13,6 +14,7 @@ export function CameraPreview({
   onPlay: (video: HTMLVideoElement, gridCoordinates: GridCoordinates) => void;
   onEnded: () => void;
 }) {
+  const { t } = useTranslation();
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [videoSize, setVideoSize] = useState<{
@@ -43,6 +45,7 @@ export function CameraPreview({
   return (
     <div className="text-sm text-muted-foreground mb-4 bg-gray-100 p-4 rounded-lg flex flex-col items-center justify-center gap-2 aspect-5/4 max-w-sm mx-auto overflow-hidden relative">
       <video
+        aria-label={t("cameraPreview")}
         className={cn("absolute inset-0 w-full h-full object-cover", {
           hidden: !isPlaying,
         })}
@@ -61,6 +64,7 @@ export function CameraPreview({
           setVideoSize(null);
           onEnded();
         }}
+        disablePictureInPicture
       />
       {videoSize && gridCoordinates && (
         <GridOverlay

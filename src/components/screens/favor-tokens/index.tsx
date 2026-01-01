@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { PlusIcon, MinusIcon } from "lucide-react";
 import { Actions } from "@/components/layout/actions";
 import { Link } from "@tanstack/react-router";
+import { useId } from "react";
 
 export function FavorTokens({ playerId }: { playerId: string }) {
   const favorTokens = useStore(
@@ -15,31 +16,33 @@ export function FavorTokens({ playerId }: { playerId: string }) {
   const decrementFavorTokens = useStore((state) => state.decrementFavorTokens);
 
   const { t } = useTranslation();
+  const htmlId = useId();
 
   return (
     <Page>
       <Header>{t("favorTokens")}</Header>
       <p className="text-center">{t("favorTokensDescription")}</p>
-      <div className="text-5xl text-center my-8">{favorTokens}</div>
+      <div className="text-5xl text-center my-8" id={htmlId} aria-live="polite">
+        {favorTokens}
+      </div>
       <div className="flex flex-row gap-2 justify-center mb-4">
         <Button
           variant="outline"
           className="rounded-full"
           onClick={() => incrementFavorTokens(Number(playerId))}
           disabled={favorTokens >= MAX_FAVOR_TOKENS}
+          aria-controls={htmlId}
         >
-          <PlusIcon className="size-4" aria-label={t("incrementFavorTokens")} />
+          <PlusIcon className="size-4" aria-label={t("increment")} />
         </Button>
         <Button
           variant="outline"
           className="rounded-full"
           onClick={() => decrementFavorTokens(Number(playerId))}
           disabled={favorTokens <= 0}
+          aria-controls={htmlId}
         >
-          <MinusIcon
-            className="size-4"
-            aria-label={t("decrementFavorTokens")}
-          />
+          <MinusIcon className="size-4" aria-label={t("decrement")} />
         </Button>
       </div>
       <Actions>

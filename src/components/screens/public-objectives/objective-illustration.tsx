@@ -47,6 +47,7 @@ export function ObjectiveIllustration({
     <div
       className="grid grid-cols-5 gap-1 mb-2 w-full aspect-5/4 bg-neutral-50 rounded-md p-2 content-center"
       role="presentation"
+      aria-hidden="true"
     >
       {description.split("").map((char, index) => {
         const isDigit = !isNaN(Number(char));
@@ -58,7 +59,7 @@ export function ObjectiveIllustration({
             : "span";
 
         return (
-          <span className="flex items-center justify-center">
+          <span key={index} className="flex items-center justify-center">
             <Component
               className={cn(
                 "fill-current",
@@ -67,7 +68,6 @@ export function ObjectiveIllustration({
                 isColor ? COLOR_CLASSES_TEXT[COLORS[char]] : "text-neutral",
                 isDigit ? SHADE_COLORS[Number(char)] : "",
               )}
-              key={index}
             />
           </span>
         );

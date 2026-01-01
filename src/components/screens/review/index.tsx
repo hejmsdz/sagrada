@@ -68,7 +68,12 @@ export function Review({ playerId }: { playerId: string }) {
               <PopoverTrigger asChild>
                 <ClickableDiceWrapper>{children}</ClickableDiceWrapper>
               </PopoverTrigger>
-              <PopoverContent>
+              <PopoverContent
+                aria-label={t("editDice", {
+                  row: rowIndex + 1,
+                  column: columnIndex + 1,
+                })}
+              >
                 <DiceEdit
                   dice={board.at(rowIndex, columnIndex)}
                   rowIndex={rowIndex}
