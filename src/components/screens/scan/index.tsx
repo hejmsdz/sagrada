@@ -171,6 +171,7 @@ export function Scan({ playerId }: { playerId: string }) {
           <Link
             to="/player/$id/review"
             params={{ id: playerId }}
+            search={{ manual: true }}
             onClick={() => setPlayerBoard(Number(playerId), emptyBoard)}
           >
             <PencilIcon className="w-4 h-4" />

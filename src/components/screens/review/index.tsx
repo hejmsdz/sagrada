@@ -18,7 +18,13 @@ import { HelpText } from "@/components/help-text";
 import { Link } from "@tanstack/react-router";
 import { Actions } from "@/components/layout/actions";
 
-export function Review({ playerId }: { playerId: string }) {
+export function Review({
+  playerId,
+  isManual,
+}: {
+  playerId: string;
+  isManual: boolean;
+}) {
   const board = useStore((state) => state.players[Number(playerId)]?.board);
   const updateDice = useStore((state) => state.updateDice);
   const setPlayerBoard = useStore((state) => state.setPlayerBoard);
@@ -49,7 +55,9 @@ export function Review({ playerId }: { playerId: string }) {
 
   return (
     <Page>
-      <Header>{t("reviewScanningResults")}</Header>
+      <Header>
+        {t(isManual ? "enterBoardManually" : "reviewScanningResults")}
+      </Header>
       <div className="mb-4">
         <BoardView
           board={board}
@@ -92,14 +100,21 @@ export function Review({ playerId }: { playerId: string }) {
           )}
         />
       </div>
-      <HelpText>{t("boardReviewTip")}</HelpText>
+      <HelpText>
+        {t(isManual ? "boardManualEntryTip" : "boardReviewTip")}
+      </HelpText>
+      {/* <div className="pointer-fine:block hidden">
+        <HelpText>{t("keyboardEntryTip")}</HelpText>
+      </div> */}
       <Actions>
         <Button variant="default" className="w-full" asChild>
           <Link to="/player/$id/rules" params={{ id: playerId }}>
             {t("continue")}
           </Link>
         </Button>
-        <BackButton onClick={resetBoard}>{t("scanAgain")}</BackButton>
+        <BackButton onClick={resetBoard}>
+          {t(isManual ? "backToScanning" : "scanAgain")}
+        </BackButton>
       </Actions>
     </Page>
   );

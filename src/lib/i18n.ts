@@ -15,14 +15,20 @@ const resources = {
       photoFramingTip:
         "Place your camera directly above the board and align the photo so that each die fits between the grid lines.",
       reviewScanningResults: "Review your board",
+      enterBoardManually: "Enter your board",
       emptyField: "Empty field",
       diceLabel: "$t(colors:{{color}}) dice with number {{value}}",
       editDice: "Edit dice in row {{row}} and column {{column}}",
       selectColor: "Select color",
       selectValue: "Select value",
       scanAgain: "Scan again",
+      backToScanning: "Back to scanning",
       continue: "Continue",
       boardReviewTip: "If any dice was misidentified, click it to correct it.",
+      boardManualEntryTip:
+        "Click on a field to set the color and value of the dice.",
+      keyboardEntryTip:
+        "You can navigate using the arrow keys on your keyboard, select values with numeric keys (1-6) and colors with the letters B, G, P, R, Y. To clear a field, press X or 0.",
       placementRulesCheck: "Placement rules check",
       placementRulesCheckInfo:
         "Some dice are placed incorrectly and have to be removed from the board. Click on a dice to remove it.",
