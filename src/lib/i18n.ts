@@ -5,7 +5,6 @@ const resources = {
   en: {
     translation: {
       selectPublicObjectives: "Select public objectives",
-      next: "Next",
       back: "Back",
       objectivesSelectionMessage: "Select {{count}} objectives to continue",
       scanYourWindowFrame: "Scan your window frame",
@@ -29,11 +28,12 @@ const resources = {
       favorTokens: "Favor tokens",
       favorTokensDescription:
         "How many favor tokens did you keep until the end of the game?",
+      calculateScore: "Calculate score",
       scoring: "Scoring",
       total: "Total",
       checkAnotherBoard: "Check another board",
       leaderboard: "Leaderboard",
-      whoseScoreWasThat: "Whose score was that?",
+      whoseScoreWasThis: "Whose score was this?",
       enterPlayerName:
         "Enter the name of the player whose scoring we've just calculated in order to include them in a leaderboard.",
       ok: "OK",

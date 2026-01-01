@@ -67,7 +67,7 @@ export function PlayerNameDialogTrigger({
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
           <DialogHeader>
-            <DialogTitle>{t("whoseScoreWasThat")}</DialogTitle>
+            <DialogTitle>{t("whoseScoreWasThis")}</DialogTitle>
             <DialogDescription>{t("enterPlayerName")}</DialogDescription>
           </DialogHeader>
           <div className="grid gap-3 my-4">

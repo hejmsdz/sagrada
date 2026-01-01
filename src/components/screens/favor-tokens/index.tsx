@@ -45,7 +45,7 @@ export function FavorTokens({ playerId }: { playerId: string }) {
       <Actions>
         <Button variant="default" className="w-full" asChild>
           <Link to="/player/$id/score" params={{ id: playerId }}>
-            {t("next")}
+            {t("calculateScore")}
           </Link>
         </Button>
       </Actions>

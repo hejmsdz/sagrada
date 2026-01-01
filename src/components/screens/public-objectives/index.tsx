@@ -42,7 +42,7 @@ export function PublicObjectives() {
             count: REQUIRED_PUBLIC_OBJECTIVES,
           })}
         >
-          {t("next")}
+          {t("continue")}
         </DisablableButtonLink>
       </Actions>
     </Page>
