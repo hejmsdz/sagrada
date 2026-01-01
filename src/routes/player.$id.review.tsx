@@ -3,7 +3,7 @@ import { Review } from "@/components/screens/review";
 import { EnsurePlayerHas } from "@/components/ensure-player-has";
 
 interface ReviewSearch {
-  manual: boolean;
+  manual?: boolean;
 }
 
 export const Route = createFileRoute("/player/$id/review")({
@@ -21,7 +21,7 @@ function RouteComponent() {
 
   return (
     <EnsurePlayerHas board playerId={id}>
-      <Review playerId={id} isManual={manual} />
+      <Review playerId={id} isManual={manual ?? false} />
     </EnsurePlayerHas>
   );
 }
