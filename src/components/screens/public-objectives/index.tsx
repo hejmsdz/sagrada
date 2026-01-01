@@ -1,4 +1,6 @@
-import { publicObjectiveNames } from "@/game/public-objectives";
+import publicObjectives, {
+  publicObjectiveNames,
+} from "@/game/public-objectives";
 import { PublicObjectiveItem } from "./public-objective-item";
 import { REQUIRED_PUBLIC_OBJECTIVES, useStore } from "@/lib/store";
 import { Page } from "@/components/layout/page";
@@ -20,12 +22,13 @@ export function PublicObjectives() {
   return (
     <Page>
       <Header>{t("selectPublicObjectives")}</Header>
-      <div className="grid grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-4">
         {publicObjectiveNames.map((name) => (
           <PublicObjectiveItem
             key={name}
             name={t(`${name}.name`, { ns: "publicObjectives" })}
             description={t(`${name}.description`, { ns: "publicObjectives" })}
+            illustration={publicObjectives[name].illustration}
             checked={selectedObjectives.includes(name)}
             onChange={(isSelected) => togglePublicObjective(name, isSelected)}
           />
