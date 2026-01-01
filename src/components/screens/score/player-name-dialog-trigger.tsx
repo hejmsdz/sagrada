@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "react-i18next";
 import { useStore } from "@/lib/store";
+import { CheckIcon } from "lucide-react";
 
 export function PlayerNameDialogTrigger({
   playerId,
@@ -81,6 +82,7 @@ export function PlayerNameDialogTrigger({
           </div>
           <DialogFooter>
             <Button type="submit" className="w-full" disabled={isInvalid}>
+              <CheckIcon />
               {t("ok")}
             </Button>
           </DialogFooter>

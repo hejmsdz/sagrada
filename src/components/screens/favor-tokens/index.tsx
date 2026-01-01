@@ -3,7 +3,7 @@ import { Header } from "@/components/layout/header";
 import { useTranslation } from "react-i18next";
 import { MAX_FAVOR_TOKENS, useStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
-import { PlusIcon, MinusIcon } from "lucide-react";
+import { PlusIcon, MinusIcon, CheckIcon } from "lucide-react";
 import { Actions } from "@/components/layout/actions";
 import { Link } from "@tanstack/react-router";
 import { useId } from "react";
@@ -48,6 +48,7 @@ export function FavorTokens({ playerId }: { playerId: string }) {
       <Actions>
         <Button variant="default" className="w-full" asChild>
           <Link to="/player/$id/score" params={{ id: playerId }}>
+            <CheckIcon />
             {t("calculateScore")}
           </Link>
         </Button>

@@ -3,6 +3,7 @@ import { useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { useStore, MAX_PLAYERS } from "@/lib/store";
 import { PlayerNameDialogTrigger } from "./player-name-dialog-trigger";
+import { PlusIcon } from "lucide-react";
 
 export function CheckAnotherBoardButton({ playerId }: { playerId: string }) {
   const addPlayer = useStore((state) => state.addPlayer);
@@ -23,6 +24,7 @@ export function CheckAnotherBoardButton({ playerId }: { playerId: string }) {
   return (
     <PlayerNameDialogTrigger playerId={playerId} onSubmit={onPlayerNameSubmit}>
       <Button variant="outline" className="w-full">
+        <PlusIcon />
         {t("checkAnotherBoard")}
       </Button>
     </PlayerNameDialogTrigger>

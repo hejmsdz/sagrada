@@ -14,6 +14,7 @@ import { Actions } from "@/components/layout/actions";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { useStore } from "@/lib/store";
+import { RefreshCcwIcon } from "lucide-react";
 
 export function Leaderboard() {
   const { t } = useTranslation();
@@ -46,7 +47,10 @@ export function Leaderboard() {
           asChild
           onClick={() => resetStore()}
         >
-          <Link to="/objectives">{t("newGame")}</Link>
+          <Link to="/objectives">
+            <RefreshCcwIcon />
+            {t("newGame")}
+          </Link>
         </Button>
       </Actions>
     </Page>

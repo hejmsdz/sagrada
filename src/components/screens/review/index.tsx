@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import { HelpText } from "@/components/help-text";
 import { Link } from "@tanstack/react-router";
 import { Actions } from "@/components/layout/actions";
+import { CheckIcon } from "lucide-react";
 
 export function Review({
   playerId,
@@ -109,6 +110,7 @@ export function Review({
       <Actions>
         <Button variant="default" className="w-full" asChild>
           <Link to="/player/$id/rules" params={{ id: playerId }}>
+            <CheckIcon />
             {t("continue")}
           </Link>
         </Button>

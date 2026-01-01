@@ -3,6 +3,7 @@ import { useRouter } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { PlayerNameDialogTrigger } from "./player-name-dialog-trigger";
 import { useStore } from "@/lib/store";
+import { TrophyIcon } from "lucide-react";
 
 export function LeaderboardButton({ playerId }: { playerId: string }) {
   const router = useRouter();
@@ -20,6 +21,7 @@ export function LeaderboardButton({ playerId }: { playerId: string }) {
   return (
     <PlayerNameDialogTrigger playerId={playerId} onSubmit={onPlayerNameSubmit}>
       <Button variant="outline" className="w-full">
+        <TrophyIcon />
         {t("leaderboard")}
       </Button>
     </PlayerNameDialogTrigger>

@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { useStore } from "@/lib/store";
 import { Actions } from "@/components/layout/actions";
 import { DisablableButtonLink } from "@/components/disablable-button-link";
+import { CheckIcon } from "lucide-react";
 
 export function PrivateObjective({ playerId }: { playerId: string }) {
   const { t } = useTranslation();
@@ -70,6 +71,7 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
           params={{ id: playerId }}
           disabled={!selectedColor}
         >
+          <CheckIcon />
           {t("continue")}
         </DisablableButtonLink>
       </Actions>

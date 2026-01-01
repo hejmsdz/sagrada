@@ -8,6 +8,7 @@ import { Header } from "@/components/layout/header";
 import { useTranslation } from "react-i18next";
 import { Actions } from "@/components/layout/actions";
 import { DisablableButtonLink } from "@/components/disablable-button-link";
+import { CheckIcon } from "lucide-react";
 
 export function PublicObjectives() {
   const selectedObjectives = useStore((state) => state.publicObjectives);
@@ -48,6 +49,7 @@ export function PublicObjectives() {
             count: REQUIRED_PUBLIC_OBJECTIVES,
           })}
         >
+          <CheckIcon />
           {t("continue")}
         </DisablableButtonLink>
       </Actions>

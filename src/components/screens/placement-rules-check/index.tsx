@@ -3,7 +3,7 @@ import { Header } from "@/components/layout/header";
 import { useStore } from "@/lib/store";
 import { BoardView } from "@/components/board-view";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { CircleAlertIcon, CircleCheckIcon } from "lucide-react";
+import { CheckIcon, CircleAlertIcon, CircleCheckIcon } from "lucide-react";
 import { ClickableDiceWrapper } from "@/components/clickable-dice-wrapper";
 import { useMemo, useRef } from "react";
 import { Actions } from "@/components/layout/actions";
@@ -98,6 +98,7 @@ export function PlacementRulesCheck({ playerId }: { playerId: string }) {
           params={{ id: playerId }}
           disabled={hasIllegallyPlacedDice}
         >
+          <CheckIcon />
           {t("continue")}
         </DisablableButtonLink>
         <BackButton
