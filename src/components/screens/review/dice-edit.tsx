@@ -5,6 +5,7 @@ import type { Color, OptionalDice, Value } from "@/game/types";
 import { COLORS, VALUES } from "@/game/types";
 import { Dice5Icon, SquareIcon } from "lucide-react";
 import { COLOR_CLASSES_TEXT } from "@/lib/colors";
+import { cn } from "@/lib/utils";
 
 const keysToColors: Record<string, Color> = {
   b: "blue",
@@ -29,6 +30,7 @@ export function DiceEdit({
 }) {
   const buttonClasses = "flex-1 aria-checked:bg-primary/40";
   const lastValueRef = useRef<Value | null>(dice?.value ?? null);
+  const lastColorRef = useRef<Color | null>(dice?.color ?? null);
   const colorButtonRefs = useRef<
     Record<Color | "null", HTMLButtonElement | null>
   >({
@@ -51,6 +53,7 @@ export function DiceEdit({
   useEffect(() => {
     if (dice) {
       lastValueRef.current = dice.value;
+      lastColorRef.current = dice.color;
     }
   }, [dice]);
 
@@ -65,7 +68,7 @@ export function DiceEdit({
         case "6": {
           const value = Number(event.key);
           onChange({
-            color: dice?.color ?? COLORS[0],
+            color: dice?.color ?? lastColorRef.current ?? COLORS[0],
             value,
           });
           valueButtonRefs.current[value]?.focus();
@@ -138,7 +141,10 @@ export function DiceEdit({
             }
           >
             <Dice5Icon
-              className={COLOR_CLASSES_TEXT[color]}
+              className={cn(
+                COLOR_CLASSES_TEXT[color],
+                "fill-current [&_path]:stroke-white [&_path]:stroke-3",
+              )}
               aria-label={color} /* TODO: i18n */
             />
           </Button>
@@ -167,9 +173,13 @@ export function DiceEdit({
             variant="outline"
             className={buttonClasses}
             aria-checked={dice?.value === value}
-            disabled={!dice}
             aria-keyshortcuts={value.toString()}
-            onClick={() => onChange({ color: dice?.color ?? COLORS[0], value })}
+            onClick={() =>
+              onChange({
+                color: dice?.color ?? lastColorRef.current ?? COLORS[0],
+                value,
+              })
+            }
           >
             {value}
           </Button>
