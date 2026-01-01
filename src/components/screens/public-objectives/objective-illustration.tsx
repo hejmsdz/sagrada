@@ -7,7 +7,7 @@ import {
   Dice5Icon,
   Dice6Icon,
 } from "lucide-react";
-import { NUM_COLUMNS, NUM_ROWS, type Color } from "@/game/types";
+import { type Color } from "@/game/types";
 import { cn } from "@/lib/utils";
 import { COLOR_CLASSES_TEXT } from "@/lib/colors";
 
