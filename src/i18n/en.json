@@ -42,7 +42,10 @@
     "ok": "OK",
     "playerName": "Name",
     "defaultPlayerName": "Player {{number}}",
-    "newGame": "New game"
+    "newGame": "New game",
+    "notFound": "Page not found",
+    "notFoundDescription": "Sorry, the page you requested could not be found. Please check the address or return to the home page.",
+    "notFoundHomePage": "Home page"
   },
   "publicObjectives": {
     "diagonals": {

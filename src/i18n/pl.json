@@ -42,7 +42,10 @@
     "ok": "OK",
     "playerName": "Imię",
     "defaultPlayerName": "Gracz {{number}}",
-    "newGame": "Nowa gra"
+    "newGame": "Nowa gra",
+    "notFound": "Nie znaleziono strony",
+    "notFoundDescription": "Przepraszamy, strona, której szukasz, nie została znaleziona. Sprawdź adres lub wróć na stronę główną.",
+    "notFoundHomePage": "Strona główna"
   },
   "publicObjectives": {
     "diagonals": {
