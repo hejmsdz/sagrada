@@ -62,7 +62,7 @@ export function Review({
   const handleButtonKeyDown = useKeyboard({
     getField: (event) => {
       const id = (event.target as HTMLButtonElement).id;
-      if (!id?.startsWith(diceHtmlId)) {
+      if (!id?.startsWith(diceHtmlId) || !board) {
         return null;
       }
 
