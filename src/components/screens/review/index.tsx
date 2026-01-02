@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useId } from "react";
 import { useStore } from "@/lib/store";
 import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
@@ -12,12 +12,13 @@ import { ClickableDiceWrapper } from "@/components/clickable-dice-wrapper";
 import { BoardView } from "@/components/board-view";
 import { DiceEdit } from "./dice-edit";
 import { BackButton } from "@/components/back-button";
-import { Board } from "@/game/types";
+import { Board, type OptionalDice } from "@/game/types";
 import { useTranslation } from "react-i18next";
 import { HelpText } from "@/components/help-text";
 import { Link } from "@tanstack/react-router";
 import { Actions } from "@/components/layout/actions";
 import { CheckIcon } from "lucide-react";
+import { useKeyboard } from "./use-keyboard";
 
 export function Review({
   playerId,
@@ -50,20 +51,50 @@ export function Review({
 
   const { t } = useTranslation();
 
+  const diceHtmlId = useId();
+
+  const onChange = (
+    rowIndex: number,
+    columnIndex: number,
+    dice: OptionalDice,
+  ) => updateDice(Number(playerId), rowIndex, columnIndex, dice);
+
+  const handleButtonKeyDown = useKeyboard({
+    getField: (event) => {
+      const id = (event.target as HTMLButtonElement).id;
+      if (!id?.startsWith(diceHtmlId)) {
+        return null;
+      }
+
+      const [rowIndex, columnIndex] = id.split("-").slice(1).map(Number);
+
+      return { rowIndex, columnIndex, dice: board.at(rowIndex, columnIndex) };
+    },
+    onNavigate: (rowIndex, columnIndex) => {
+      document
+        .getElementById(`${diceHtmlId}-${rowIndex}-${columnIndex}`)
+        ?.focus();
+    },
+    onChange,
+  });
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
         event.key.startsWith("Arrow") &&
         event.target === document.body &&
-        !selected
+        !selected &&
+        !(event.metaKey || event.ctrlKey || event.altKey)
       ) {
-        setSelected([0, 0]);
+        document.getElementById(`${diceHtmlId}-0-0`)?.focus();
+        event.preventDefault();
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
+
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [selected]);
+  }, [selected, diceHtmlId]);
 
   if (!board) {
     return null;
@@ -78,50 +109,47 @@ export function Review({
         <BoardView
           board={board}
           mask={mask}
-          diceWrapper={(children, rowIndex, columnIndex) => (
-            <Popover
-              open={
-                selected !== null &&
-                selected[0] === rowIndex &&
-                selected[1] === columnIndex
-              }
-              onOpenChange={(open) =>
-                setSelected(open ? [rowIndex, columnIndex] : null)
-              }
-            >
-              <PopoverTrigger asChild>
-                <ClickableDiceWrapper
-                  isSelected={
-                    selected !== null &&
-                    selected[0] === rowIndex &&
-                    selected[1] === columnIndex
-                  }
-                >
-                  {children}
-                </ClickableDiceWrapper>
-              </PopoverTrigger>
-              <PopoverContent
-                aria-label={t("editDice", {
-                  row: rowIndex + 1,
-                  column: columnIndex + 1,
-                })}
+          diceWrapper={(children, rowIndex, columnIndex) => {
+            const isSelected =
+              selected !== null &&
+              selected[0] === rowIndex &&
+              selected[1] === columnIndex;
+
+            return (
+              <Popover
+                open={isSelected}
+                onOpenChange={(open) =>
+                  setSelected(open ? [rowIndex, columnIndex] : null)
+                }
               >
-                <DiceEdit
-                  dice={board.at(rowIndex, columnIndex)}
-                  rowIndex={rowIndex}
-                  columnIndex={columnIndex}
-                  onChange={(dice) =>
-                    updateDice(Number(playerId), rowIndex, columnIndex, dice)
-                  }
-                  onNavigate={(rowIndex, columnIndex) => {
-                    if (Board.validCoordinates(rowIndex, columnIndex)) {
-                      setSelected([rowIndex, columnIndex]);
+                <PopoverTrigger asChild>
+                  <ClickableDiceWrapper
+                    id={`${diceHtmlId}-${rowIndex}-${columnIndex}`}
+                    isSelected={isSelected}
+                    onKeyDown={handleButtonKeyDown}
+                  >
+                    {children}
+                  </ClickableDiceWrapper>
+                </PopoverTrigger>
+                <PopoverContent
+                  aria-label={t("editDice", {
+                    row: rowIndex + 1,
+                    column: columnIndex + 1,
+                  })}
+                >
+                  <DiceEdit
+                    dice={board.at(rowIndex, columnIndex)}
+                    onChange={(dice) => onChange(rowIndex, columnIndex, dice)}
+                    rowIndex={rowIndex}
+                    columnIndex={columnIndex}
+                    onNavigate={(rowIndex, columnIndex) =>
+                      setSelected([rowIndex, columnIndex])
                     }
-                  }}
-                />
-              </PopoverContent>
-            </Popover>
-          )}
+                  />
+                </PopoverContent>
+              </Popover>
+            );
+          }}
         />
       </div>
       <HelpText>

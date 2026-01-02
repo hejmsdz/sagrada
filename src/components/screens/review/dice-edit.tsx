@@ -7,14 +7,7 @@ import { Dice5Icon, SquareIcon } from "lucide-react";
 import { COLOR_CLASSES_TEXT } from "@/lib/colors";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
-
-const keysToColors: Record<string, Color> = {
-  b: "blue",
-  g: "green",
-  p: "purple",
-  r: "red",
-  y: "yellow",
-};
+import { useKeyboard } from "./use-keyboard";
 
 export function DiceEdit({
   dice,
@@ -31,8 +24,7 @@ export function DiceEdit({
 }) {
   const { t } = useTranslation();
   const buttonClasses = "flex-1 aria-checked:bg-primary/40";
-  const lastValueRef = useRef<Value | null>(dice?.value ?? null);
-  const lastColorRef = useRef<Color | null>(dice?.color ?? null);
+  const lastNotNullDiceRef = useRef<OptionalDice>(dice);
   const colorButtonRefs = useRef<
     Record<Color | "null", HTMLButtonElement | null>
   >({
@@ -53,69 +45,30 @@ export function DiceEdit({
   });
 
   useEffect(() => {
-    if (dice) {
-      lastValueRef.current = dice.value;
-      lastColorRef.current = dice.color;
+    if (dice !== null) {
+      lastNotNullDiceRef.current = dice;
     }
   }, [dice]);
 
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      switch (event.key.toLowerCase()) {
-        case "1":
-        case "2":
-        case "3":
-        case "4":
-        case "5":
-        case "6": {
-          const value = Number(event.key);
-          onChange({
-            color: dice?.color ?? lastColorRef.current ?? COLORS[0],
-            value,
-          });
-          valueButtonRefs.current[value]?.focus();
-          break;
-        }
-        case "b":
-        case "g":
-        case "p":
-        case "r":
-        case "y":
-          onChange({
-            color: keysToColors[event.key.toLowerCase()],
-            value: dice?.value ?? lastValueRef.current ?? VALUES[0],
-          });
-          colorButtonRefs.current[
-            keysToColors[event.key.toLowerCase()]
-          ]?.focus();
-          break;
-        case "x":
-        case "0":
-          onChange(null);
-          colorButtonRefs.current.null?.focus();
-          break;
-        case "arrowup":
-          onNavigate(rowIndex - 1, columnIndex);
-          break;
-        case "arrowdown":
-          onNavigate(rowIndex + 1, columnIndex);
-          break;
-        case "arrowleft":
-          onNavigate(rowIndex, columnIndex - 1);
-          break;
-        case "arrowright":
-          onNavigate(rowIndex, columnIndex + 1);
-          break;
-        default:
-          break;
+  const handleKeyDown = useKeyboard({
+    getField: () => ({ dice, rowIndex, columnIndex }),
+    onNavigate,
+    onChange: (_i, _j, newDice, changeType) => {
+      if (changeType === "clear" || !newDice) {
+        colorButtonRefs.current.null?.focus();
+      } else if (changeType === "color") {
+        colorButtonRefs.current[newDice?.color]?.focus();
+      } else if (changeType === "value") {
+        valueButtonRefs.current[newDice?.value]?.focus();
       }
-    };
-    document.addEventListener("keydown", handleKeyDown);
+      onChange(newDice);
+    },
+  });
 
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [onChange, dice, rowIndex, columnIndex]);
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [handleKeyDown]);
 
   useEffect(() => {
     colorButtonRefs.current[dice?.color ?? "null"]?.focus();
@@ -143,7 +96,8 @@ export function DiceEdit({
             onClick={() =>
               onChange({
                 color,
-                value: dice?.value ?? lastValueRef.current ?? VALUES[0],
+                value:
+                  dice?.value ?? lastNotNullDiceRef.current?.value ?? VALUES[0],
               })
             }
           >
@@ -187,7 +141,8 @@ export function DiceEdit({
             aria-keyshortcuts={value.toString()}
             onClick={() =>
               onChange({
-                color: dice?.color ?? lastColorRef.current ?? COLORS[0],
+                color:
+                  dice?.color ?? lastNotNullDiceRef.current?.color ?? COLORS[0],
                 value,
               })
             }
