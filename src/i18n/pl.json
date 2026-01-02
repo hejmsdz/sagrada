@@ -8,6 +8,7 @@
     "startScanning": "Rozpocznij skanowanie",
     "capture": "Zrób zdjęcie",
     "enterManually": "Wprowadź ręcznie",
+    "cameraInfo": "Aby zeskanować planszę, musisz zezwolić na dostęp do kamery. Przetwarzanie obrazu odbywa się na Twoim urządzeniu, zdjęcia nie są nigdzie wysyłane.",
     "photoFramingTip": "Ustaw aparat poziomo nad planszą i wykadruj zdjęcie tak, żeby kostki znajdowały się dokładnie między liniami siatki.",
     "reviewScanningResults": "Sprawdź wyniki skanowania",
     "enterBoardManually": "Wprowadź planszę ręcznie",

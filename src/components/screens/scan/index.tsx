@@ -149,7 +149,7 @@ export function Scan({ playerId }: { playerId: string }) {
         onPlay={onCameraReady}
         onEnded={() => setStream(null)}
       />
-      <HelpText>{t("photoFramingTip")}</HelpText>
+      <HelpText>{stream ? t("photoFramingTip") : t("cameraInfo")}</HelpText>
       <Actions>
         {stream ? (
           <Button variant="default" className="w-full" onClick={manualCapture}>
