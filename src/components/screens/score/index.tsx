@@ -39,9 +39,12 @@ export function Score({ playerId }: { playerId: string }) {
         {results.map((result, index) => (
           <Item
             key={result.name}
+            tabIndex={0}
             variant="muted"
             onMouseEnter={() => setActiveResultIndex(index)}
             onMouseLeave={() => setActiveResultIndex(undefined)}
+            onFocus={() => setActiveResultIndex(index)}
+            onBlur={() => setActiveResultIndex(undefined)}
             className={cn(
               "cursor-pointer",
               activeResultIndex === index && "text-primary bg-primary/10",
