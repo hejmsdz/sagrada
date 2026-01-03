@@ -7,7 +7,7 @@ import { Dice5Icon, SquareIcon } from "lucide-react";
 import { COLOR_CLASSES_TEXT } from "@/lib/colors";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
-import { useKeyboard } from "./use-keyboard";
+import { useKeyboard } from "@/components/board-view/use-keyboard";
 
 export function DiceEdit({
   dice,
@@ -23,7 +23,7 @@ export function DiceEdit({
   onNavigate: (rowIndex: number, columnIndex: number) => void;
 }) {
   const { t } = useTranslation();
-  const buttonClasses = "flex-1 aria-checked:bg-primary/40";
+  const buttonClasses = "flex-1 aria-checked:bg-primary/40 transition-all";
   const lastNotNullDiceRef = useRef<OptionalDice>(dice);
   const colorButtonRefs = useRef<
     Record<Color | "null", HTMLButtonElement | null>
@@ -72,7 +72,7 @@ export function DiceEdit({
 
   useEffect(() => {
     colorButtonRefs.current[dice?.color ?? "null"]?.focus();
-  }, []);
+  }, [rowIndex, columnIndex]);
 
   return (
     <div className="flex flex-col gap-2">

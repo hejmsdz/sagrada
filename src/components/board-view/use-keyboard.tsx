@@ -21,6 +21,7 @@ export function useKeyboard({
   getField,
   onChange,
   onNavigate,
+  onEnter,
 }: {
   getField: (
     event: EventType,
@@ -32,6 +33,7 @@ export function useKeyboard({
     changeType: "clear" | "color" | "value",
   ) => void;
   onNavigate: (rowIndex: number, columnIndex: number) => void;
+  onEnter?: (rowIndex: number, columnIndex: number) => void;
 }) {
   const lastNotNullDiceRef = useRef<OptionalDice>(null);
   const lastNotNullCoordinatesRef = useRef<[number, number] | null>(null);
@@ -73,6 +75,9 @@ export function useKeyboard({
           break;
         case "arrowright":
           navigate(rowIndex, columnIndex + 1);
+          break;
+        case "enter":
+          onEnter?.(rowIndex, columnIndex);
           break;
 
         case "1":
@@ -125,7 +130,7 @@ export function useKeyboard({
 
       event.preventDefault();
     },
-    [getField, onChange, onNavigate],
+    [getField, onChange, onNavigate, onEnter],
   );
 
   return handleKeyDown;

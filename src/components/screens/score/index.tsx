@@ -3,7 +3,7 @@ import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
 import { useTranslation } from "react-i18next";
 import { useStore } from "@/lib/store";
-import { BoardView } from "@/components/board-view";
+import { BoardView } from "@/components/board-view/board-view";
 import {
   Item,
   ItemActions,

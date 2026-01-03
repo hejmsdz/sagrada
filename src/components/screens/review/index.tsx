@@ -1,16 +1,10 @@
-import { useState, useMemo, useEffect, useId } from "react";
+import { useState, useMemo, useEffect, useId, useRef } from "react";
 import { useStore } from "@/lib/store";
 import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { ClickableDiceWrapper } from "@/components/clickable-dice-wrapper";
-import { BoardView } from "@/components/board-view";
-import { DiceEdit } from "./dice-edit";
+import { PopoverAnchor } from "@/components/ui/popover";
+import { ControlledInteractiveBoardView } from "@/components/board-view/controlled-interactive-board-view";
 import { BackButton } from "@/components/back-button";
 import { Board, type OptionalDice } from "@/game/types";
 import { useTranslation } from "react-i18next";
@@ -18,7 +12,8 @@ import { HelpText } from "@/components/help-text";
 import { Link } from "@tanstack/react-router";
 import { Actions } from "@/components/layout/actions";
 import { CheckIcon } from "lucide-react";
-import { useKeyboard } from "./use-keyboard";
+import { DiceEditPopover } from "./dice-edit-popover";
+import { type Measurable } from "@radix-ui/rect";
 
 export function Review({
   playerId,
@@ -30,16 +25,20 @@ export function Review({
   const board = useStore((state) => state.players[Number(playerId)]?.board);
   const updateDice = useStore((state) => state.updateDice);
   const setPlayerBoard = useStore((state) => state.setPlayerBoard);
-  const [selected, setSelected] = useState<[number, number] | null>(null);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const [selectedCoordinates, setSelectedCoordinates] = useState<
+    [number, number]
+  >([0, 0]);
   const mask = useMemo(
     () =>
-      selected && board
+      isPopoverOpen && board
         ? board.createMask(
             (_dice, rowIndex, columnIndex) =>
-              selected[0] === rowIndex && selected[1] === columnIndex,
+              selectedCoordinates[0] === rowIndex &&
+              selectedCoordinates[1] === columnIndex,
           )
         : undefined,
-    [board, selected],
+    [board, isPopoverOpen, selectedCoordinates],
   );
 
   const resetBoard = () => {
@@ -59,31 +58,16 @@ export function Review({
     dice: OptionalDice,
   ) => updateDice(Number(playerId), rowIndex, columnIndex, dice);
 
-  const handleButtonKeyDown = useKeyboard({
-    getField: (event) => {
-      const id = (event.target as HTMLButtonElement).id;
-      if (!id?.startsWith(diceHtmlId) || !board) {
-        return null;
-      }
-
-      const [rowIndex, columnIndex] = id.split("-").slice(1).map(Number);
-
-      return { rowIndex, columnIndex, dice: board.at(rowIndex, columnIndex) };
-    },
-    onNavigate: (rowIndex, columnIndex) => {
-      document
-        .getElementById(`${diceHtmlId}-${rowIndex}-${columnIndex}`)
-        ?.focus();
-    },
-    onChange,
-  });
+  const onNavigate = (rowIndex: number, columnIndex: number) => {
+    setSelectedCoordinates([rowIndex, columnIndex]);
+  };
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (
         event.key.startsWith("Arrow") &&
         event.target === document.body &&
-        !selected &&
+        !isPopoverOpen &&
         !(event.metaKey || event.ctrlKey || event.altKey)
       ) {
         document.getElementById(`${diceHtmlId}-0-0`)?.focus();
@@ -94,7 +78,14 @@ export function Review({
     document.addEventListener("keydown", handleKeyDown);
 
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [selected, diceHtmlId]);
+  }, [isPopoverOpen, diceHtmlId]);
+
+  const focusedRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    focusedRef.current = document.getElementById(
+      `${diceHtmlId}-${selectedCoordinates[0]}-${selectedCoordinates[1]}`,
+    );
+  }, [selectedCoordinates, diceHtmlId]);
 
   if (!board) {
     return null;
@@ -106,51 +97,33 @@ export function Review({
         {t(isManual ? "enterBoardManually" : "reviewScanningResults")}
       </Header>
       <div className="mb-4">
-        <BoardView
+        <ControlledInteractiveBoardView
           board={board}
           mask={mask}
-          diceWrapper={(children, rowIndex, columnIndex) => {
-            const isSelected =
-              selected !== null &&
-              selected[0] === rowIndex &&
-              selected[1] === columnIndex;
-
-            return (
-              <Popover
-                open={isSelected}
-                onOpenChange={(open) =>
-                  setSelected(open ? [rowIndex, columnIndex] : null)
-                }
-              >
-                <PopoverTrigger asChild>
-                  <ClickableDiceWrapper
-                    id={`${diceHtmlId}-${rowIndex}-${columnIndex}`}
-                    isSelected={isSelected}
-                    onKeyDown={handleButtonKeyDown}
-                  >
-                    {children}
-                  </ClickableDiceWrapper>
-                </PopoverTrigger>
-                <PopoverContent
-                  aria-label={t("editDice", {
-                    row: rowIndex + 1,
-                    column: columnIndex + 1,
-                  })}
-                >
-                  <DiceEdit
-                    dice={board.at(rowIndex, columnIndex)}
-                    onChange={(dice) => onChange(rowIndex, columnIndex, dice)}
-                    rowIndex={rowIndex}
-                    columnIndex={columnIndex}
-                    onNavigate={(rowIndex, columnIndex) =>
-                      setSelected([rowIndex, columnIndex])
-                    }
-                  />
-                </PopoverContent>
-              </Popover>
-            );
-          }}
+          selectedCoordinates={selectedCoordinates}
+          onNavigate={onNavigate}
+          onClick={() => setIsPopoverOpen(true)}
+          onChange={onChange}
+          customIsSelected={isPopoverOpen}
+          diceHtmlId={diceHtmlId}
         />
+        <DiceEditPopover
+          selectedCoordinates={isPopoverOpen ? selectedCoordinates : null}
+          onNavigate={onNavigate}
+          onOpenChange={(open) => {
+            setIsPopoverOpen(open);
+            if (!open) {
+              focusedRef.current?.focus();
+            }
+          }}
+          board={board}
+          onChange={onChange}
+        >
+          <PopoverAnchor
+            key={selectedCoordinates.join("-")}
+            virtualRef={focusedRef as React.RefObject<Measurable>}
+          />
+        </DiceEditPopover>
       </div>
       <HelpText>
         {t(isManual ? "boardManualEntryTip" : "boardReviewTip")}

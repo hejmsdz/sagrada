@@ -1,16 +1,16 @@
 import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
 import { useStore } from "@/lib/store";
-import { BoardView } from "@/components/board-view";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CheckIcon, CircleAlertIcon, CircleCheckIcon } from "lucide-react";
-import { ClickableDiceWrapper } from "@/components/clickable-dice-wrapper";
 import { useMemo, useRef } from "react";
 import { Actions } from "@/components/layout/actions";
 import { useTranslation } from "react-i18next";
 import { Navigate } from "@tanstack/react-router";
 import { BackButton } from "@/components/back-button";
 import { DisablableButtonLink } from "@/components/disablable-button-link";
+import { InteractiveBoardView } from "@/components/board-view/interactive-board-view";
+import { NUM_COLUMNS, NUM_ROWS } from "@/game/types";
 
 export function PlacementRulesCheck({ playerId }: { playerId: string }) {
   const board = useStore((state) => state.players[Number(playerId)]?.board);
@@ -26,6 +26,16 @@ export function PlacementRulesCheck({ playerId }: { playerId: string }) {
     () => initialIllegallyPlacedDice?.some((row) => row.some(Boolean)),
     [], // eslint-disable-line react-hooks/exhaustive-deps
   );
+  const firstMistakeCoordinates = useMemo<[number, number]>(() => {
+    for (let rowIndex = 0; rowIndex < NUM_ROWS; rowIndex++) {
+      for (let columnIndex = 0; columnIndex < NUM_COLUMNS; columnIndex++) {
+        if (illegallyPlacedDice?.[rowIndex][columnIndex]) {
+          return [rowIndex, columnIndex];
+        }
+      }
+    }
+    return [0, 0];
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const { t } = useTranslation();
 
   if (!board || !hasInitialIllegallyPlacedDice) {
@@ -37,10 +47,11 @@ export function PlacementRulesCheck({ playerId }: { playerId: string }) {
   return (
     <Page>
       <Header>{t("placementRulesCheck")}</Header>
-      <BoardView
+      <InteractiveBoardView
         board={board}
         mask={hasIllegallyPlacedDice ? illegallyPlacedDice : undefined}
-        diceWrapper={(children, rowIndex, columnIndex) => {
+        initialSelectedCoordinates={firstMistakeCoordinates}
+        onClick={(rowIndex, columnIndex) => {
           const wasInitiallyIllegal =
             initialIllegallyPlacedDice?.[rowIndex][columnIndex];
           const isCurrentlyIllegal =
@@ -52,29 +63,21 @@ export function PlacementRulesCheck({ playerId }: { playerId: string }) {
               !isCurrentlyIllegal &&
               board.at(rowIndex, columnIndex) !== null)
           ) {
-            return children;
+            return;
           }
 
-          return (
-            <ClickableDiceWrapper
-              onClick={() => {
-                const replacement = isCurrentlyIllegal
-                  ? null
-                  : (initialBoard?.at(rowIndex, columnIndex) ?? null);
-                updateDice(
-                  Number(playerId),
-                  rowIndex,
-                  columnIndex,
-                  replacement,
-                );
-              }}
-            >
-              {children}
-            </ClickableDiceWrapper>
-          );
+          const replacement = isCurrentlyIllegal
+            ? null
+            : (initialBoard?.at(rowIndex, columnIndex) ?? null);
+          updateDice(Number(playerId), rowIndex, columnIndex, replacement);
         }}
+        onChange={() => {}}
+        /*
+            return children;
+          }
+            */
       />
-      <div className="my-4">
+      <div className="my-4" aria-live="polite">
         {hasIllegallyPlacedDice ? (
           <Alert>
             <CircleAlertIcon />
