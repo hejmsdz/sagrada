@@ -10,15 +10,19 @@ export function CheckAnotherBoardButton({ playerId }: { playerId: string }) {
   const router = useRouter();
   const { t } = useTranslation();
   const playersCount = useStore((state) => state.players.length);
+  const nextPlayerId = Number(playerId) + 1;
+  const nextPlayerExists = useStore((state) =>
+    Boolean(state.players[nextPlayerId]),
+  );
 
   if (playersCount >= MAX_PLAYERS) {
     return null;
   }
 
   const onPlayerNameSubmit = () => {
-    const newPlayerId = addPlayer();
+    const playerIdToNavigateTo = nextPlayerExists ? nextPlayerId : addPlayer();
 
-    router.history.push(`/player/${newPlayerId}/scan`);
+    router.history.push(`/player/${playerIdToNavigateTo}/scan`);
   };
 
   return (
