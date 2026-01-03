@@ -10,7 +10,7 @@ import type { GridCoordinates } from "@/lib/grid";
 import {
   IMAGE_HEIGHT,
   IMAGE_WIDTH,
-  loadModels,
+  loadModel,
   scan,
 } from "@/scanning/scanning";
 import { useStore } from "@/lib/store";
@@ -19,7 +19,7 @@ import { HelpText } from "@/components/help-text";
 import { Actions } from "@/components/layout/actions";
 import { Board } from "@/game/types";
 
-const models = loadModels();
+loadModel();
 
 const emptyBoard = Board.build(() => null);
 
@@ -101,7 +101,7 @@ export function Scan({ playerId }: { playerId: string }) {
       IMAGE_HEIGHT,
     );
 
-    return scan(canvasRef.current, await models);
+    return await scan(canvasRef.current);
   };
 
   const scanContinuously = async () => {

@@ -1,13 +1,22 @@
 import * as tf from "@tensorflow/tfjs";
 import { NUM_ROWS, NUM_COLUMNS, VALUES, COLORS, Board } from "@/game/types";
 
-export const loadModels = async () => {
-  const [colorsModel, numbersModel] = await Promise.all(
+type ModelType = {
+  colorsModel: tf.LayersModel;
+  numbersModel: tf.LayersModel;
+};
+let modelPromise: Promise<ModelType> | null = null;
+
+export const loadModel = async () => {
+  if (modelPromise) {
+    return modelPromise;
+  }
+
+  modelPromise = Promise.all(
     ["/tfjs/colors/model.json", "/tfjs/numbers/model.json"].map((path) =>
       tf.loadLayersModel(path),
     ),
-  );
-  return { colorsModel, numbersModel };
+  ).then(([colorsModel, numbersModel]) => ({ colorsModel, numbersModel }));
 };
 
 const IMAGE_SIZE = 32;
@@ -37,8 +46,12 @@ const getImageSlices = (image: tf.Tensor3D) =>
 
 export const scan = async (
   image: Parameters<typeof tf.browser.fromPixels>[0],
-  models: { colorsModel: tf.LayersModel; numbersModel: tf.LayersModel },
 ) => {
+  if (!modelPromise) {
+    throw new Error("Load model first!");
+  }
+  const models = await modelPromise;
+
   const { colors, numbers } = tf.tidy(() => {
     const inputImage = tf.browser.fromPixels(image);
 
