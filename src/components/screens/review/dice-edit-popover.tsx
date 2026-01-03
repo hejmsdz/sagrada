@@ -6,6 +6,7 @@ import { DiceEdit } from "./dice-edit";
 
 export function DiceEditPopover({
   selectedCoordinates,
+  open,
   onOpenChange,
   onNavigate,
   board,
@@ -13,6 +14,7 @@ export function DiceEditPopover({
   children,
 }: {
   selectedCoordinates: [number, number] | null;
+  open: boolean;
   onOpenChange: (open: boolean) => void;
   onNavigate: (rowIndex: number, columnIndex: number) => void;
   board: Board;
@@ -24,7 +26,7 @@ export function DiceEditPopover({
   const [rowIndex, columnIndex] = selectedCoordinates ?? [-1, -1];
 
   return (
-    <Popover open={selectedCoordinates !== null} onOpenChange={onOpenChange}>
+    <Popover open={open} onOpenChange={onOpenChange}>
       {children}
       <PopoverContent
         aria-label={t("editDice", {

@@ -62,8 +62,16 @@ export function Review({
     setSelectedCoordinates([rowIndex, columnIndex]);
   };
 
+  const focusedRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    focusedRef.current = document.getElementById(
+      `${diceHtmlId}-${selectedCoordinates[0]}-${selectedCoordinates[1]}`,
+    );
+  }, [selectedCoordinates, diceHtmlId]);
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      console.log("keydown", event.key);
       if (
         event.key.startsWith("Arrow") &&
         event.target === document.body &&
@@ -72,6 +80,9 @@ export function Review({
       ) {
         document.getElementById(`${diceHtmlId}-0-0`)?.focus();
         event.preventDefault();
+      } else if (event.key === "Escape" && isPopoverOpen) {
+        setIsPopoverOpen(false);
+        focusedRef.current?.focus();
       }
     };
 
@@ -80,12 +91,13 @@ export function Review({
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isPopoverOpen, diceHtmlId]);
 
-  const focusedRef = useRef<HTMLElement>(null);
+  const isSwitchingBetweenFieldsRef = useRef(false);
   useEffect(() => {
-    focusedRef.current = document.getElementById(
-      `${diceHtmlId}-${selectedCoordinates[0]}-${selectedCoordinates[1]}`,
-    );
-  }, [selectedCoordinates, diceHtmlId]);
+    setTimeout(() => {
+      console.log("not switching anymore");
+      isSwitchingBetweenFieldsRef.current = false;
+    }, 100);
+  }, [selectedCoordinates]);
 
   if (!board) {
     return null;
@@ -102,19 +114,24 @@ export function Review({
           mask={mask}
           selectedCoordinates={selectedCoordinates}
           onNavigate={onNavigate}
-          onClick={() => setIsPopoverOpen(true)}
+          onClick={() => {
+            isSwitchingBetweenFieldsRef.current = true;
+            setIsPopoverOpen(true);
+          }}
           onChange={onChange}
           customIsSelected={isPopoverOpen}
           diceHtmlId={diceHtmlId}
         />
         <DiceEditPopover
+          open={isPopoverOpen}
           selectedCoordinates={isPopoverOpen ? selectedCoordinates : null}
           onNavigate={onNavigate}
           onOpenChange={(open) => {
-            setIsPopoverOpen(open);
-            if (!open) {
-              focusedRef.current?.focus();
+            if (!open && isSwitchingBetweenFieldsRef.current) {
+              isSwitchingBetweenFieldsRef.current = false;
+              return;
             }
+            setIsPopoverOpen(open);
           }}
           board={board}
           onChange={onChange}
