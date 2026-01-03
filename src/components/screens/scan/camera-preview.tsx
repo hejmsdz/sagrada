@@ -65,6 +65,7 @@ export function CameraPreview({
           onEnded();
         }}
         disablePictureInPicture
+        tabIndex={-1}
       />
       {videoSize && gridCoordinates && (
         <GridOverlay

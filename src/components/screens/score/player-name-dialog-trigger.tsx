@@ -62,12 +62,14 @@ export function PlayerNameDialogTrigger({
     onSubmit();
   };
 
+  const dialogHeaderHtmlId = useId();
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
-          <DialogHeader>
+          <DialogHeader id={dialogHeaderHtmlId}>
             <DialogTitle>{t("whoseScoreWasThis")}</DialogTitle>
             <DialogDescription>{t("enterPlayerName")}</DialogDescription>
           </DialogHeader>
@@ -78,6 +80,7 @@ export function PlayerNameDialogTrigger({
               name="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              aria-describedby={dialogHeaderHtmlId}
             />
           </div>
           <DialogFooter>
