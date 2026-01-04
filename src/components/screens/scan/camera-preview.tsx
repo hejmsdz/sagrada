@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useMemo } from "react";
+import { useRef, useEffect, useState, useMemo, startTransition } from "react";
 import { CameraIcon } from "lucide-react";
 import { getGridCoordinates, type GridCoordinates } from "@/lib/grid";
 import { GridOverlay } from "./grid-overlay";
@@ -54,27 +54,39 @@ export function CameraPreview({
           const video = videoRef.current;
           if (!video) return;
 
-          setVideoSize({ width: video.videoWidth, height: video.videoHeight });
+          startTransition(() => {
+            setVideoSize({
+              width: video.videoWidth,
+              height: video.videoHeight,
+            });
+          });
         }}
         onPlay={() => {
-          setIsPlaying(true);
+          startTransition(() => {
+            setIsPlaying(true);
+          });
         }}
         onEnded={() => {
-          setIsPlaying(false);
-          setVideoSize(null);
+          startTransition(() => {
+            setIsPlaying(false);
+            setVideoSize(null);
+          });
           onEnded();
         }}
         disablePictureInPicture
         tabIndex={-1}
       />
-      {videoSize && gridCoordinates && (
-        <GridOverlay
-          className="absolute inset-0 w-full h-full object-cover"
-          videoWidth={videoSize.width}
-          videoHeight={videoSize.height}
-          gridCoordinates={gridCoordinates}
-        />
-      )}
+      <div className="absolute inset-0 w-full h-full pointer-events-none">
+        {videoSize && gridCoordinates && (
+          <GridOverlay
+            key={`${videoSize.width}-${videoSize.height}`}
+            className="w-full h-full object-cover"
+            videoWidth={videoSize.width}
+            videoHeight={videoSize.height}
+            gridCoordinates={gridCoordinates}
+          />
+        )}
+      </div>
       {!stream && <CameraIcon className="w-32 h-32 opacity-25" />}
     </div>
   );
