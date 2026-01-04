@@ -1,17 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { Dice, Color, Value } from "./types";
+import type { Color } from "./types";
 import { Board } from "./types";
 import { blankPenalty, sumColorFactory } from "./scoring-rules";
-
-const buildDice =
-  (color: Color) =>
-  (value: Value): Dice => ({ color, value });
-
-const R = buildDice("red");
-const G = buildDice("green");
-const B = buildDice("blue");
-const Y = buildDice("yellow");
-const P = buildDice("purple");
+import { R, G, B, Y, P } from "./test-utils";
 
 describe("scoring rules", () => {
   const board = new Board([
