@@ -48,5 +48,9 @@
     "typescript-eslint": "^8.46.4",
     "vite": "^7.2.4",
     "vitest": "^4.0.16"
+  },
+  "optionalDependencies": {
+    "@tensorflow/tfjs-node": "^4.22.0",
+    "sharp": "^0.34.5"
   }
 }
