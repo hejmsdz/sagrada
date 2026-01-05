@@ -13,6 +13,7 @@
   "dependencies": {
     "@base-ui/react": "^1.0.0",
     "@fontsource-variable/outfit": "^5.2.8",
+    "@sentry/react": "^10.32.1",
     "@tailwindcss/vite": "^4.1.17",
     "@tanstack/react-router": "^1.144.0",
     "@tensorflow/tfjs": "^4.22.0",

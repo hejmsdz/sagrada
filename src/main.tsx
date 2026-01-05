@@ -1,8 +1,5 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-
-import "./index.css";
-
 import {
   ErrorComponent,
   RouterProvider,
@@ -10,7 +7,9 @@ import {
 } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen.ts";
 import { Loader2 } from "lucide-react";
+import "./lib/sentry.ts";
 import "./i18n/i18n.ts";
+import "./index.css";
 
 const router = createRouter({
   routeTree,
