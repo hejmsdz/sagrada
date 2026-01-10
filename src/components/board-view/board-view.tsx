@@ -27,6 +27,7 @@ export function BoardView({
     <div
       className={`grid grid-rows-4 gap-2 max-w-sm mx-auto`}
       role="grid"
+      aria-readonly="true"
       {...rest}
     >
       {ROWS.map((rowIndex) => (
@@ -34,7 +35,6 @@ export function BoardView({
           {COLUMNS.map((columnIndex) => (
             <DiceView
               key={columnIndex}
-              // className="aspect-square flex transition-opacity"
               dice={board.at(rowIndex, columnIndex)}
               role="gridcell"
               aria-rowindex={rowIndex + 1}

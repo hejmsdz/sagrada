@@ -50,6 +50,7 @@ export function ControlledInteractiveBoardView({
       mask={mask}
       onFocus={() => setIsBoardFocused(true)}
       onBlur={() => setIsBoardFocused(false)}
+      aria-readonly="false"
       extraDiceProps={(rowIndex, columnIndex) => {
         const isSelected =
           selectedRowIndex === rowIndex && selectedColumnIndex === columnIndex;
