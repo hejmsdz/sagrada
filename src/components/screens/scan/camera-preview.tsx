@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useMemo, startTransition } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { CameraIcon } from "lucide-react";
 import { getGridCoordinates, type GridCoordinates } from "@/lib/grid";
 import { GridOverlay } from "./grid-overlay";
@@ -54,23 +54,17 @@ export function CameraPreview({
           const video = videoRef.current;
           if (!video) return;
 
-          startTransition(() => {
-            setVideoSize({
-              width: video.videoWidth,
-              height: video.videoHeight,
-            });
+          setVideoSize({
+            width: video.videoWidth,
+            height: video.videoHeight,
           });
         }}
         onPlay={() => {
-          startTransition(() => {
-            setIsPlaying(true);
-          });
+          setIsPlaying(true);
         }}
         onEnded={() => {
-          startTransition(() => {
-            setIsPlaying(false);
-            setVideoSize(null);
-          });
+          setIsPlaying(false);
+          setVideoSize(null);
           onEnded();
         }}
         disablePictureInPicture
@@ -87,7 +81,7 @@ export function CameraPreview({
           />
         )}
       </div>
-      {!stream && <CameraIcon className="w-32 h-32 opacity-25" />}
+      {!isPlaying && <CameraIcon className="w-32 h-32 opacity-25" />}
     </div>
   );
 }
