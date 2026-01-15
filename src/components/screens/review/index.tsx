@@ -148,7 +148,7 @@ export function Review({
       </div>
       <Actions>
         <Button variant="default" className="w-full" asChild>
-          <Link to="/{$locale}/player/$id/rules" params={{ id: playerId }}>
+          <Link to="/{-$locale}/player/$id/rules" params={{ id: playerId }}>
             <CheckIcon />
             {t("continue")}
           </Link>

@@ -9,7 +9,7 @@ export const Route = createFileRoute("/{-$locale}/leaderboard")({
 function RouteComponent() {
   const players = useStore((state) => state.players);
   if (players.length < 2) {
-    return <Navigate to="/{$locale}/objectives" replace />;
+    return <Navigate to="/{-$locale}/objectives" replace />;
   }
 
   return <Leaderboard />;

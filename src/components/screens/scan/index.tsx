@@ -114,7 +114,7 @@ export function Scan({ playerId }: { playerId: string }) {
     if (result.confidence >= 0.98 && !result.isEmpty) {
       setPlayerBoard(Number(playerId), result.board);
       navigate({
-        to: "/{$locale}/player/$id/review",
+        to: "/{-$locale}/player/$id/review",
         params: { id: playerId },
       });
     } else {
@@ -130,7 +130,7 @@ export function Scan({ playerId }: { playerId: string }) {
     }
 
     setPlayerBoard(Number(playerId), result.board);
-    navigate({ to: "/{$locale}/player/$id/review", params: { id: playerId } });
+    navigate({ to: "/{-$locale}/player/$id/review", params: { id: playerId } });
   };
 
   useEffect(
@@ -172,7 +172,7 @@ export function Scan({ playerId }: { playerId: string }) {
         )}
         <Button variant="outline" className="w-full" asChild>
           <Link
-            to="/{$locale}/player/$id/review"
+            to="/{-$locale}/player/$id/review"
             params={{ id: playerId }}
             search={{ manual: true }}
             onClick={() => setPlayerBoard(Number(playerId), emptyBoard)}

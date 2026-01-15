@@ -11,7 +11,7 @@ export function LeaderboardButton({ playerId }: { playerId: string }) {
   const numPlayers = useStore((state) => state.players.length);
 
   const onPlayerNameSubmit = () => {
-    navigate({ to: "/{$locale}/leaderboard" });
+    navigate({ to: "/{-$locale}/leaderboard" });
   };
 
   if (numPlayers < 2) {

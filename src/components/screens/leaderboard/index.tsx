@@ -42,7 +42,7 @@ export function Leaderboard() {
       </ul>
       <Actions>
         <Button variant="outline" className="w-full" asChild>
-          <Link to="/{$locale}/objectives" onClick={resetStore}>
+          <Link to="/{-$locale}/objectives" onClick={resetStore}>
             <RefreshCcwIcon />
             {t("newGame")}
           </Link>

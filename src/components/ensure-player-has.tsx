@@ -15,13 +15,13 @@ export function EnsurePlayerHas({
   const player = useStore((state) => state.players[Number(playerId)]);
 
   if (!player) {
-    return <Navigate to="/{$locale}/objectives" replace />;
+    return <Navigate to="/{-$locale}/objectives" replace />;
   }
 
   if (isBoardRequired && !player?.board) {
     return (
       <Navigate
-        to="/{$locale}/player/$id/scan"
+        to="/{-$locale}/player/$id/scan"
         params={{ id: playerId }}
         replace
       />
@@ -31,7 +31,7 @@ export function EnsurePlayerHas({
   if (isPrivateObjectiveRequired && !player?.privateObjective) {
     return (
       <Navigate
-        to="/{$locale}/player/$id/objective"
+        to="/{-$locale}/player/$id/objective"
         params={{ id: playerId }}
         replace
       />

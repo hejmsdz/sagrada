@@ -77,7 +77,7 @@ export function Home() {
             resetStore();
           }}
         >
-          <Link to="/{$locale}/objectives">{t("getStarted")}</Link>
+          <Link to="/{-$locale}/objectives">{t("getStarted")}</Link>
         </Button>
       </Actions>
     </Page>

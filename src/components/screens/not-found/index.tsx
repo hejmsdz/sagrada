@@ -14,7 +14,7 @@ export function NotFound() {
       <p>{t("notFoundDescription")}</p>
       <Actions>
         <Button variant="default" className="w-full" asChild>
-          <Link to="/">{t("notFoundHomePage")}</Link>
+          <Link to="/{-$locale}">{t("notFoundHomePage")}</Link>
         </Button>
       </Actions>
     </Page>

@@ -23,8 +23,8 @@ export function CheckAnotherBoardButton({ playerId }: { playerId: string }) {
     const playerIdToNavigateTo = nextPlayerExists ? nextPlayerId : addPlayer();
 
     navigate({
-      to: "/{$locale}/player/$id/scan",
-      params: { id: playerIdToNavigateTo },
+      to: "/{-$locale}/player/$id/scan",
+      params: { id: playerIdToNavigateTo.toString() },
     });
   };
 

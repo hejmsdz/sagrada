@@ -11,7 +11,7 @@ function RouteComponent() {
   const publicObjectives = useStore((state) => state.publicObjectives);
 
   if (!player || publicObjectives.length !== REQUIRED_PUBLIC_OBJECTIVES) {
-    return <Navigate to="/{$locale}/objectives" replace />;
+    return <Navigate to="/{-$locale}/objectives" replace />;
   }
 
   return <Outlet />;

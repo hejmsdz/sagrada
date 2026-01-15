@@ -41,7 +41,7 @@ export function PlacementRulesCheck({ playerId }: { playerId: string }) {
   if (!board || !hasInitialIllegallyPlacedDice) {
     return (
       <Navigate
-        to="/{$locale}/player/$id/objective"
+        to="/{-$locale}/player/$id/objective"
         params={{ id: playerId }}
         replace
       />
@@ -97,7 +97,7 @@ export function PlacementRulesCheck({ playerId }: { playerId: string }) {
         <DisablableButtonLink
           variant="default"
           className="w-full"
-          to="/{$locale}/player/$id/objective"
+          to="/{-$locale}/player/$id/objective"
           params={{ id: playerId }}
           disabled={hasIllegallyPlacedDice}
         >
