@@ -100,6 +100,7 @@ export function PlacementRulesCheck({ playerId }: { playerId: string }) {
           to="/{-$locale}/player/$id/objective"
           params={{ id: playerId }}
           disabled={hasIllegallyPlacedDice}
+          disabledText={t("placementRulesCheckMessage")}
         >
           <CheckIcon />
           {t("continue")}

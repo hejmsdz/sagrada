@@ -70,6 +70,7 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
           to="/{-$locale}/player/$id/tokens"
           params={{ id: playerId }}
           disabled={!selectedColor}
+          disabledText={t("privateObjectiveSelectionMessage")}
         >
           <CheckIcon />
           {t("continue")}
