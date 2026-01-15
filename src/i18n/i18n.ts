@@ -8,10 +8,16 @@ const resources = {
   pl,
 };
 
+export const defaultLocale = "en";
+const supportedLocalesArray = Object.keys(resources);
+export const supportedLocales = new Set(
+  supportedLocalesArray,
+) as ReadonlySet<string>;
+
 i18n.use(initReactI18next).init({
   resources,
-  fallbackLng: "en",
-  supportedLngs: Object.keys(resources),
+  fallbackLng: defaultLocale,
+  supportedLngs: supportedLocalesArray,
   interpolation: {
     escapeValue: false,
     format: (value, format) => {

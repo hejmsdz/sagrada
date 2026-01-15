@@ -1,4 +1,4 @@
-import i18n from "@/i18n/i18n";
+import i18n, { supportedLocales, defaultLocale } from "@/i18n/i18n";
 import {
   createFileRoute,
   notFound,
@@ -6,26 +6,39 @@ import {
   redirect,
 } from "@tanstack/react-router";
 
-const availableLocales = i18n.services.resourceStore.data;
+function findPreferredLocale(
+  preferredLanguages: readonly string[],
+  fallback?: string | boolean,
+) {
+  for (const fullLocale of preferredLanguages) {
+    const [language] = fullLocale.split("-");
+
+    if (supportedLocales.has(fullLocale)) {
+      return fullLocale;
+    }
+
+    if (supportedLocales.has(language)) {
+      return language;
+    }
+  }
+
+  return fallback;
+}
 
 export const Route = createFileRoute("/{-$locale}")({
   component: RouteComponent,
   beforeLoad: async ({ params, location }) => {
-    console.log("beforeLoad", location.href, params.locale, availableLocales);
     if (params.locale) {
-      if (!availableLocales[params.locale]) {
-        console.log("locale not found, throwing not found", params.locale);
+      if (!supportedLocales.has(params.locale)) {
         throw notFound();
       } else if (params.locale !== i18n.language) {
-        console.log("locale found, changing language to", params.locale);
         i18n.changeLanguage(params.locale);
       }
     } else {
-      const preferredLocale =
-        navigator.languages.find((locale) => availableLocales[locale]) ||
-        i18n.options.fallbackLng;
-
-      console.log("no locale, redirecting to", preferredLocale);
+      const preferredLocale = findPreferredLocale(
+        navigator.languages,
+        defaultLocale,
+      );
 
       throw redirect({ to: `/${preferredLocale}/${location.href}` });
     }
