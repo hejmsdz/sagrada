@@ -110,6 +110,7 @@
   },
   "home": {
     "title": "Sagrada Scoring Assistant",
+    "seoDescription": "Policz punkty w grze Sagrada na podstawie zdjęcia planszy. Za darmo, szybko, łatwo i dokładnie.",
     "description": "Cześć! Za pomocą tej aplikacji szybko i łatwo policzysz punkty w grze <1>Sagrada</1>.",
     "howDoesItWork": "Jak to działa?",
     "features": {

@@ -1,4 +1,8 @@
-import i18n, { supportedLocales, defaultLocale } from "@/i18n/i18n";
+import i18n, {
+  supportedLocalesSet,
+  supportedLocales,
+  defaultLocale,
+} from "@/i18n/i18n";
 import {
   createFileRoute,
   notFound,
@@ -14,11 +18,11 @@ function findPreferredLocale(
   for (const fullLocale of preferredLanguages) {
     const [language] = fullLocale.split("-");
 
-    if (supportedLocales.has(fullLocale)) {
+    if (supportedLocalesSet.has(fullLocale)) {
       return fullLocale;
     }
 
-    if (supportedLocales.has(language)) {
+    if (supportedLocalesSet.has(language)) {
       return language;
     }
   }
@@ -30,7 +34,7 @@ export const Route = createFileRoute("/{-$locale}")({
   component: RouteComponent,
   beforeLoad: async ({ params, location }) => {
     if (params.locale) {
-      if (!supportedLocales.has(params.locale)) {
+      if (!supportedLocalesSet.has(params.locale)) {
         throw notFound();
       } else if (params.locale !== i18n.language) {
         i18n.changeLanguage(params.locale);
@@ -44,6 +48,33 @@ export const Route = createFileRoute("/{-$locale}")({
       const localizedHref = `/${preferredLocale}${location.href}`;
       throw redirect({ to: localizedHref });
     }
+  },
+  head: ({ params, matches }) => {
+    const mostSpecificMatch = matches[matches.length - 1];
+
+    return {
+      meta: [
+        {
+          name: "description",
+          content: i18n.t("seoDescription", { ns: "home" }),
+        },
+      ],
+      links: [
+        ...supportedLocales
+          .filter((locale) => locale !== params.locale)
+          .map((locale) => ({
+            rel: "alternate",
+            href: new URL(
+              `/${locale}/${mostSpecificMatch.pathname.slice(`/${params.locale}/`.length)}`.replace(
+                /\/$/,
+                "",
+              ),
+              location.origin,
+            ).toString(),
+            hrefLang: locale,
+          })),
+      ],
+    };
   },
 });
 
