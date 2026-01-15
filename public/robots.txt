@@ -1,4 +1,6 @@
 User-agent: *
 Disallow: /player
 Disallow: /leaderboard
+Disallow: /*/player
+Disallow: /*/leaderboard
 Allow: /
