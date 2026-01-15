@@ -5,6 +5,7 @@ import {
   Outlet,
   redirect,
 } from "@tanstack/react-router";
+import { useBeforeUnload } from "@/hooks/use-before-unload";
 
 function findPreferredLocale(
   preferredLanguages: readonly string[],
@@ -47,5 +48,7 @@ export const Route = createFileRoute("/{-$locale}")({
 });
 
 function RouteComponent() {
+  useBeforeUnload();
+
   return <Outlet />;
 }
