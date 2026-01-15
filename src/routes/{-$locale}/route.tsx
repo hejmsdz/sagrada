@@ -8,8 +8,8 @@ import {
 
 function findPreferredLocale(
   preferredLanguages: readonly string[],
-  fallback?: string | boolean,
-) {
+  fallback: string,
+): string {
   for (const fullLocale of preferredLanguages) {
     const [language] = fullLocale.split("-");
 
@@ -40,7 +40,8 @@ export const Route = createFileRoute("/{-$locale}")({
         defaultLocale,
       );
 
-      throw redirect({ to: `/${preferredLocale}/${location.href}` });
+      const localizedHref = `/${preferredLocale}${location.href}`;
+      throw redirect({ to: localizedHref });
     }
   },
 });
