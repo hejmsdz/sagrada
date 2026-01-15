@@ -15,16 +15,26 @@ export function EnsurePlayerHas({
   const player = useStore((state) => state.players[Number(playerId)]);
 
   if (!player) {
-    return <Navigate to="/objectives" replace />;
+    return <Navigate to="/{$locale}/objectives" replace />;
   }
 
   if (isBoardRequired && !player?.board) {
-    return <Navigate to="/player/$id/scan" params={{ id: playerId }} replace />;
+    return (
+      <Navigate
+        to="/{$locale}/player/$id/scan"
+        params={{ id: playerId }}
+        replace
+      />
+    );
   }
 
   if (isPrivateObjectiveRequired && !player?.privateObjective) {
     return (
-      <Navigate to="/player/$id/objective" params={{ id: playerId }} replace />
+      <Navigate
+        to="/{$locale}/player/$id/objective"
+        params={{ id: playerId }}
+        replace
+      />
     );
   }
 

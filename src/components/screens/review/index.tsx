@@ -71,7 +71,6 @@ export function Review({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      console.log("keydown", event.key);
       if (
         event.key.startsWith("Arrow") &&
         event.target === document.body &&
@@ -94,7 +93,6 @@ export function Review({
   const isSwitchingBetweenFieldsRef = useRef(false);
   useEffect(() => {
     setTimeout(() => {
-      console.log("not switching anymore");
       isSwitchingBetweenFieldsRef.current = false;
     }, 100);
   }, [selectedCoordinates]);
@@ -150,7 +148,7 @@ export function Review({
       </div>
       <Actions>
         <Button variant="default" className="w-full" asChild>
-          <Link to="/player/$id/rules" params={{ id: playerId }}>
+          <Link to="/{$locale}/player/$id/rules" params={{ id: playerId }}>
             <CheckIcon />
             {t("continue")}
           </Link>

@@ -9,274 +9,304 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ObjectivesRouteImport } from './routes/objectives'
-import { Route as LoadingRouteImport } from './routes/loading'
-import { Route as LeaderboardRouteImport } from './routes/leaderboard'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as PlayerIdRouteImport } from './routes/player.$id'
-import { Route as PlayerIdTokensRouteImport } from './routes/player.$id.tokens'
-import { Route as PlayerIdScoreRouteImport } from './routes/player.$id.score'
-import { Route as PlayerIdScanRouteImport } from './routes/player.$id.scan'
-import { Route as PlayerIdRulesRouteImport } from './routes/player.$id.rules'
-import { Route as PlayerIdReviewRouteImport } from './routes/player.$id.review'
-import { Route as PlayerIdObjectiveRouteImport } from './routes/player.$id.objective'
+import { Route as Char123LocaleChar125RouteRouteImport } from './routes/{-$locale}/route'
+import { Route as Char123LocaleChar125IndexRouteImport } from './routes/{-$locale}/index'
+import { Route as Char123LocaleChar125ObjectivesRouteImport } from './routes/{-$locale}/objectives'
+import { Route as Char123LocaleChar125LeaderboardRouteImport } from './routes/{-$locale}/leaderboard'
+import { Route as Char123LocaleChar125PlayerIdRouteImport } from './routes/{-$locale}/player.$id'
+import { Route as Char123LocaleChar125PlayerIdTokensRouteImport } from './routes/{-$locale}/player.$id.tokens'
+import { Route as Char123LocaleChar125PlayerIdScoreRouteImport } from './routes/{-$locale}/player.$id.score'
+import { Route as Char123LocaleChar125PlayerIdScanRouteImport } from './routes/{-$locale}/player.$id.scan'
+import { Route as Char123LocaleChar125PlayerIdRulesRouteImport } from './routes/{-$locale}/player.$id.rules'
+import { Route as Char123LocaleChar125PlayerIdReviewRouteImport } from './routes/{-$locale}/player.$id.review'
+import { Route as Char123LocaleChar125PlayerIdObjectiveRouteImport } from './routes/{-$locale}/player.$id.objective'
 
-const ObjectivesRoute = ObjectivesRouteImport.update({
-  id: '/objectives',
-  path: '/objectives',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoadingRoute = LoadingRouteImport.update({
-  id: '/loading',
-  path: '/loading',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LeaderboardRoute = LeaderboardRouteImport.update({
-  id: '/leaderboard',
-  path: '/leaderboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlayerIdRoute = PlayerIdRouteImport.update({
-  id: '/player/$id',
-  path: '/player/$id',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlayerIdTokensRoute = PlayerIdTokensRouteImport.update({
-  id: '/tokens',
-  path: '/tokens',
-  getParentRoute: () => PlayerIdRoute,
-} as any)
-const PlayerIdScoreRoute = PlayerIdScoreRouteImport.update({
-  id: '/score',
-  path: '/score',
-  getParentRoute: () => PlayerIdRoute,
-} as any)
-const PlayerIdScanRoute = PlayerIdScanRouteImport.update({
-  id: '/scan',
-  path: '/scan',
-  getParentRoute: () => PlayerIdRoute,
-} as any)
-const PlayerIdRulesRoute = PlayerIdRulesRouteImport.update({
-  id: '/rules',
-  path: '/rules',
-  getParentRoute: () => PlayerIdRoute,
-} as any)
-const PlayerIdReviewRoute = PlayerIdReviewRouteImport.update({
-  id: '/review',
-  path: '/review',
-  getParentRoute: () => PlayerIdRoute,
-} as any)
-const PlayerIdObjectiveRoute = PlayerIdObjectiveRouteImport.update({
-  id: '/objective',
-  path: '/objective',
-  getParentRoute: () => PlayerIdRoute,
-} as any)
+const Char123LocaleChar125RouteRoute =
+  Char123LocaleChar125RouteRouteImport.update({
+    id: '/{-$locale}',
+    path: '/{-$locale}',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const Char123LocaleChar125IndexRoute =
+  Char123LocaleChar125IndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125ObjectivesRoute =
+  Char123LocaleChar125ObjectivesRouteImport.update({
+    id: '/objectives',
+    path: '/objectives',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125LeaderboardRoute =
+  Char123LocaleChar125LeaderboardRouteImport.update({
+    id: '/leaderboard',
+    path: '/leaderboard',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125PlayerIdRoute =
+  Char123LocaleChar125PlayerIdRouteImport.update({
+    id: '/player/$id',
+    path: '/player/$id',
+    getParentRoute: () => Char123LocaleChar125RouteRoute,
+  } as any)
+const Char123LocaleChar125PlayerIdTokensRoute =
+  Char123LocaleChar125PlayerIdTokensRouteImport.update({
+    id: '/tokens',
+    path: '/tokens',
+    getParentRoute: () => Char123LocaleChar125PlayerIdRoute,
+  } as any)
+const Char123LocaleChar125PlayerIdScoreRoute =
+  Char123LocaleChar125PlayerIdScoreRouteImport.update({
+    id: '/score',
+    path: '/score',
+    getParentRoute: () => Char123LocaleChar125PlayerIdRoute,
+  } as any)
+const Char123LocaleChar125PlayerIdScanRoute =
+  Char123LocaleChar125PlayerIdScanRouteImport.update({
+    id: '/scan',
+    path: '/scan',
+    getParentRoute: () => Char123LocaleChar125PlayerIdRoute,
+  } as any)
+const Char123LocaleChar125PlayerIdRulesRoute =
+  Char123LocaleChar125PlayerIdRulesRouteImport.update({
+    id: '/rules',
+    path: '/rules',
+    getParentRoute: () => Char123LocaleChar125PlayerIdRoute,
+  } as any)
+const Char123LocaleChar125PlayerIdReviewRoute =
+  Char123LocaleChar125PlayerIdReviewRouteImport.update({
+    id: '/review',
+    path: '/review',
+    getParentRoute: () => Char123LocaleChar125PlayerIdRoute,
+  } as any)
+const Char123LocaleChar125PlayerIdObjectiveRoute =
+  Char123LocaleChar125PlayerIdObjectiveRouteImport.update({
+    id: '/objective',
+    path: '/objective',
+    getParentRoute: () => Char123LocaleChar125PlayerIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/leaderboard': typeof LeaderboardRoute
-  '/loading': typeof LoadingRoute
-  '/objectives': typeof ObjectivesRoute
-  '/player/$id': typeof PlayerIdRouteWithChildren
-  '/player/$id/objective': typeof PlayerIdObjectiveRoute
-  '/player/$id/review': typeof PlayerIdReviewRoute
-  '/player/$id/rules': typeof PlayerIdRulesRoute
-  '/player/$id/scan': typeof PlayerIdScanRoute
-  '/player/$id/score': typeof PlayerIdScoreRoute
-  '/player/$id/tokens': typeof PlayerIdTokensRoute
+  '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
+  '/{-$locale}/leaderboard': typeof Char123LocaleChar125LeaderboardRoute
+  '/{-$locale}/objectives': typeof Char123LocaleChar125ObjectivesRoute
+  '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
+  '/{-$locale}/player/$id': typeof Char123LocaleChar125PlayerIdRouteWithChildren
+  '/{-$locale}/player/$id/objective': typeof Char123LocaleChar125PlayerIdObjectiveRoute
+  '/{-$locale}/player/$id/review': typeof Char123LocaleChar125PlayerIdReviewRoute
+  '/{-$locale}/player/$id/rules': typeof Char123LocaleChar125PlayerIdRulesRoute
+  '/{-$locale}/player/$id/scan': typeof Char123LocaleChar125PlayerIdScanRoute
+  '/{-$locale}/player/$id/score': typeof Char123LocaleChar125PlayerIdScoreRoute
+  '/{-$locale}/player/$id/tokens': typeof Char123LocaleChar125PlayerIdTokensRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/leaderboard': typeof LeaderboardRoute
-  '/loading': typeof LoadingRoute
-  '/objectives': typeof ObjectivesRoute
-  '/player/$id': typeof PlayerIdRouteWithChildren
-  '/player/$id/objective': typeof PlayerIdObjectiveRoute
-  '/player/$id/review': typeof PlayerIdReviewRoute
-  '/player/$id/rules': typeof PlayerIdRulesRoute
-  '/player/$id/scan': typeof PlayerIdScanRoute
-  '/player/$id/score': typeof PlayerIdScoreRoute
-  '/player/$id/tokens': typeof PlayerIdTokensRoute
+  '/{-$locale}/leaderboard': typeof Char123LocaleChar125LeaderboardRoute
+  '/{-$locale}/objectives': typeof Char123LocaleChar125ObjectivesRoute
+  '/{-$locale}': typeof Char123LocaleChar125IndexRoute
+  '/{-$locale}/player/$id': typeof Char123LocaleChar125PlayerIdRouteWithChildren
+  '/{-$locale}/player/$id/objective': typeof Char123LocaleChar125PlayerIdObjectiveRoute
+  '/{-$locale}/player/$id/review': typeof Char123LocaleChar125PlayerIdReviewRoute
+  '/{-$locale}/player/$id/rules': typeof Char123LocaleChar125PlayerIdRulesRoute
+  '/{-$locale}/player/$id/scan': typeof Char123LocaleChar125PlayerIdScanRoute
+  '/{-$locale}/player/$id/score': typeof Char123LocaleChar125PlayerIdScoreRoute
+  '/{-$locale}/player/$id/tokens': typeof Char123LocaleChar125PlayerIdTokensRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/leaderboard': typeof LeaderboardRoute
-  '/loading': typeof LoadingRoute
-  '/objectives': typeof ObjectivesRoute
-  '/player/$id': typeof PlayerIdRouteWithChildren
-  '/player/$id/objective': typeof PlayerIdObjectiveRoute
-  '/player/$id/review': typeof PlayerIdReviewRoute
-  '/player/$id/rules': typeof PlayerIdRulesRoute
-  '/player/$id/scan': typeof PlayerIdScanRoute
-  '/player/$id/score': typeof PlayerIdScoreRoute
-  '/player/$id/tokens': typeof PlayerIdTokensRoute
+  '/{-$locale}': typeof Char123LocaleChar125RouteRouteWithChildren
+  '/{-$locale}/leaderboard': typeof Char123LocaleChar125LeaderboardRoute
+  '/{-$locale}/objectives': typeof Char123LocaleChar125ObjectivesRoute
+  '/{-$locale}/': typeof Char123LocaleChar125IndexRoute
+  '/{-$locale}/player/$id': typeof Char123LocaleChar125PlayerIdRouteWithChildren
+  '/{-$locale}/player/$id/objective': typeof Char123LocaleChar125PlayerIdObjectiveRoute
+  '/{-$locale}/player/$id/review': typeof Char123LocaleChar125PlayerIdReviewRoute
+  '/{-$locale}/player/$id/rules': typeof Char123LocaleChar125PlayerIdRulesRoute
+  '/{-$locale}/player/$id/scan': typeof Char123LocaleChar125PlayerIdScanRoute
+  '/{-$locale}/player/$id/score': typeof Char123LocaleChar125PlayerIdScoreRoute
+  '/{-$locale}/player/$id/tokens': typeof Char123LocaleChar125PlayerIdTokensRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
-    | '/leaderboard'
-    | '/loading'
-    | '/objectives'
-    | '/player/$id'
-    | '/player/$id/objective'
-    | '/player/$id/review'
-    | '/player/$id/rules'
-    | '/player/$id/scan'
-    | '/player/$id/score'
-    | '/player/$id/tokens'
+    | '/{-$locale}'
+    | '/{-$locale}/leaderboard'
+    | '/{-$locale}/objectives'
+    | '/{-$locale}/'
+    | '/{-$locale}/player/$id'
+    | '/{-$locale}/player/$id/objective'
+    | '/{-$locale}/player/$id/review'
+    | '/{-$locale}/player/$id/rules'
+    | '/{-$locale}/player/$id/scan'
+    | '/{-$locale}/player/$id/score'
+    | '/{-$locale}/player/$id/tokens'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/leaderboard'
-    | '/loading'
-    | '/objectives'
-    | '/player/$id'
-    | '/player/$id/objective'
-    | '/player/$id/review'
-    | '/player/$id/rules'
-    | '/player/$id/scan'
-    | '/player/$id/score'
-    | '/player/$id/tokens'
+    | '/{-$locale}/leaderboard'
+    | '/{-$locale}/objectives'
+    | '/{-$locale}'
+    | '/{-$locale}/player/$id'
+    | '/{-$locale}/player/$id/objective'
+    | '/{-$locale}/player/$id/review'
+    | '/{-$locale}/player/$id/rules'
+    | '/{-$locale}/player/$id/scan'
+    | '/{-$locale}/player/$id/score'
+    | '/{-$locale}/player/$id/tokens'
   id:
     | '__root__'
-    | '/'
-    | '/leaderboard'
-    | '/loading'
-    | '/objectives'
-    | '/player/$id'
-    | '/player/$id/objective'
-    | '/player/$id/review'
-    | '/player/$id/rules'
-    | '/player/$id/scan'
-    | '/player/$id/score'
-    | '/player/$id/tokens'
+    | '/{-$locale}'
+    | '/{-$locale}/leaderboard'
+    | '/{-$locale}/objectives'
+    | '/{-$locale}/'
+    | '/{-$locale}/player/$id'
+    | '/{-$locale}/player/$id/objective'
+    | '/{-$locale}/player/$id/review'
+    | '/{-$locale}/player/$id/rules'
+    | '/{-$locale}/player/$id/scan'
+    | '/{-$locale}/player/$id/score'
+    | '/{-$locale}/player/$id/tokens'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  LeaderboardRoute: typeof LeaderboardRoute
-  LoadingRoute: typeof LoadingRoute
-  ObjectivesRoute: typeof ObjectivesRoute
-  PlayerIdRoute: typeof PlayerIdRouteWithChildren
+  Char123LocaleChar125RouteRoute: typeof Char123LocaleChar125RouteRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/objectives': {
-      id: '/objectives'
-      path: '/objectives'
-      fullPath: '/objectives'
-      preLoaderRoute: typeof ObjectivesRouteImport
+    '/{-$locale}': {
+      id: '/{-$locale}'
+      path: '/{-$locale}'
+      fullPath: '/{-$locale}'
+      preLoaderRoute: typeof Char123LocaleChar125RouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/loading': {
-      id: '/loading'
-      path: '/loading'
-      fullPath: '/loading'
-      preLoaderRoute: typeof LoadingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/leaderboard': {
-      id: '/leaderboard'
-      path: '/leaderboard'
-      fullPath: '/leaderboard'
-      preLoaderRoute: typeof LeaderboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/': {
-      id: '/'
+    '/{-$locale}/': {
+      id: '/{-$locale}/'
       path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/'
+      preLoaderRoute: typeof Char123LocaleChar125IndexRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/player/$id': {
-      id: '/player/$id'
+    '/{-$locale}/objectives': {
+      id: '/{-$locale}/objectives'
+      path: '/objectives'
+      fullPath: '/{-$locale}/objectives'
+      preLoaderRoute: typeof Char123LocaleChar125ObjectivesRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/leaderboard': {
+      id: '/{-$locale}/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/{-$locale}/leaderboard'
+      preLoaderRoute: typeof Char123LocaleChar125LeaderboardRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
+    }
+    '/{-$locale}/player/$id': {
+      id: '/{-$locale}/player/$id'
       path: '/player/$id'
-      fullPath: '/player/$id'
-      preLoaderRoute: typeof PlayerIdRouteImport
-      parentRoute: typeof rootRouteImport
+      fullPath: '/{-$locale}/player/$id'
+      preLoaderRoute: typeof Char123LocaleChar125PlayerIdRouteImport
+      parentRoute: typeof Char123LocaleChar125RouteRoute
     }
-    '/player/$id/tokens': {
-      id: '/player/$id/tokens'
+    '/{-$locale}/player/$id/tokens': {
+      id: '/{-$locale}/player/$id/tokens'
       path: '/tokens'
-      fullPath: '/player/$id/tokens'
-      preLoaderRoute: typeof PlayerIdTokensRouteImport
-      parentRoute: typeof PlayerIdRoute
+      fullPath: '/{-$locale}/player/$id/tokens'
+      preLoaderRoute: typeof Char123LocaleChar125PlayerIdTokensRouteImport
+      parentRoute: typeof Char123LocaleChar125PlayerIdRoute
     }
-    '/player/$id/score': {
-      id: '/player/$id/score'
+    '/{-$locale}/player/$id/score': {
+      id: '/{-$locale}/player/$id/score'
       path: '/score'
-      fullPath: '/player/$id/score'
-      preLoaderRoute: typeof PlayerIdScoreRouteImport
-      parentRoute: typeof PlayerIdRoute
+      fullPath: '/{-$locale}/player/$id/score'
+      preLoaderRoute: typeof Char123LocaleChar125PlayerIdScoreRouteImport
+      parentRoute: typeof Char123LocaleChar125PlayerIdRoute
     }
-    '/player/$id/scan': {
-      id: '/player/$id/scan'
+    '/{-$locale}/player/$id/scan': {
+      id: '/{-$locale}/player/$id/scan'
       path: '/scan'
-      fullPath: '/player/$id/scan'
-      preLoaderRoute: typeof PlayerIdScanRouteImport
-      parentRoute: typeof PlayerIdRoute
+      fullPath: '/{-$locale}/player/$id/scan'
+      preLoaderRoute: typeof Char123LocaleChar125PlayerIdScanRouteImport
+      parentRoute: typeof Char123LocaleChar125PlayerIdRoute
     }
-    '/player/$id/rules': {
-      id: '/player/$id/rules'
+    '/{-$locale}/player/$id/rules': {
+      id: '/{-$locale}/player/$id/rules'
       path: '/rules'
-      fullPath: '/player/$id/rules'
-      preLoaderRoute: typeof PlayerIdRulesRouteImport
-      parentRoute: typeof PlayerIdRoute
+      fullPath: '/{-$locale}/player/$id/rules'
+      preLoaderRoute: typeof Char123LocaleChar125PlayerIdRulesRouteImport
+      parentRoute: typeof Char123LocaleChar125PlayerIdRoute
     }
-    '/player/$id/review': {
-      id: '/player/$id/review'
+    '/{-$locale}/player/$id/review': {
+      id: '/{-$locale}/player/$id/review'
       path: '/review'
-      fullPath: '/player/$id/review'
-      preLoaderRoute: typeof PlayerIdReviewRouteImport
-      parentRoute: typeof PlayerIdRoute
+      fullPath: '/{-$locale}/player/$id/review'
+      preLoaderRoute: typeof Char123LocaleChar125PlayerIdReviewRouteImport
+      parentRoute: typeof Char123LocaleChar125PlayerIdRoute
     }
-    '/player/$id/objective': {
-      id: '/player/$id/objective'
+    '/{-$locale}/player/$id/objective': {
+      id: '/{-$locale}/player/$id/objective'
       path: '/objective'
-      fullPath: '/player/$id/objective'
-      preLoaderRoute: typeof PlayerIdObjectiveRouteImport
-      parentRoute: typeof PlayerIdRoute
+      fullPath: '/{-$locale}/player/$id/objective'
+      preLoaderRoute: typeof Char123LocaleChar125PlayerIdObjectiveRouteImport
+      parentRoute: typeof Char123LocaleChar125PlayerIdRoute
     }
   }
 }
 
-interface PlayerIdRouteChildren {
-  PlayerIdObjectiveRoute: typeof PlayerIdObjectiveRoute
-  PlayerIdReviewRoute: typeof PlayerIdReviewRoute
-  PlayerIdRulesRoute: typeof PlayerIdRulesRoute
-  PlayerIdScanRoute: typeof PlayerIdScanRoute
-  PlayerIdScoreRoute: typeof PlayerIdScoreRoute
-  PlayerIdTokensRoute: typeof PlayerIdTokensRoute
+interface Char123LocaleChar125PlayerIdRouteChildren {
+  Char123LocaleChar125PlayerIdObjectiveRoute: typeof Char123LocaleChar125PlayerIdObjectiveRoute
+  Char123LocaleChar125PlayerIdReviewRoute: typeof Char123LocaleChar125PlayerIdReviewRoute
+  Char123LocaleChar125PlayerIdRulesRoute: typeof Char123LocaleChar125PlayerIdRulesRoute
+  Char123LocaleChar125PlayerIdScanRoute: typeof Char123LocaleChar125PlayerIdScanRoute
+  Char123LocaleChar125PlayerIdScoreRoute: typeof Char123LocaleChar125PlayerIdScoreRoute
+  Char123LocaleChar125PlayerIdTokensRoute: typeof Char123LocaleChar125PlayerIdTokensRoute
 }
 
-const PlayerIdRouteChildren: PlayerIdRouteChildren = {
-  PlayerIdObjectiveRoute: PlayerIdObjectiveRoute,
-  PlayerIdReviewRoute: PlayerIdReviewRoute,
-  PlayerIdRulesRoute: PlayerIdRulesRoute,
-  PlayerIdScanRoute: PlayerIdScanRoute,
-  PlayerIdScoreRoute: PlayerIdScoreRoute,
-  PlayerIdTokensRoute: PlayerIdTokensRoute,
+const Char123LocaleChar125PlayerIdRouteChildren: Char123LocaleChar125PlayerIdRouteChildren =
+  {
+    Char123LocaleChar125PlayerIdObjectiveRoute:
+      Char123LocaleChar125PlayerIdObjectiveRoute,
+    Char123LocaleChar125PlayerIdReviewRoute:
+      Char123LocaleChar125PlayerIdReviewRoute,
+    Char123LocaleChar125PlayerIdRulesRoute:
+      Char123LocaleChar125PlayerIdRulesRoute,
+    Char123LocaleChar125PlayerIdScanRoute:
+      Char123LocaleChar125PlayerIdScanRoute,
+    Char123LocaleChar125PlayerIdScoreRoute:
+      Char123LocaleChar125PlayerIdScoreRoute,
+    Char123LocaleChar125PlayerIdTokensRoute:
+      Char123LocaleChar125PlayerIdTokensRoute,
+  }
+
+const Char123LocaleChar125PlayerIdRouteWithChildren =
+  Char123LocaleChar125PlayerIdRoute._addFileChildren(
+    Char123LocaleChar125PlayerIdRouteChildren,
+  )
+
+interface Char123LocaleChar125RouteRouteChildren {
+  Char123LocaleChar125LeaderboardRoute: typeof Char123LocaleChar125LeaderboardRoute
+  Char123LocaleChar125ObjectivesRoute: typeof Char123LocaleChar125ObjectivesRoute
+  Char123LocaleChar125IndexRoute: typeof Char123LocaleChar125IndexRoute
+  Char123LocaleChar125PlayerIdRoute: typeof Char123LocaleChar125PlayerIdRouteWithChildren
 }
 
-const PlayerIdRouteWithChildren = PlayerIdRoute._addFileChildren(
-  PlayerIdRouteChildren,
-)
+const Char123LocaleChar125RouteRouteChildren: Char123LocaleChar125RouteRouteChildren =
+  {
+    Char123LocaleChar125LeaderboardRoute: Char123LocaleChar125LeaderboardRoute,
+    Char123LocaleChar125ObjectivesRoute: Char123LocaleChar125ObjectivesRoute,
+    Char123LocaleChar125IndexRoute: Char123LocaleChar125IndexRoute,
+    Char123LocaleChar125PlayerIdRoute:
+      Char123LocaleChar125PlayerIdRouteWithChildren,
+  }
+
+const Char123LocaleChar125RouteRouteWithChildren =
+  Char123LocaleChar125RouteRoute._addFileChildren(
+    Char123LocaleChar125RouteRouteChildren,
+  )
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  LeaderboardRoute: LeaderboardRoute,
-  LoadingRoute: LoadingRoute,
-  ObjectivesRoute: ObjectivesRoute,
-  PlayerIdRoute: PlayerIdRouteWithChildren,
+  Char123LocaleChar125RouteRoute: Char123LocaleChar125RouteRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -67,7 +67,7 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
         <DisablableButtonLink
           variant="default"
           className="w-full"
-          to="/player/$id/tokens"
+          to="/{$locale}/player/$id/tokens"
           params={{ id: playerId }}
           disabled={!selectedColor}
         >

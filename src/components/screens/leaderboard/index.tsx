@@ -41,13 +41,8 @@ export function Leaderboard() {
         ))}
       </ul>
       <Actions>
-        <Button
-          variant="outline"
-          className="w-full"
-          asChild
-          onClick={() => resetStore()}
-        >
-          <Link to="/objectives">
+        <Button variant="outline" className="w-full" asChild>
+          <Link to="/{$locale}/objectives" onClick={resetStore}>
             <RefreshCcwIcon />
             {t("newGame")}
           </Link>

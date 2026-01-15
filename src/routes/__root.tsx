@@ -1,11 +1,9 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import { NotFound } from "@/components/screens/not-found";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 
 export const Route = createRootRoute({
   component: RootComponent,
-  notFoundComponent: NotFound,
 });
 
 function RootComponent() {

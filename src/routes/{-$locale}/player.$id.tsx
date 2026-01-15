@@ -1,7 +1,7 @@
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
 import { REQUIRED_PUBLIC_OBJECTIVES, useStore } from "@/lib/store";
 
-export const Route = createFileRoute("/player/$id")({
+export const Route = createFileRoute("/{-$locale}/player/$id")({
   component: RouteComponent,
 });
 
@@ -11,7 +11,7 @@ function RouteComponent() {
   const publicObjectives = useStore((state) => state.publicObjectives);
 
   if (!player || publicObjectives.length !== REQUIRED_PUBLIC_OBJECTIVES) {
-    return <Navigate to="/objectives" replace />;
+    return <Navigate to="/{$locale}/objectives" replace />;
   }
 
   return <Outlet />;

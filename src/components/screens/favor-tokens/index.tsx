@@ -47,7 +47,7 @@ export function FavorTokens({ playerId }: { playerId: string }) {
       </div>
       <Actions>
         <Button variant="default" className="w-full" asChild>
-          <Link to="/player/$id/score" params={{ id: playerId }}>
+          <Link to="/{$locale}/player/$id/score" params={{ id: playerId }}>
             <CheckIcon />
             {t("calculateScore")}
           </Link>

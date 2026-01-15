@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useRouter } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { useStore, MAX_PLAYERS } from "@/lib/store";
 import { PlayerNameDialogTrigger } from "./player-name-dialog-trigger";
@@ -7,7 +7,7 @@ import { PlusIcon } from "lucide-react";
 
 export function CheckAnotherBoardButton({ playerId }: { playerId: string }) {
   const addPlayer = useStore((state) => state.addPlayer);
-  const router = useRouter();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const playersCount = useStore((state) => state.players.length);
   const nextPlayerId = Number(playerId) + 1;
@@ -22,7 +22,10 @@ export function CheckAnotherBoardButton({ playerId }: { playerId: string }) {
   const onPlayerNameSubmit = () => {
     const playerIdToNavigateTo = nextPlayerExists ? nextPlayerId : addPlayer();
 
-    router.history.push(`/player/${playerIdToNavigateTo}/scan`);
+    navigate({
+      to: "/{$locale}/player/$id/scan",
+      params: { id: playerIdToNavigateTo },
+    });
   };
 
   return (

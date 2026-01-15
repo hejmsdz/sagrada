@@ -6,7 +6,7 @@ interface ReviewSearch {
   manual?: boolean;
 }
 
-export const Route = createFileRoute("/player/$id/review")({
+export const Route = createFileRoute("/{-$locale}/player/$id/review")({
   component: RouteComponent,
   validateSearch: (search: Record<string, unknown>): ReviewSearch => {
     return {

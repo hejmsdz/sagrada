@@ -42,7 +42,7 @@ export function PublicObjectives() {
         <DisablableButtonLink
           variant="default"
           className="w-full"
-          to="/player/$id/scan"
+          to="/{$locale}/player/$id/scan"
           params={{ id: "0" }}
           disabled={!isValid}
           disabledText={t("objectivesSelectionMessage", {

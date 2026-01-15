@@ -10,11 +10,13 @@ import "./lib/sentry.ts";
 import "./i18n/i18n.ts";
 import "./index.css";
 import { LoadingScreen } from "./components/screens/loading";
+import { NotFound } from "./components/screens/not-found";
 
 const router = createRouter({
   routeTree,
   defaultPendingComponent: LoadingScreen,
-  defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
+  defaultErrorComponent: ErrorComponent,
+  defaultNotFoundComponent: NotFound,
   scrollRestoration: true,
 });
 

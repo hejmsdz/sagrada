@@ -40,7 +40,11 @@ export function PlacementRulesCheck({ playerId }: { playerId: string }) {
 
   if (!board || !hasInitialIllegallyPlacedDice) {
     return (
-      <Navigate to="/player/$id/objective" params={{ id: playerId }} replace />
+      <Navigate
+        to="/{$locale}/player/$id/objective"
+        params={{ id: playerId }}
+        replace
+      />
     );
   }
 
@@ -72,10 +76,6 @@ export function PlacementRulesCheck({ playerId }: { playerId: string }) {
           updateDice(Number(playerId), rowIndex, columnIndex, replacement);
         }}
         onChange={() => {}}
-        /*
-            return children;
-          }
-            */
       />
       <div className="my-4" aria-live="polite">
         {hasIllegallyPlacedDice ? (
@@ -97,7 +97,7 @@ export function PlacementRulesCheck({ playerId }: { playerId: string }) {
         <DisablableButtonLink
           variant="default"
           className="w-full"
-          to="/player/$id/objective"
+          to="/{$locale}/player/$id/objective"
           params={{ id: playerId }}
           disabled={hasIllegallyPlacedDice}
         >
