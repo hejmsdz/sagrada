@@ -10,7 +10,7 @@ import {
   redirect,
 } from "@tanstack/react-router";
 import { useBeforeUnload } from "@/hooks/use-before-unload";
-import { LOCALE } from "@/lib/local-storage-keys";
+import { useSettingsStore } from "@/stores/settings";
 
 function findPreferredLocale(
   preferredLanguages: readonly string[],
@@ -41,7 +41,7 @@ export const Route = createFileRoute("/{-$locale}")({
         i18n.changeLanguage(params.locale);
       }
     } else {
-      const storedLocale = localStorage.getItem(LOCALE);
+      const storedLocale = useSettingsStore.getState().defaultLocale;
       const preferredLocale = findPreferredLocale(
         [...(storedLocale ? [storedLocale] : []), ...navigator.languages],
         defaultLocale,

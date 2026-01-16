@@ -4,7 +4,7 @@ import { Field, FieldLabel } from "@/components/ui/field";
 import { supportedLocales, supportedLocalesNames } from "@/i18n/i18n";
 import { NativeSelect, NativeSelectOption } from "../ui/native-select";
 import { useTranslation } from "react-i18next";
-import { LOCALE } from "@/lib/local-storage-keys";
+import { useSettingsStore } from "@/stores/settings";
 
 export function LanguageSettings() {
   const { i18n, t } = useTranslation();
@@ -12,6 +12,7 @@ export function LanguageSettings() {
   const mostSpecificMatch = match[match.length - 1];
   const navigate = useNavigate();
   const htmlId = useId();
+  const setDefaultLocale = useSettingsStore((store) => store.setDefaultLocale);
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const locale = event.target.value;
@@ -29,7 +30,7 @@ export function LanguageSettings() {
       },
       replace: true,
     });
-    localStorage.setItem(LOCALE, locale);
+    setDefaultLocale(locale);
   };
 
   return (
