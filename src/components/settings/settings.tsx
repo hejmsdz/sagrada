@@ -16,7 +16,19 @@ export function Settings({ children }: { children: React.ReactNode }) {
   return (
     <Sheet>
       <SheetTrigger asChild>{children}</SheetTrigger>
-      <SheetContent>
+      <SheetContent
+        onOpenAutoFocus={(event) => {
+          if (!(event.target instanceof HTMLElement)) return;
+          const closeButton = event.target.querySelector(
+            '[data-slot="sheet-close"]',
+          );
+
+          if (closeButton instanceof HTMLElement) {
+            closeButton.focus();
+            event.preventDefault();
+          }
+        }}
+      >
         <SheetHeader>
           <SheetTitle>{t("settings")}</SheetTitle>
         </SheetHeader>

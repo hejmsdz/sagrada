@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { useMatches, useNavigate } from "@tanstack/react-router";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { supportedLocales, supportedLocalesNames } from "@/i18n/i18n";
@@ -10,6 +11,7 @@ export function LanguageSettings() {
   const match = useMatches();
   const mostSpecificMatch = match[match.length - 1];
   const navigate = useNavigate();
+  const htmlId = useId();
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const locale = event.target.value;
@@ -32,8 +34,8 @@ export function LanguageSettings() {
 
   return (
     <Field>
-      <FieldLabel>{t("language")}</FieldLabel>
-      <NativeSelect onChange={handleChange} value={i18n.language}>
+      <FieldLabel htmlFor={htmlId}>{t("language")}</FieldLabel>
+      <NativeSelect id={htmlId} onChange={handleChange} value={i18n.language}>
         {supportedLocales.map((locale) => (
           <NativeSelectOption key={locale} value={locale}>
             {supportedLocalesNames[locale]}
