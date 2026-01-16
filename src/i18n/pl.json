@@ -47,7 +47,10 @@
     "newGame": "Nowa gra",
     "notFound": "Nie znaleziono strony",
     "notFoundDescription": "Przepraszamy, strona, której szukasz, nie została znaleziona. Sprawdź adres lub wróć na stronę główną.",
-    "notFoundHomePage": "Strona główna"
+    "notFoundHomePage": "Strona główna",
+    "settings": "Ustawienia",
+    "language": "Język",
+    "createdBy": "Wykonanie: <1>{{name}}</1>"
   },
   "publicObjectives": {
     "diagonals": {

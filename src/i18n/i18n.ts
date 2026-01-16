@@ -8,11 +8,17 @@ const resources = {
   pl,
 };
 
+export type SupportedLocale = keyof typeof resources;
 export const defaultLocale = "en";
-export const supportedLocales = Object.keys(resources);
+export const supportedLocales = Object.keys(resources) as SupportedLocale[];
 export const supportedLocalesSet = new Set(
   supportedLocales,
 ) as ReadonlySet<string>;
+
+export const supportedLocalesNames = {
+  en: "English",
+  pl: "Polski",
+};
 
 i18n.use(initReactI18next).init({
   resources,
