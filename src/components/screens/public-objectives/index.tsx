@@ -2,7 +2,7 @@ import publicObjectives, {
   publicObjectiveNames,
 } from "@/game/public-objectives";
 import { PublicObjectiveItem } from "./public-objective-item";
-import { REQUIRED_PUBLIC_OBJECTIVES, useStore } from "@/lib/store";
+import { REQUIRED_PUBLIC_OBJECTIVES, useGameStore } from "@/stores/game";
 import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
 import { useTranslation } from "react-i18next";
@@ -11,8 +11,8 @@ import { DisablableButtonLink } from "@/components/disablable-button-link";
 import { CheckIcon } from "lucide-react";
 
 export function PublicObjectives() {
-  const selectedObjectives = useStore((state) => state.publicObjectives);
-  const togglePublicObjective = useStore(
+  const selectedObjectives = useGameStore((state) => state.publicObjectives);
+  const togglePublicObjective = useGameStore(
     (store) => store.togglePublicObjective,
   );
 

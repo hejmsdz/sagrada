@@ -1,10 +1,10 @@
-import { useStore } from "@/lib/store";
+import { useGameStore } from "@/stores/game";
 import { useEffect } from "react";
 
 export function useBeforeUnload() {
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => {
-      const state = useStore.getState();
+      const state = useGameStore.getState();
 
       const isDirty =
         state.publicObjectives.length > 0 ||

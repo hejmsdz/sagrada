@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { useStore } from "./store";
+import { useGameStore } from "@/stores/game";
 import {
   calculateScore,
   calculateLeaderboard,
@@ -9,12 +9,12 @@ import { useTranslation } from "react-i18next";
 
 export function usePlayerScore(playerId: number) {
   const { t } = useTranslation();
-  const board = useStore((state) => state.players[playerId]?.board);
-  const publicObjectives = useStore((state) => state.publicObjectives);
-  const privateObjective = useStore(
+  const board = useGameStore((state) => state.players[playerId]?.board);
+  const publicObjectives = useGameStore((state) => state.publicObjectives);
+  const privateObjective = useGameStore(
     (state) => state.players[playerId]?.privateObjective,
   );
-  const favorTokens = useStore(
+  const favorTokens = useGameStore(
     (state) => state.players[playerId]?.favorTokens ?? 0,
   );
 
@@ -35,8 +35,8 @@ export function usePlayerScore(playerId: number) {
 
 export function useLeaderboard(): LeaderboardEntry[] {
   const { t } = useTranslation();
-  const players = useStore((state) => state.players);
-  const publicObjectives = useStore((state) => state.publicObjectives);
+  const players = useGameStore((state) => state.players);
+  const publicObjectives = useGameStore((state) => state.publicObjectives);
 
   return useMemo(
     () => calculateLeaderboard({ players, publicObjectives, t }),

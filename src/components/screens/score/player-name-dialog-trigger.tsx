@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useTranslation } from "react-i18next";
-import { useStore } from "@/lib/store";
+import { useGameStore } from "@/stores/game";
 import { CheckIcon } from "lucide-react";
 
 export function PlayerNameDialogTrigger({
@@ -27,11 +27,11 @@ export function PlayerNameDialogTrigger({
   const [open, setOpen] = useState(false);
   const { t } = useTranslation();
   const inputId = useId();
-  const setPlayerName = useStore((state) => state.setPlayerName);
-  const currentPlayerName = useStore(
+  const setPlayerName = useGameStore((state) => state.setPlayerName);
+  const currentPlayerName = useGameStore(
     (state) => state.players[Number(playerId)]?.name,
   );
-  const players = useStore((state) => state.players);
+  const players = useGameStore((state) => state.players);
   const takenPlayerNames = useMemo(
     () =>
       new Set(

@@ -13,14 +13,14 @@ import { RankBadge } from "./rank-badge";
 import { Actions } from "@/components/layout/actions";
 import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
-import { useStore } from "@/lib/store";
+import { useGameStore } from "@/stores/game";
 import { RefreshCcwIcon } from "lucide-react";
 
 export function Leaderboard() {
   const { t } = useTranslation();
 
   const leaderboard = useLeaderboard();
-  const resetStore = useStore((state) => state.resetStore);
+  const resetStore = useGameStore((state) => state.resetStore);
 
   return (
     <Page>

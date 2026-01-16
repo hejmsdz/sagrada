@@ -1,13 +1,13 @@
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Leaderboard } from "@/components/screens/leaderboard";
-import { useStore } from "@/lib/store";
+import { useGameStore } from "@/stores/game";
 
 export const Route = createFileRoute("/{-$locale}/leaderboard")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const players = useStore((state) => state.players);
+  const players = useGameStore((state) => state.players);
   if (players.length < 2) {
     return <Navigate to="/{-$locale}/objectives" replace />;
   }

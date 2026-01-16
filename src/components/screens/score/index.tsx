@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
 import { useTranslation } from "react-i18next";
-import { useStore } from "@/lib/store";
+import { useGameStore } from "@/stores/game";
 import { BoardView } from "@/components/board-view/board-view";
 import {
   Item,
@@ -18,7 +18,7 @@ import { CheckAnotherBoardButton } from "./check-another-board-button";
 import { LeaderboardButton } from "./leaderboard-button";
 
 export function Score({ playerId }: { playerId: string }) {
-  const board = useStore((state) => state.players[Number(playerId)]?.board);
+  const board = useGameStore((state) => state.players[Number(playerId)]?.board);
   const score = usePlayerScore(Number(playerId));
   const { t } = useTranslation();
   const [activeResultIndex, setActiveResultIndex] = useState<

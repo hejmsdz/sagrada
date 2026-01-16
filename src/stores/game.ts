@@ -3,7 +3,7 @@ import type { Color } from "@/game/types";
 import { Board, type OptionalDice } from "@/game/types";
 import { create } from "zustand";
 
-export type State = {
+type GameState = {
   publicObjectives: PublicObjectiveName[];
   players: {
     name?: string;
@@ -34,17 +34,17 @@ export const REQUIRED_PUBLIC_OBJECTIVES = 3;
 export const MAX_FAVOR_TOKENS = 6;
 export const MAX_PLAYERS = 4;
 
-export type Player = State["players"][number];
+export type Player = GameState["players"][number];
 
 function updatePlayer(playerId: number, update: (player: Player) => Player) {
-  return (prevState: State) => ({
+  return (prevState: GameState) => ({
     players: prevState.players.map((player, index) =>
       index === playerId ? { ...player, ...update(player) } : player,
     ),
   });
 }
 
-export const useStore = create<State>()((set, get) => ({
+export const useGameStore = create<GameState>()((set, get) => ({
   publicObjectives: [],
   players: [{}],
   togglePublicObjective: (objectiveName, isSelected) => {

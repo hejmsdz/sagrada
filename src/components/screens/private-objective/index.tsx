@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { COLORS } from "@/game/types";
 import { COLOR_CLASSES_BG } from "@/lib/colors";
 import { cn } from "@/lib/utils";
-import { useStore } from "@/lib/store";
+import { useGameStore } from "@/stores/game";
 import { Actions } from "@/components/layout/actions";
 import { DisablableButtonLink } from "@/components/disablable-button-link";
 import { CheckIcon } from "lucide-react";
@@ -13,10 +13,10 @@ import { CheckIcon } from "lucide-react";
 export function PrivateObjective({ playerId }: { playerId: string }) {
   const { t } = useTranslation();
 
-  const selectedColor = useStore(
+  const selectedColor = useGameStore(
     (state) => state.players[Number(playerId)]?.privateObjective,
   );
-  const players = useStore((state) => state.players);
+  const players = useGameStore((state) => state.players);
   const takenColors = useMemo(
     () =>
       new Set(
@@ -29,7 +29,9 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
       ),
     [players, playerId],
   );
-  const setSelectedColor = useStore((state) => state.setPlayerPrivateObjective);
+  const setSelectedColor = useGameStore(
+    (state) => state.setPlayerPrivateObjective,
+  );
 
   return (
     <Page>

@@ -1,17 +1,17 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
-import { useStore, MAX_PLAYERS } from "@/lib/store";
+import { useGameStore, MAX_PLAYERS } from "@/stores/game";
 import { PlayerNameDialogTrigger } from "./player-name-dialog-trigger";
 import { PlusIcon } from "lucide-react";
 
 export function CheckAnotherBoardButton({ playerId }: { playerId: string }) {
-  const addPlayer = useStore((state) => state.addPlayer);
+  const addPlayer = useGameStore((state) => state.addPlayer);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const playersCount = useStore((state) => state.players.length);
+  const playersCount = useGameStore((state) => state.players.length);
   const nextPlayerId = Number(playerId) + 1;
-  const nextPlayerExists = useStore((state) =>
+  const nextPlayerExists = useGameStore((state) =>
     Boolean(state.players[nextPlayerId]),
   );
 

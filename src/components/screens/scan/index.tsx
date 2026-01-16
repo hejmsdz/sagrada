@@ -1,4 +1,4 @@
-// import { useStore } from "@/lib/store";
+// import { useGameStore } from "@/stores/game";
 import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import {
   loadModel,
   scan,
 } from "@/scanning/scanning";
-import { useStore } from "@/lib/store";
+import { useGameStore } from "@/stores/game";
 import { useTranslation } from "react-i18next";
 import { HelpText } from "@/components/help-text";
 import { Actions } from "@/components/layout/actions";
@@ -28,7 +28,7 @@ export function Scan({ playerId }: { playerId: string }) {
   const [isDisabled, setIsDisabled] = useState(false);
 
   const navigate = useNavigate();
-  const setPlayerBoard = useStore((state) => state.setPlayerBoard);
+  const setPlayerBoard = useGameStore((state) => state.setPlayerBoard);
 
   const requestCamera = async () => {
     setIsDisabled(true);

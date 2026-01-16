@@ -1,7 +1,7 @@
 import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
 import { useTranslation } from "react-i18next";
-import { MAX_FAVOR_TOKENS, useStore } from "@/lib/store";
+import { MAX_FAVOR_TOKENS, useGameStore } from "@/stores/game";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, MinusIcon, CheckIcon } from "lucide-react";
 import { Actions } from "@/components/layout/actions";
@@ -9,11 +9,15 @@ import { Link } from "@tanstack/react-router";
 import { useId } from "react";
 
 export function FavorTokens({ playerId }: { playerId: string }) {
-  const favorTokens = useStore(
+  const favorTokens = useGameStore(
     (state) => state.players[Number(playerId)]?.favorTokens ?? 0,
   );
-  const incrementFavorTokens = useStore((state) => state.incrementFavorTokens);
-  const decrementFavorTokens = useStore((state) => state.decrementFavorTokens);
+  const incrementFavorTokens = useGameStore(
+    (state) => state.incrementFavorTokens,
+  );
+  const decrementFavorTokens = useGameStore(
+    (state) => state.decrementFavorTokens,
+  );
 
   const { t } = useTranslation();
   const htmlId = useId();

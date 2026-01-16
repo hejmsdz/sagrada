@@ -10,7 +10,7 @@ import {
   type ScoringResult,
 } from "./scoring-rules";
 import type { TFunction } from "i18next";
-import type { Player } from "@/lib/store";
+import type { Player } from "@/stores/game";
 
 const favorTokensScoringRule =
   (favorTokens: number): ScoringRule =>

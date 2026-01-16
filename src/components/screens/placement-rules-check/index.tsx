@@ -1,6 +1,6 @@
 import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
-import { useStore } from "@/lib/store";
+import { useGameStore } from "@/stores/game";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { CheckIcon, CircleAlertIcon, CircleCheckIcon } from "lucide-react";
 import { useMemo, useRef } from "react";
@@ -13,9 +13,9 @@ import { InteractiveBoardView } from "@/components/board-view/interactive-board-
 import { NUM_COLUMNS, NUM_ROWS } from "@/game/types";
 
 export function PlacementRulesCheck({ playerId }: { playerId: string }) {
-  const board = useStore((state) => state.players[Number(playerId)]?.board);
-  const updateDice = useStore((state) => state.updateDice);
-  const setPlayerBoard = useStore((state) => state.setPlayerBoard);
+  const board = useGameStore((state) => state.players[Number(playerId)]?.board);
+  const updateDice = useGameStore((state) => state.updateDice);
+  const setPlayerBoard = useGameStore((state) => state.setPlayerBoard);
   const { current: initialBoard } = useRef(board);
   const illegallyPlacedDice = board?.findIllegallyPlacedDice();
   const { current: initialIllegallyPlacedDice } = useRef(illegallyPlacedDice);

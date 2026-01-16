@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect, useId, useRef } from "react";
-import { useStore } from "@/lib/store";
+import { useGameStore } from "@/stores/game";
 import { Page } from "@/components/layout/page";
 import { Header } from "@/components/layout/header";
 import { Button } from "@/components/ui/button";
@@ -22,9 +22,9 @@ export function Review({
   playerId: string;
   isManual: boolean;
 }) {
-  const board = useStore((state) => state.players[Number(playerId)]?.board);
-  const updateDice = useStore((state) => state.updateDice);
-  const setPlayerBoard = useStore((state) => state.setPlayerBoard);
+  const board = useGameStore((state) => state.players[Number(playerId)]?.board);
+  const updateDice = useGameStore((state) => state.updateDice);
+  const setPlayerBoard = useGameStore((state) => state.setPlayerBoard);
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [selectedCoordinates, setSelectedCoordinates] = useState<
     [number, number]

@@ -1,4 +1,4 @@
-import { useStore } from "@/lib/store";
+import { useGameStore } from "@/stores/game";
 import { Navigate } from "@tanstack/react-router";
 
 export function EnsurePlayerHas({
@@ -12,7 +12,7 @@ export function EnsurePlayerHas({
   board?: boolean;
   privateObjective?: boolean;
 }) {
-  const player = useStore((state) => state.players[Number(playerId)]);
+  const player = useGameStore((state) => state.players[Number(playerId)]);
 
   if (!player) {
     return <Navigate to="/{-$locale}/objectives" replace />;
