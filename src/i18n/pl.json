@@ -48,9 +48,7 @@
     "notFound": "Nie znaleziono strony",
     "notFoundDescription": "Przepraszamy, strona, której szukasz, nie została znaleziona. Sprawdź adres lub wróć na stronę główną.",
     "notFoundHomePage": "Strona główna",
-    "settings": "Ustawienia",
-    "language": "Język",
-    "createdBy": "Wykonanie: <1>{{name}}</1>"
+    "settings": "Ustawienia"
   },
   "publicObjectives": {
     "diagonals": {
@@ -137,5 +135,16 @@
       }
     },
     "getStarted": "Zaczynamy"
+  },
+  "settings": {
+    "settings": "Ustawienia",
+    "language": "Język",
+    "appearance": "Wygląd",
+    "themes": {
+      "system": "Zgodny z ustawieniami systemu",
+      "light": "Jasny",
+      "dark": "Ciemny"
+    },
+    "createdBy": "Wykonanie: <1>{{name}}</1>"
   }
 }

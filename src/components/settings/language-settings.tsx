@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useSettingsStore } from "@/stores/settings";
 
 export function LanguageSettings() {
-  const { i18n, t } = useTranslation();
+  const { i18n, t } = useTranslation("settings");
   const match = useMatches();
   const mostSpecificMatch = match[match.length - 1];
   const navigate = useNavigate();

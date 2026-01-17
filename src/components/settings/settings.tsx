@@ -9,9 +9,10 @@ import {
 import { useTranslation } from "react-i18next";
 import { LanguageSettings } from "./language-settings";
 import { SettingsFooter } from "./settings-footer";
+import { AppearanceSettings } from "./appearance-settings";
 
 export function Settings({ children }: { children: React.ReactNode }) {
-  const { t } = useTranslation();
+  const { t } = useTranslation("settings");
 
   return (
     <Sheet>
@@ -32,8 +33,9 @@ export function Settings({ children }: { children: React.ReactNode }) {
         <SheetHeader>
           <SheetTitle>{t("settings")}</SheetTitle>
         </SheetHeader>
-        <div className="px-6">
+        <div className="px-6 flex flex-col gap-7">
           <LanguageSettings />
+          <AppearanceSettings />
         </div>
         <SheetFooter>
           <SettingsFooter />

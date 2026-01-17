@@ -48,9 +48,7 @@
     "notFound": "Page not found",
     "notFoundDescription": "Sorry, the page you requested could not be found. Please check the address or return to the home page.",
     "notFoundHomePage": "Home page",
-    "settings": "Settings",
-    "language": "Language",
-    "createdBy": "Created by <1>{{name}}</1>"
+    "settings": "Settings"
   },
   "publicObjectives": {
     "diagonals": {
@@ -130,5 +128,16 @@
       }
     },
     "getStarted": "Get started"
+  },
+  "settings": {
+    "settings": "Settings",
+    "language": "Language",
+    "appearance": "Appearance",
+    "themes": {
+      "system": "According to system settings",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "createdBy": "Created by <1>{{name}}</1>"
   }
 }

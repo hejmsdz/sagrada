@@ -7,7 +7,7 @@ const githubUrl = "https://github.com/hejmsdz/sagrada";
 export function SettingsFooter() {
   return (
     <p className="text-sm text-muted-foreground">
-      <Trans i18nKey="createdBy" values={{ name: authorName }}>
+      <Trans ns="settings" i18nKey="createdBy" values={{ name: authorName }}>
         ...
         <a
           href={authorUrl}
