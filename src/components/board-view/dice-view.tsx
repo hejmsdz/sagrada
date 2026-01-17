@@ -1,4 +1,4 @@
-import type { Color, OptionalDice } from "@/game/types";
+import type { OptionalDice } from "@/game/types";
 import { COLOR_CLASSES_BG, COLOR_CLASSES_TEXT_CONTRAST } from "@/lib/colors";
 import { useSettingsStore } from "@/stores/settings";
 import { useTranslation } from "react-i18next";
