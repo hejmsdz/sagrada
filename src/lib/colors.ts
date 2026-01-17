@@ -19,7 +19,7 @@ export const COLOR_CLASSES_TEXT: Record<Color, string> = {
 export const COLOR_CLASSES_TEXT_CONTRAST: Record<Color, string> = {
   blue: "text-foreground",
   green: "text-foreground",
-  purple: "text-foreground",
-  red: "text-foreground",
+  purple: "text-white",
+  red: "text-white",
   yellow: "text-black",
 };
