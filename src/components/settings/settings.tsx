@@ -12,11 +12,19 @@ import { SettingsFooter } from "./settings-footer";
 import { AppearanceSettings } from "./appearance-settings";
 import { ColorBlindSettings } from "./colorblind-settings";
 
-export function Settings({ children }: { children: React.ReactNode }) {
+export function Settings({
+  children,
+  open,
+  setOpen,
+}: {
+  children: React.ReactNode;
+  open?: boolean;
+  setOpen?: (open: boolean) => void;
+}) {
   const { t } = useTranslation("settings");
 
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>{children}</SheetTrigger>
       <SheetContent
         onOpenAutoFocus={(event) => {
