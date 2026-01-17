@@ -1,9 +1,9 @@
 import type { Color } from "@/game/types";
-import patternB from "./patterns/b.svg";
-import patternG from "./patterns/g.svg";
-import patternP from "./patterns/p.svg";
-import patternR from "./patterns/r.svg";
-import patternY from "./patterns/y.svg";
+import patternB from "./patterns/b.svg?no-inline";
+import patternG from "./patterns/g.svg?no-inline";
+import patternP from "./patterns/p.svg?no-inline";
+import patternR from "./patterns/r.svg?no-inline";
+import patternY from "./patterns/y.svg?no-inline";
 
 const PATTERNS: Record<Color, string> = {
   blue: patternB,
