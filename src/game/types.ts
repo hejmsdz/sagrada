@@ -45,6 +45,16 @@ export class Board {
     return row >= 0 && row < NUM_ROWS && column >= 0 && column < NUM_COLUMNS;
   }
 
+  static neighbors(row: number, column: number): Coordinate[] {
+    return ([
+      [row - 1, column],
+      [row + 1, column],
+      [row, column - 1],
+      [row, column + 1],
+    ] satisfies Coordinate[])
+      .filter(([row, column]) => Board.validCoordinates(row, column));
+  }
+
   at(row: number, column: number): OptionalDice {
     return this.board[row][column];
   }
@@ -91,15 +101,7 @@ export class Board {
         return false;
       }
 
-      const neighbors = [
-        [i - 1, j],
-        [i + 1, j],
-        [i, j - 1],
-        [i, j + 1],
-      ] satisfies Coordinate[];
-
-      return neighbors
-        .filter(([row, column]) => Board.validCoordinates(row, column))
+      return Board.neighbors(i, j)
         .some(([row, column]) => {
           const neighbor = this.at(row, column);
 

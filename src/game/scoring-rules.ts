@@ -180,19 +180,11 @@ export const colorDiagonals = (board: Board) => {
       return false;
     }
 
-    const neighbors = [
-      [i - 1, j - 1],
-      [i - 1, j + 1],
-      [i + 1, j - 1],
-      [i + 1, j + 1],
-    ];
-
-    return neighbors
-      .filter(([row, column]) => Board.validCoordinates(row, column))
+    return Board.neighbors(i, j)
       .some(([row, column]) => {
         const neighbor = board.at(row, column);
         return neighbor !== null && neighbor.color === dice.color;
-      });
+      })
   });
 
   const countByColors = board.diceAtMask(mask).reduce(

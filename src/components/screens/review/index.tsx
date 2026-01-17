@@ -33,10 +33,10 @@ export function Review({
     () =>
       isPopoverOpen && board
         ? board.createMask(
-            (_dice, rowIndex, columnIndex) =>
-              selectedCoordinates[0] === rowIndex &&
-              selectedCoordinates[1] === columnIndex,
-          )
+          (_dice, rowIndex, columnIndex) =>
+            selectedCoordinates[0] === rowIndex &&
+            selectedCoordinates[1] === columnIndex,
+        )
         : undefined,
     [board, isPopoverOpen, selectedCoordinates],
   );
@@ -82,13 +82,17 @@ export function Review({
       } else if (event.key === "Escape" && isPopoverOpen) {
         setIsPopoverOpen(false);
         focusedRef.current?.focus();
+      } else if (event.key === '*') {
+        import("@/game/random-board").then(({ buildRandomBoard }) => {
+          setPlayerBoard(Number(playerId), buildRandomBoard());
+        });
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
 
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [isPopoverOpen, diceHtmlId]);
+  }, [isPopoverOpen, diceHtmlId, playerId, setPlayerBoard]);
 
   const isSwitchingBetweenFieldsRef = useRef(false);
   useEffect(() => {
