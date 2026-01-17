@@ -1,11 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { MenuIcon } from "lucide-react";
-import { Fragment, lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const LazySettings = lazy(() =>
   import("./settings").then((module) => ({ default: module.Settings })),
 );
+
+const FragmentWrapper = ({ children }: { children: React.ReactNode }) => {
+  return <>{children}</>;
+};
 
 type SettingsComponentType = React.ComponentType<{
   children: React.ReactNode;
@@ -17,7 +21,7 @@ export function SettingsButton() {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [SettingsComponent, setSettingsComponent] =
-    useState<SettingsComponentType>(Fragment);
+    useState<SettingsComponentType>(() => FragmentWrapper);
 
   const handleClick = () => {
     setIsOpen(!isOpen);
