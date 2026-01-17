@@ -1,19 +1,17 @@
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
+
+const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+const subscribe = (callback: () => void) => {
+  mediaQuery.addEventListener("change", callback);
+
+  return () => mediaQuery.removeEventListener("change", callback);
+};
+
+const getSnapshot = () => mediaQuery.matches;
 
 export function useSystemTheme() {
-  const [isDark, setIsDark] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = (event: MediaQueryListEvent) => {
-      setIsDark(event.matches);
-    };
-    mediaQuery.addEventListener("change", handleChange);
-
-    return () => {
-      mediaQuery.removeEventListener("change", handleChange);
-    };
-  }, []);
+  const isDark = useSyncExternalStore(subscribe, getSnapshot);
 
   return isDark ? "dark" : "light";
 }
