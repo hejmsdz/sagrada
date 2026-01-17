@@ -17,7 +17,7 @@ export function Pattern({ color }: { color: Color }) {
   return (
     <div
       aria-hidden="true"
-      className="absolute top-0 left-0 w-full h-full opacity-15 bg-position-[5%_5%]"
+      className="absolute inset-0 opacity-15 bg-position-[5%_5%]"
       style={{
         backgroundImage: `url(${PATTERNS[color]})`,
       }}

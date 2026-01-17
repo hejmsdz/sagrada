@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import type { Color, OptionalDice, Value } from "@/game/types";
 import { COLORS, VALUES } from "@/game/types";
 import { Dice5Icon, SquareIcon } from "lucide-react";
-import { COLOR_CLASSES_TEXT } from "@/lib/colors";
+import { COLOR_CLASSES_TEXT, COLOR_CLASSES_TEXT_CONTRAST } from "@/lib/colors";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { useKeyboard } from "@/components/board-view/use-keyboard";
@@ -106,10 +106,10 @@ export function DiceEdit({
           >
             {isColorBlindMode ? (
               <>
-                <span>{color.toUpperCase().slice(0, 1)}</span>
                 <SquareIcon
-                  className={cn("absolute size-7", COLOR_CLASSES_TEXT[color])}
+                  className={cn(COLOR_CLASSES_TEXT[color], "absolute size-7 fill-current")}
                 />
+                <span className={cn(COLOR_CLASSES_TEXT_CONTRAST[color], "relative z-10")}>{color.toUpperCase().slice(0, 1)}</span>
               </>
             ) : (
               <Dice5Icon
