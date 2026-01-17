@@ -8,6 +8,8 @@ type Settings = {
   setDefaultLocale: (locale: string) => void;
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  colorBlindMode: boolean;
+  setColorBlindMode: (colorBlindMode: boolean) => void;
 };
 
 export const useSettingsStore = create<Settings>()(
@@ -17,6 +19,8 @@ export const useSettingsStore = create<Settings>()(
       setDefaultLocale: (value) => set({ defaultLocale: value }),
       theme: "system",
       setTheme: (value) => set({ theme: value }),
+      colorBlindMode: true,
+      setColorBlindMode: (value) => set({ colorBlindMode: value }),
     }),
     {
       name: "settings",

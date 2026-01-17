@@ -145,6 +145,7 @@
       "light": "Jasny",
       "dark": "Ciemny"
     },
+    "colorBlindMode": "Tryb dla osób z daltonizmem",
     "createdBy": "Wykonanie: <1>{{name}}</1>"
   }
 }

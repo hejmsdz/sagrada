@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import { LanguageSettings } from "./language-settings";
 import { SettingsFooter } from "./settings-footer";
 import { AppearanceSettings } from "./appearance-settings";
+import { ColorBlindSettings } from "./colorblind-settings";
 
 export function Settings({ children }: { children: React.ReactNode }) {
   const { t } = useTranslation("settings");
@@ -36,6 +37,7 @@ export function Settings({ children }: { children: React.ReactNode }) {
         <div className="px-6 flex flex-col gap-7">
           <LanguageSettings />
           <AppearanceSettings />
+          <ColorBlindSettings />
         </div>
         <SheetFooter>
           <SettingsFooter />

@@ -9,6 +9,8 @@ import { useGameStore } from "@/stores/game";
 import { Actions } from "@/components/layout/actions";
 import { DisablableButtonLink } from "@/components/disablable-button-link";
 import { CheckIcon } from "lucide-react";
+import { Pattern } from "@/components/board-view/pattern";
+import { useSettingsStore } from "@/stores/settings";
 
 export function PrivateObjective({ playerId }: { playerId: string }) {
   const { t } = useTranslation();
@@ -33,6 +35,8 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
     (state) => state.setPlayerPrivateObjective,
   );
 
+  const isColorBlindMode = useSettingsStore((store) => store.colorBlindMode);
+
   return (
     <Page>
       <Header>{t("selectPrivateObjective")}</Header>
@@ -56,10 +60,12 @@ export function PrivateObjective({ playerId }: { playerId: string }) {
             >
               <div
                 className={cn(
-                  "rounded-full aspect-square w-full",
+                  "rounded-full aspect-square w-full relative overflow-hidden",
                   COLOR_CLASSES_BG[color],
                 )}
-              />
+              >
+                {isColorBlindMode && <Pattern color={color} />}
+              </div>
               <span>{t(color, { ns: "colors" })}</span>
             </button>
           );

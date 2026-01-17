@@ -8,6 +8,7 @@ import { COLOR_CLASSES_TEXT } from "@/lib/colors";
 import { cn } from "@/lib/utils";
 import { useTranslation } from "react-i18next";
 import { useKeyboard } from "@/components/board-view/use-keyboard";
+import { useSettingsStore } from "@/stores/settings";
 
 export function DiceEdit({
   dice,
@@ -74,6 +75,8 @@ export function DiceEdit({
     colorButtonRefs.current[dice?.color ?? "null"]?.focus();
   }, [rowIndex, columnIndex]);
 
+  const isColorBlindMode = useSettingsStore((store) => store.colorBlindMode);
+
   return (
     <div className="flex flex-col gap-2">
       <ButtonGroup
@@ -88,7 +91,7 @@ export function DiceEdit({
               colorButtonRefs.current[color] = el;
             }}
             variant="outline"
-            className={buttonClasses}
+            className={cn(buttonClasses, "relative")}
             role="radio"
             aria-checked={dice?.color === color}
             aria-keyshortcuts={color.toUpperCase().slice(0, 1)}
@@ -101,12 +104,21 @@ export function DiceEdit({
               })
             }
           >
-            <Dice5Icon
-              className={cn(
-                COLOR_CLASSES_TEXT[color],
-                "fill-current [&_path]:stroke-white [&_path]:stroke-3",
-              )}
-            />
+            {isColorBlindMode ? (
+              <>
+                <span>{color.toUpperCase().slice(0, 1)}</span>
+                <SquareIcon
+                  className={cn("absolute size-7", COLOR_CLASSES_TEXT[color])}
+                />
+              </>
+            ) : (
+              <Dice5Icon
+                className={cn(
+                  COLOR_CLASSES_TEXT[color],
+                  "fill-current [&_path]:stroke-white [&_path]:stroke-3",
+                )}
+              />
+            )}
           </Button>
         ))}
         <Button

@@ -133,6 +133,7 @@
     "settings": "Settings",
     "language": "Language",
     "appearance": "Appearance",
+    "colorBlindMode": "Color-blind mode",
     "themes": {
       "system": "According to system settings",
       "light": "Light",
