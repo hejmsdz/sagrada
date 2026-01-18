@@ -126,6 +126,10 @@
       "leaderboard": {
         "title": "Leaderboard",
         "description": "Track scores for multiple players and crown the winner!"
+      },
+      "offline": {
+        "title": "Offline access",
+        "description": "All app features, including image recognition, run fully on your device. If you want to use it without internet connection, enable offline mode in the settings menu."
       }
     },
     "getStarted": "Get started"

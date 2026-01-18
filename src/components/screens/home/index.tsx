@@ -8,6 +8,7 @@ import {
   CalculatorIcon,
   TrophyIcon,
   CheckCircleIcon,
+  UnplugIcon,
 } from "lucide-react";
 import { FeatureHighlight } from "./feature-highlight";
 import { Trans, useTranslation } from "react-i18next";
@@ -29,6 +30,10 @@ const features = [
   {
     name: "leaderboard",
     icon: TrophyIcon,
+  },
+  {
+    name: "offline",
+    icon: UnplugIcon,
   },
 ];
 

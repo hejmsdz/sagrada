@@ -132,7 +132,11 @@
       },
       "leaderboard": {
         "title": "Tablica wyników",
-        "description": "Sprawdź wyniki wszystkich graczy i ogłoś zwycięzcę!"
+        "description": "Sprawdź wyniki wszystkich graczy i wyłoń zwycięzcę!"
+      },
+      "offline": {
+        "title": "Dostęp offline",
+        "description": "Wszystkie funkcje, w tym rozpoznawanie obrazu, działają w pełni na Twoim urządzeniu. Jeśli chcesz korzystać z aplikacji bez internetu, włącz tryb offline w menu ustawień."
       }
     },
     "getStarted": "Zaczynamy"
