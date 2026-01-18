@@ -48,7 +48,8 @@
     "notFound": "Page not found",
     "notFoundDescription": "Sorry, the page you requested could not be found. Please check the address or return to the home page.",
     "notFoundHomePage": "Home page",
-    "settings": "Settings"
+    "settings": "Settings",
+    "close": "Close"
   },
   "publicObjectives": {
     "diagonals": {
@@ -136,7 +137,7 @@
     "colorBlindMode": "Color-blind mode",
     "offlineMode": "Offline mode",
     "offlineModeStatus": {
-      "notInstalled": "Check the box to make the app available offline.",
+      "notInstalled": "Check to make the app available offline.",
       "installing": "Installing offline mode...",
       "offlineReady": "The application is ready to work offline. Bookmark it to access it easily.",
       "error": "Failed to install offline mode. Please try again."

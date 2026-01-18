@@ -48,7 +48,8 @@
     "notFound": "Nie znaleziono strony",
     "notFoundDescription": "Przepraszamy, strona, której szukasz, nie została znaleziona. Sprawdź adres lub wróć na stronę główną.",
     "notFoundHomePage": "Strona główna",
-    "settings": "Ustawienia"
+    "settings": "Ustawienia",
+    "close": "Zamknij"
   },
   "publicObjectives": {
     "diagonals": {
@@ -148,7 +149,7 @@
     "colorBlindMode": "Tryb dla osób z daltonizmem",
     "offlineMode": "Tryb offline",
     "offlineModeStatus": {
-      "notInstalled": "Zaznacz to pole, aby aplikacja była dostępna bez połączenia z internetem.",
+      "notInstalled": "Zaznacz, aby aplikacja była dostępna bez połączenia z internetem.",
       "installing": "Instalowanie w trybie offline...",
       "offlineReady": "Aplikacja jest gotowa do pracy bez internetu. Dodaj ją do zakładek, aby mieć do niej łatwy dostęp.",
       "error": "Nie udało się zainstalować trybu offline. Spróbuj ponownie."

@@ -61,7 +61,20 @@ const useServiceWorker = () => {
 export function OfflineSettings() {
   const { t } = useTranslation("settings");
   const htmlId = useId();
+  const descriptionHtmlId = `${htmlId}-description`;
   const { register, unregister, status } = useServiceWorker();
+
+  const handleChange = () => {
+    if (status === 'installing') {
+      return;
+    }
+
+    if (status === 'notInstalled' || status === 'error') {
+      register();
+    } else {
+      unregister();
+    }
+  }
 
   if (status === 'unsupported') {
     return null;
@@ -71,21 +84,15 @@ export function OfflineSettings() {
     <Field orientation="horizontal" aria-busy={status === 'installing'}>
       <Checkbox
         id={htmlId}
+        aria-describedby={descriptionHtmlId}
         checked={status !== 'notInstalled' && status !== 'error'}
-        disabled={status === 'installing'}
-        onCheckedChange={() => {
-          if (status === 'notInstalled' || status === 'error') {
-            register();
-          } else {
-            unregister();
-          }
-        }}
+        onCheckedChange={handleChange}
       />
       <FieldContent>
         <FieldLabel htmlFor={htmlId}>
           {t("offlineMode")}
         </FieldLabel>
-        <FieldDescription>
+        <FieldDescription id={descriptionHtmlId} aria-live="polite">
           {t(`offlineModeStatus.${status}`)}
         </FieldDescription>
       </FieldContent>
