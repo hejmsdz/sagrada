@@ -12,6 +12,17 @@ import "./index.css";
 import { LoadingScreen } from "./components/screens/loading";
 import { NotFound } from "./components/screens/not-found";
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistration().then((registration) => {
+    if (registration) {
+      registration.addEventListener('updatefound', async () => {
+        await registration.update();
+        window.location.reload();
+      });
+    }
+  });
+}
+
 const router = createRouter({
   routeTree,
   defaultPendingComponent: LoadingScreen,

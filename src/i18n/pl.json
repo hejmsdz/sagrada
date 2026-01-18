@@ -146,6 +146,13 @@
       "dark": "Ciemny"
     },
     "colorBlindMode": "Tryb dla osób z daltonizmem",
+    "offlineMode": "Tryb offline",
+    "offlineModeStatus": {
+      "notInstalled": "Zaznacz to pole, aby aplikacja była dostępna bez połączenia z internetem.",
+      "installing": "Instalowanie w trybie offline...",
+      "offlineReady": "Aplikacja jest gotowa do pracy bez internetu. Dodaj ją do zakładek, aby mieć do niej łatwy dostęp.",
+      "error": "Nie udało się zainstalować trybu offline. Spróbuj ponownie."
+    },
     "createdBy": "Wykonanie: <1>{{name}}</1>"
   }
 }

@@ -23,7 +23,7 @@ export function ColorBlindSettings() {
         checked={colorBlindMode}
         onCheckedChange={handleChange}
       />
-      <FieldLabel htmlFor={htmlId} className="mb-0">
+      <FieldLabel htmlFor={htmlId}>
         {t("colorBlindMode")}
       </FieldLabel>
     </Field>

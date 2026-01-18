@@ -134,6 +134,13 @@
     "language": "Language",
     "appearance": "Appearance",
     "colorBlindMode": "Color-blind mode",
+    "offlineMode": "Offline mode",
+    "offlineModeStatus": {
+      "notInstalled": "Check the box to make the app available offline.",
+      "installing": "Installing offline mode...",
+      "offlineReady": "The application is ready to work offline. Bookmark it to access it easily.",
+      "error": "Failed to install offline mode. Please try again."
+    },
     "themes": {
       "system": "According to system settings",
       "light": "Light",

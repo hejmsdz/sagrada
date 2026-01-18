@@ -11,6 +11,7 @@ import { LanguageSettings } from "./language-settings";
 import { SettingsFooter } from "./settings-footer";
 import { AppearanceSettings } from "./appearance-settings";
 import { ColorBlindSettings } from "./colorblind-settings";
+import { OfflineSettings } from "./offline-settings";
 
 export function Settings({
   children,
@@ -46,6 +47,7 @@ export function Settings({
           <LanguageSettings />
           <AppearanceSettings />
           <ColorBlindSettings />
+          <OfflineSettings />
         </div>
         <SheetFooter>
           <SettingsFooter />
