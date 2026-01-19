@@ -19,7 +19,7 @@ export const useSettingsStore = create<Settings>()(
       setDefaultLocale: (value) => set({ defaultLocale: value }),
       theme: "system",
       setTheme: (value) => set({ theme: value }),
-      colorBlindMode: true,
+      colorBlindMode: false,
       setColorBlindMode: (value) => set({ colorBlindMode: value }),
     }),
     {
