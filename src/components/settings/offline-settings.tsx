@@ -21,6 +21,8 @@ const useServiceWorker = () => {
     setIsInstalling(true);
     try {
       await navigator.serviceWorker.register('/sw.js');
+      await navigator.serviceWorker.ready;
+      setOfflineReady(true);
     } catch {
       setHasError(true);
     } finally {
