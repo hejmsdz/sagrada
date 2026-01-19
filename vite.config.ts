@@ -18,11 +18,11 @@ export default defineConfig({
     }),
     react(),
     tailwindcss(),
-    sentryVitePlugin({
+    ...process.env.SENTRY_AUTH_TOKEN ? [sentryVitePlugin({
       authToken: process.env.SENTRY_AUTH_TOKEN,
       org: "hejmsdz",
       project: "sagrada",
-    }),
+    })] : [],
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: null,
