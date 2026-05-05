@@ -1,4 +1,4 @@
-import type { Mask, Color, Value, OptionalDice } from "./types";
+import type { Mask, Color, Value, OptionalDice, Coordinate } from "./types";
 import { Board, COLORS, NUM_COLUMNS, NUM_ROWS, VALUES } from "./types";
 
 export type ScoringResult = {
@@ -180,7 +180,11 @@ export const colorDiagonals = (board: Board) => {
       return false;
     }
 
-    return Board.neighbors(i, j)
+    return ([
+      [i - 1, j - 1], [i - 1, j + 1],
+      [i + 1, j - 1], [i + 1, j + 1],
+    ] satisfies Coordinate[])
+      .filter(([row, column]) => Board.validCoordinates(row, column))
       .some(([row, column]) => {
         const neighbor = board.at(row, column);
         return neighbor !== null && neighbor.color === dice.color;
